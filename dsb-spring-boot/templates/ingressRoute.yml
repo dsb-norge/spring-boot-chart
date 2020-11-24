@@ -1,0 +1,17 @@
+{{- if .Values.application_traefik_rule }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  # Must be a valid DNS name:
+  name: {{ .Release.Name }}.route
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: {{ .Values.application_traefik_rule }}
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-service
+          port: {{ .Values.application_web_port }}
+{{- end }}
