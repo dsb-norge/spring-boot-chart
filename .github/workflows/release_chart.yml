@@ -1,0 +1,39 @@
+name: 'Release the chart'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CHART_NAME: 'dsb-spring-boot'
+  # Needed to deploy helm chart as oci bundle:
+  HELM_EXPERIMENTAL_OCI: 1
+
+jobs:
+  set-variables:
+    name: Release the chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout working branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # We use a format with todays date, plus seconds since midnight.
+      - name: Set CHART_VERSION variable on environment
+        run: echo "CHART_VERSION=$( date +%Y.%m.%d ).$(( $( date "+%s" ) - $( date -d 'today 00:00:00' "+%s" ) ))" >> $GITHUB_ENV
+
+      - name: Update chart version in Chart.yaml
+        run: "sed -i 's/^version:.*/version: ${{ env.CHART_VERSION }}/' ${{ env.CHART_NAME }}/Chart.yaml"
+
+      - name: Login to registry
+        run: echo  ${{ secrets.AZ_CR_SECRET }} | helm registry login ${{ secrets.AZ_CR_SERVER }} --username ${{ secrets.AZ_CR_USER }} --password-stdin
+
+      - name: Save helm chart
+        run: helm chart save ./dsb-spring-boot ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.CHART_VERSION }}
+
+      - name: Push helm chart
+        run: helm chart push ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.CHART_VERSION }}

@@ -1,0 +1,30 @@
+---
+# Number of pods to create:
+replicas: 2
+# For the pod distruption budget, default is replicas - 1:
+minAvailableReplicas:
+
+# The secret (must already exist in the namespace) used to pull images:
+pullSecret: "dockerconfigjson-github-com"
+
+image:
+tag:
+
+config:
+secrets:
+roles: []
+
+application_traefik_rule:
+
+application_web_port: 8080
+application_actuator_port: 8180
+
+prometheus_enabled: "true"
+prometheus_port: 8180
+prometheus_path: "/actuator/prometheus"
+
+memory_request: "256Mi"
+memory_limit: "1024Mi"
+
+cpu_request: "0.2"
+cpu_limit: "2.5"

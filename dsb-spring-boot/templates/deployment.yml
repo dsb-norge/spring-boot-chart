@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+      annotations:
+        "prometheus.io/scrape": {{ .Values.prometheus_enabled | quote }}
+        "prometheus.io/port": {{ .Values.prometheus_port | quote }}
+        "prometheus.io/path": {{ .Values.prometheus_path | quote }}
+        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        # We create a string based on the chart version, and the resolved configuration values.
+        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
+    spec:
+      serviceAccountName: {{ .Release.Name }}-service-account
+      imagePullSecrets:
+        - name: {{ .Values.pullSecret | quote }}
+      containers:
+        - name: {{ .Release.Name }}-container
+          image: {{ .Values.image }}:{{ .Values.tag }}
+          # Sleep before shutdown to finish requests, as suggested here:
+          # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{ .Values.application_actuator_port }}
+            initialDelaySeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{ .Values.application_actuator_port }}
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              memory: {{ .Values.memory_request }}
+              cpu: {{ .Values.cpu_request }}
+            limits:
+              memory: {{ .Values.memory_limit }}
+              cpu: {{ .Values.cpu_limit }}
+          env:
+            - name: APPLICATIONINSIGHTS_ROLE_NAME
+              value: {{ .Release.Name }}
+          envFrom:
+            {{- if .Values.config  }}
+            - configMapRef:
+                name: {{ .Release.Name }}-configmap
+            {{- end }}
+            {{- if .Values.secrets }}
+            - configMapRef:
+                name: kubernetes-api-server-config
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
+            {{- end }}
+            - secretRef:
+                name: "applicationinsight-connection-string-secret"
+          ports:
+            - containerPort: {{ .Values.application_web_port }}
+              name: web
+            - containerPort: {{ .Values.application_actuator_port }}
+              name: actuator
