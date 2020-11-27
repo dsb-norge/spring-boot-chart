@@ -53,6 +53,8 @@ spec:
           env:
             - name: APPLICATIONINSIGHTS_ROLE_NAME
               value: {{ .Release.Name }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.springProfile | quote }}
           envFrom:
             {{- if .Values.config  }}
             - configMapRef:

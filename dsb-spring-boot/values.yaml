@@ -10,6 +10,9 @@ pullSecret: "dockerconfigjson-github-com"
 image:
 tag:
 
+# Default Spring Profile:
+springProfile: "kubernetes"
+
 config:
 secrets:
 roles: []
