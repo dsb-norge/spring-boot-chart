@@ -13,10 +13,26 @@ tag:
 # Default Spring Profile:
 springProfile: "kubernetes"
 
+# It is possible to use a normal yaml tree here, for example:
+# root:
+#   node1: 1
+#   node2: 2
+#
+# If there is a lot of config, it is useful to use the helm function --set-file.
 config:
+
+# It is possible to use a normal yaml tree here, for example:
+# root:
+#   node1: 1
+#   node2: 2
+#
+# If there is a lot of secrets, it is useful to use the helm function --set-file.
 secrets:
+
+# Any roles the generated service account should be bound to:
 roles: []
 
+# If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
 
 application_web_port: 8080

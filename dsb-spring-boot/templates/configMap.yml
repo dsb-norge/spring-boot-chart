@@ -5,7 +5,5 @@ metadata:
   name: {{ .Release.Name }}-configmap
   namespace: {{ .Release.Namespace }}
 data:
-  {{- range $key, $val := .Values.config }}
-    {{ $key | quote }}: {{ $val | toString | quote }}
-  {{- end }}
+{{ template "envify" (list "" .Values.config) }}
 {{ end }}
