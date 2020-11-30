@@ -29,6 +29,9 @@ jobs:
       - name: Update chart version in Chart.yaml
         run: "sed -i 's/^version:.*/version: ${{ env.CHART_VERSION }}/' ${{ env.CHART_NAME }}/Chart.yaml"
 
+      - name: Run linting
+        run: helm lint dsb-spring-boot
+
       - name: Login to registry
         run: echo  ${{ secrets.AZ_CR_SECRET }} | helm registry login ${{ secrets.AZ_CR_SERVER }} --username ${{ secrets.AZ_CR_USER }} --password-stdin
 
