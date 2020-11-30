@@ -28,7 +28,7 @@ See https://stackoverflow.com/questions/60184221/convert-yaml-to-property-file-i
     {{- end -}}
   {{- end -}}
 {{- else -}}
-    {{ $prefix | indent 2 }}: {{ $value }}
+    {{ $prefix | indent 2 }}: {{ $value | quote }}
 {{ end -}}
 {{- end -}}
 
