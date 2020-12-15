@@ -62,7 +62,7 @@ spec:
             - name: DATABASE_CONTAINER_PASSWORD
               value: {{ .Values.database_container_password | quote }}
             - name: DATABASE_CONTAINER_HOST_AND_PORT
-              value: "{{ .Release.Name }}-database-service:1433"
+              value: {{ .Release.Name }}-database-service:1433
             - name: DATABASE_CONTAINER_DATABASE
               # This is hardcoded in the image used:
               value: "emptydb"
