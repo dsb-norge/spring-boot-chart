@@ -54,17 +54,30 @@ spec:
             - name: APPLICATIONINSIGHTS_ROLE_NAME
               value: {{ .Release.Name }}
             - name: SPRING_PROFILES_ACTIVE
-              value: {{ .Values.springProfile | quote }}
-          envFrom:
-            {{- if .Values.config  }}
-            - configMapRef:
-                name: {{ .Release.Name }}-configmap
+              value: {{ .Values.springProfiles | quote }}
+            {{- if .Values.database_container_enabled }}
+            - name: DATABASE_CONTAINER_USER
+              # This is hardcoded in the image used:
+              value: "sa"
+            - name: DATABASE_CONTAINER_PASSWORD
+              value: {{ .Values.database_container_password | quote }}
+            - name: DATABASE_CONTAINER_HOST_AND_PORT
+              value: "{{ .Release.Name }}-database-service:1433"
+            - name: DATABASE_CONTAINER_DATABASE
+              # This is hardcoded in the image used:
+              value: "emptydb"
             {{- end }}
+          envFrom:
             {{- if .Values.secrets }}
             - configMapRef:
                 name: kubernetes-api-server-config
             - secretRef:
                 name: {{ .Release.Name }}-secrets
+            {{- end }}
+            # We place config AFTER secrets, to more easily override with dummy values during development:
+            {{- if .Values.config  }}
+            - configMapRef:
+                name: {{ .Release.Name }}-configmap
             {{- end }}
             - secretRef:
                 name: "applicationinsight-connection-string-secret"

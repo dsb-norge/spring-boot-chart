@@ -11,7 +11,7 @@ image:
 tag:
 
 # Default Spring Profile:
-springProfile: "kubernetes"
+springProfiles: "kubernetes"
 
 # It is possible to use a normal yaml tree here, for example:
 # root:
@@ -34,6 +34,8 @@ roles: []
 
 # If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
+# If needed, include a path prefix that is removed before sending the request to the pod:
+application_traefik_strip_prefix:
 
 application_web_port: 8080
 application_actuator_port: 8180
@@ -47,3 +49,11 @@ memory_limit: "1024Mi"
 
 cpu_request: "0.2"
 cpu_limit: "2.5"
+
+# If this is enabled, a docker image with a mssql database is created.
+# The following env variables are then added to the pod:
+# DATABASE_CONTAINER_USER, DATABASE_CONTAINER_PASSWORD, DATABASE_CONTAINER_HOST_AND_PORT and DATABASE_CONTAINER_DATABASE
+database_container_enabled: false
+database_container_image: "ghcr.io/dsb-norge/mssql-empty:latest"
+# This is hardcoded in the image used:
+database_container_password: DoN0tUse1Production
