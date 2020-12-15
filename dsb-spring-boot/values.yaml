@@ -54,6 +54,6 @@ cpu_limit: "2.5"
 # The following env variables are then added to the pod:
 # DATABASE_CONTAINER_USER, DATABASE_CONTAINER_PASSWORD, DATABASE_CONTAINER_HOST_AND_PORT and DATABASE_CONTAINER_DATABASE
 database_container_enabled: false
-database_container_image: "ghcr.io/dsb-norge/mssql-empty:latest"
+database_container_image: "ghcr.io/dsb-norge/mssql-empty:2020.12.15.41903"
 # This is hardcoded in the image used:
 database_container_password: DoN0tUse1Production
