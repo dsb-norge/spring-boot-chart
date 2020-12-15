@@ -8,18 +8,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "{{ .Release.Name }}-database-app"
+      app: "{{ .Release.Name }}-db-app"
   template:
     metadata:
       labels:
-        app: "{{ .Release.Name }}-database-app"
+        app: "{{ .Release.Name }}-db-app"
       annotations:
         # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
         # We create a string based on the chart version, and the resolved configuration values.
         # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
         checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
     spec:
-      hostname: "{{ .Release.Name }}-database-service"
+      hostname: "{{ .Release.Name }}-db-svc"
       imagePullSecrets:
         - name: {{ .Values.pullSecret | quote }}
       containers:
