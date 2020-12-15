@@ -1,0 +1,11 @@
+{{- if .Values.application_traefik_strip_prefix }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: "{{ .Release.Name }}-middleware"
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  stripPrefix:
+    prefixes:
+      - {{ .Values.application_traefik_strip_prefix }}
+{{- end }}

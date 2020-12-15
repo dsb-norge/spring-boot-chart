@@ -1,0 +1,37 @@
+{{ if .Values.database_container_enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-database-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-database-app"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-database-app"
+      annotations:
+        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        # We create a string based on the chart version, and the resolved configuration values.
+        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
+    spec:
+      hostname: "{{ .Release.Name }}-database-service"
+      imagePullSecrets:
+        - name: {{ .Values.pullSecret | quote }}
+      containers:
+        - name: "{{ .Release.Name }}-database-container"
+          image: "{{ .Values.database_container_image }}"
+          env:
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: SA_PASSWORD
+            value: {{ .Values.database_container_password | quote }}
+          - name: MSSQL_SA_PASSWORD
+            value: {{ .Values.database_container_password | quote }}
+          ports:
+          - containerPort: 1433
+{{ end }}

@@ -1,0 +1,14 @@
+{{ if .Values.database_container_enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-database-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+  selector:
+    app: "{{ .Release.Name }}-database-app"
+{{ end }}
