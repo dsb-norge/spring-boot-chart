@@ -22,8 +22,6 @@ spec:
         checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
     spec:
       serviceAccountName: {{ .Release.Name }}-service-account
-      imagePullSecrets:
-        - name: {{ .Values.pullSecret | quote }}
       containers:
         - name: {{ .Release.Name }}-container
           image: {{ .Values.image }}:{{ .Values.tag }}
