@@ -24,6 +24,16 @@ spec:
       serviceAccountName: {{ .Release.Name }}-service-account
       nodeSelector:
         NodePool: workers
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}-app
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Release.Name }}-container
           image: {{ .Values.image }}:{{ .Values.tag }}
