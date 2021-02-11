@@ -26,14 +26,14 @@ spec:
         NodePool: workers
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                      - {{ .Release.Name }}-app
-              topologyKey: "kubernetes.io/hostname"
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - {{ .Release.Name }}-app
+            topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Release.Name }}-container
           image: {{ .Values.image }}:{{ .Values.tag }}
