@@ -78,9 +78,9 @@ spec:
               value: "emptydb"
             {{- end }}
           envFrom:
-            {{- if .Values.secrets }}
             - configMapRef:
                 name: kubernetes-api-server-config
+            {{- if .Values.secrets }}
             - secretRef:
                 name: {{ .Release.Name }}-secrets
             {{- end }}
