@@ -61,8 +61,6 @@ spec:
               memory: {{ .Values.memory_limit }}
               cpu: {{ .Values.cpu_limit }}
           env:
-            - name: APPLICATIONINSIGHTS_ROLE_NAME
-              value: {{ .Release.Name }}
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.springProfiles | quote }}
             {{- if .Values.database_container_enabled }}
@@ -89,8 +87,6 @@ spec:
             - configMapRef:
                 name: {{ .Release.Name }}-configmap
             {{- end }}
-            - secretRef:
-                name: "applicationinsight-connection-string-secret"
           ports:
             - containerPort: {{ .Values.application_web_port }}
               name: web
