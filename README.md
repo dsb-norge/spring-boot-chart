@@ -2,7 +2,7 @@
 
 Release the chart by invoking the workflow 'Release the chart' in Github, and then specify the desired version:
 
-https://github.com/dsb-norge/spring-boot-chart/actions?query=workflow%3A%22Release+the+chart%22
+https://github.com/dsb-norge/spring-boot-chart/actions/workflows/release_chart.yml
 
 To debug locally (requires a kubeconfig setup to a live cluster):
 
