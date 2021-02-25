@@ -4,6 +4,8 @@ Create a new release by creating a tag prefixed with 'v' (like v1.0.0):
 
 https://github.com/dsb-norge/spring-boot-chart/releases/new
 
+Note that the release will be without the prefix 'v'.
+
 To debug locally (requires a kubeconfig setup to a live cluster):
 
     helm upgrade --install --debug --dry-run --atomic -f example.yaml test-application dsb-spring-boot
