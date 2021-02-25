@@ -1,14 +1,9 @@
 name: 'Release the chart'
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version (SemVer)'
-        required: true
-      description:
-        description: 'Desciption'
-        required: true
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 env:
   CHART_NAME: 'dsb-spring-boot'
@@ -26,8 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Parse release version from tag
+        run: echo "RELEASE_VERSION=$(echo "${{ github.ref }}" | cut -c12-)" >> $GITHUB_ENV
+
       - name: Update chart version in Chart.yaml
-        run: "sed -i 's/^version:.*/version: ${{ github.event.inputs.version }}/' ${{ env.CHART_NAME }}/Chart.yaml"
+        run: "sed -i 's/^version:.*/version: ${{ env.RELEASE_VERSION }}/' ${{ env.CHART_NAME }}/Chart.yaml"
 
       - name: Run linting
         run: helm lint dsb-spring-boot
@@ -36,16 +34,7 @@ jobs:
         run: echo  ${{ secrets.AZ_CR_SECRET }} | helm registry login ${{ secrets.AZ_CR_SERVER }} --username ${{ secrets.AZ_CR_USER }} --password-stdin
 
       - name: Save helm chart
-        run: helm chart save ./dsb-spring-boot ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ github.event.inputs.version }}
+        run: helm chart save ./dsb-spring-boot ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.RELEASE_VERSION }}
 
       - name: Push helm chart
-        run: helm chart push ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ github.event.inputs.version }}
-
-      - name: Create GitHub release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: Release ${{ github.event.inputs.version }}
-          body: ${{ github.event.inputs.description }}
+        run: helm chart push ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.RELEASE_VERSION }}

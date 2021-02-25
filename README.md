@@ -1,8 +1,8 @@
 ## Helm 3 chart for Spring Boot Applications
 
-Release the chart by invoking the workflow 'Release the chart' in Github, and then specify the desired version:
+Create a new release by creating a tag prefixed with 'v' (like v1.0.0):
 
-https://github.com/dsb-norge/spring-boot-chart/actions/workflows/release_chart.yml
+https://github.com/dsb-norge/spring-boot-chart/releases/new
 
 To debug locally (requires a kubeconfig setup to a live cluster):
 
