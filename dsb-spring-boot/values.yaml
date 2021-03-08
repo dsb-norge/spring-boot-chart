@@ -4,9 +4,6 @@ replicas: 2
 # For the pod distruption budget, default is replicas - 1:
 minAvailableReplicas:
 
-# The secret (must already exist in the namespace) used to pull images:
-pullSecret: "dockerconfigjson-github-com"
-
 image:
 tag:
 
