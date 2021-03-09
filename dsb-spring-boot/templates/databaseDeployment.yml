@@ -23,6 +23,13 @@ spec:
       containers:
         - name: "{{ .Release.Name }}-database-container"
           image: "{{ .Values.database_container_image }}"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.2"
+            limits:
+              memory: "1024Mi"
+              cpu: "2.5"
           env:
           - name: ACCEPT_EULA
             value: "Y"
