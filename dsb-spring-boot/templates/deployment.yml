@@ -92,3 +92,7 @@ spec:
               name: web
             - containerPort: {{ .Values.application_actuator_port }}
               name: actuator
+          securityContext:
+            capabilities:
+              drop: [ALL]
+            runAsNonRoot: true
