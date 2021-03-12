@@ -13,6 +13,7 @@ spec:
       labels:
         app: {{ .Release.Name }}-app
       annotations:
+        "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
         "prometheus.io/scrape": {{ .Values.prometheus_enabled | quote }}
         "prometheus.io/port": {{ .Values.prometheus_port | quote }}
         "prometheus.io/path": {{ .Values.prometheus_path | quote }}
@@ -92,7 +93,18 @@ spec:
               name: web
             - containerPort: {{ .Values.application_actuator_port }}
               name: actuator
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
           securityContext:
             capabilities:
               drop: [ALL]
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 3000
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
