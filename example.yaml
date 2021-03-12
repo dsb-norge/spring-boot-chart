@@ -1,0 +1,7 @@
+---
+replicas: 2
+
+image: "dsbacr.azurecr.io/dsb-norge/test-application"
+tag: "latest"
+
+application_traefik_rule: "Host(`dev-api.eksplosiver.no`) && PathPrefix(`/test`)"
