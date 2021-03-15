@@ -54,3 +54,13 @@ database_container_enabled: false
 database_container_image: "dsbacr.azurecr.io/dsb-norge/mssql-empty:latest"
 # This is hardcoded in the image used:
 database_container_password: DoN0tUse1Production
+
+jobs:
+
+# It is possible to use a normal yaml tree here, for example:
+# root:
+#   node1: 1
+#   node2: 2
+#
+# If there is a lot of secrets, it is useful to use the helm function --set-file.
+job_secrets:
