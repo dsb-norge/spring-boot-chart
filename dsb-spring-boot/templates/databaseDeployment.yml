@@ -25,10 +25,10 @@ spec:
           image: "{{ .Values.database_container_image }}"
           resources:
             requests:
-              memory: "256Mi"
+              memory: "1024Mi"
               cpu: "0.2"
             limits:
-              memory: "1024Mi"
+              memory: "2048Mi"
               cpu: "2.5"
           env:
           - name: ACCEPT_EULA
