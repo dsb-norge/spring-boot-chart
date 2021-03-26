@@ -9,13 +9,13 @@ on:
 jobs:
   build:
     name: Build and test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout working branch
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
       - name: Run linting
-        run: helm lint dsb-spring-boot
+        run: helm lint charts/dsb-spring-boot

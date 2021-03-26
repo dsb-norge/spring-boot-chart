@@ -2,39 +2,27 @@ name: 'Release the chart'
 
 on:
   push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
-env:
-  CHART_NAME: 'dsb-spring-boot'
-  # Needed to deploy helm chart as oci bundle:
-  HELM_EXPERIMENTAL_OCI: 1
+    branches:
+      - main
 
 jobs:
-  set-variables:
-    name: Release the chart
-    runs-on: self-hosted
-
+  release:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout working branch
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Parse release version from tag
-        run: echo "RELEASE_VERSION=$(echo "${{ github.ref }}" | cut -c12-)" >> $GITHUB_ENV
-
-      - name: Update chart version in Chart.yaml
-        run: "sed -i 's/^version:.*/version: ${{ env.RELEASE_VERSION }}/' ${{ env.CHART_NAME }}/Chart.yaml"
-
       - name: Run linting
-        run: helm lint dsb-spring-boot
+        run: helm lint charts/dsb-spring-boot
 
-      - name: Login to registry
-        run: echo  ${{ secrets.AZ_CR_SECRET }} | helm registry login ${{ secrets.AZ_CR_SERVER }} --username ${{ secrets.AZ_CR_USER }} --password-stdin
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Save helm chart
-        run: helm chart save ./dsb-spring-boot ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.RELEASE_VERSION }}
-
-      - name: Push helm chart
-        run: helm chart push ${{ secrets.AZ_CR_SERVER }}/helm/${{ env.CHART_NAME }}:${{ env.RELEASE_VERSION }}
+      - name: Release chart
+        uses: helm/chart-releaser-action@v1.2.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
