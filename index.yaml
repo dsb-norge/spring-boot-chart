@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  dsb-spring-boot:
+  - apiVersion: v2
+    created: "2021-03-26T19:31:42.501271803Z"
+    description: A Helm chart for Spring Boot applications on Kubernetes
+    digest: 63110dd8631a2cfba29a625f883136b9b6cf29a28d40d4da94b96eede216c4fa
+    name: dsb-spring-boot
+    type: application
+    urls:
+    - https://github.com/dsb-norge/spring-boot-chart/releases/download/dsb-spring-boot-1.4.0/dsb-spring-boot-1.4.0.tgz
+    version: 1.4.0
+generated: "2021-03-26T19:31:42.501279003Z"
