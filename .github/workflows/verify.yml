@@ -17,5 +17,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run linting
-        run: helm lint charts/dsb-spring-boot
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.4.0
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.0.1
+
+      #- name: Run chart-testing (lint)
+      #  run: ct lint --all
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.1.0
+        with:
+          config: kind-cluster-config.yaml
+        env:
+          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+
+      - name: Run chart-testing (install)
+        run: ct install --all
