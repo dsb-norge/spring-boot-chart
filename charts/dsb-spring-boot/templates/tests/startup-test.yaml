@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-ping-test"
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: {{ .Release.Name }}-test
+      image: curlimages/curl:latest
+      env:
+        - name: SERVICE
+          value: {{ .Release.Name }}-service
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          RESPONSE=$(curl -s $SERVICE:8080/test/ping) && if [ $RESPONSE != "UP" ]; then exit 1; fi
+  restartPolicy: Never
