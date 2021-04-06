@@ -15,5 +15,5 @@ spec:
         - /bin/sh
         - -ec
         - |
-          RESPONSE=$(curl -s $SERVICE:8080/test/ping) && if [ $RESPONSE != "UP" ]; then exit 1; fi
+          RESPONSE=$(curl -s $SERVICE:8080/test/ping) && if [ $RESPONSE != "pong" ]; then exit 1; fi
   restartPolicy: Never
