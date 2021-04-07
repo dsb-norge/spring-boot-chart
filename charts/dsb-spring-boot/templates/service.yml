@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     spring-boot: "true"
+    chart-name: "{{ .Chart.Name }}"
+    chart-version: "{{ .Chart.Version }}"
     # Picked up by Spring Boot Admin:
     # https://codecentric.github.io/spring-boot-admin/current/#_converting_serviceinstances
     management.port: "{{ .Values.application_actuator_port }}"
