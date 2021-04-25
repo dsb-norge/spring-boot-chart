@@ -1,10 +1,6 @@
 ## Helm 3 chart for Spring Boot Applications
 
-Create a new release by creating a tag prefixed with 'v' (like v1.0.0):
-
-https://github.com/dsb-norge/spring-boot-chart/releases/new
-
-Note that the release will be without the prefix 'v'.
+Create a new release by comitting a new version in `charts/*/Chart.yaml`.
 
 To debug locally (requires a kubeconfig setup to a live cluster):
 
