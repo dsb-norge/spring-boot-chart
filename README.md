@@ -1,6 +1,8 @@
-## Helm 3 chart for Spring Boot Applications
+# Helm 3 charts for Spring Boot Applications
 
 Create a new release by comitting a new version in `charts/*/Chart.yaml`.
+
+## DSB Spring Boot Chart
 
 To debug locally (requires a kubeconfig setup to a live cluster):
 
@@ -18,8 +20,9 @@ The file `example.yaml` could be like this:
 
 To actually deploy, omit the --dry-run flag.
 
+### Define a CronJob
 
-## Define a CronJob
+If your application is only a spring boot application that should run as a cron job, use the chart 'dsb-spring-boot-job'.
 
 Define a `jobs` entry like below:
 
@@ -45,3 +48,7 @@ Optional parameters:
 
 You also require a client secret which is defined like the regular values.secrets only its from `values.job_secrets`
 it needs to define a value called: `CLIENT_SECRET`
+
+## DSB Spring Boot Job Chart
+
+Use this chart for creating a Spring Boot application that should run as a cron job. That is most often a console application.

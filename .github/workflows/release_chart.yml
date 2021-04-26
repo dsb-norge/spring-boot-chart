@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run linting
-        run: helm lint charts/dsb-spring-boot
+        run: helm lint charts/*
 
       - name: Configure Git
         run: |
