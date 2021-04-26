@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-deployment
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
   concurrencyPolicy: Forbid
