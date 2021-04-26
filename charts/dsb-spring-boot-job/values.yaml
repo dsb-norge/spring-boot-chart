@@ -8,6 +8,9 @@ springProfiles: "kubernetes"
 # Example:  */1 * * * *
 schedule:
 
+# Max lifetime of the pod:
+activeDeadlineSeconds:
+
 # It is possible to use a normal yaml tree here, for example:
 # root:
 #   node1: 1

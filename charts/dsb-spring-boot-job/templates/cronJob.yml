@@ -14,7 +14,7 @@ spec:
       completions: 1
       parallelism: 1
       backoffLimit: 3
-      activeDeadlineSeconds: 60
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
       template:
         metadata:
           labels:
