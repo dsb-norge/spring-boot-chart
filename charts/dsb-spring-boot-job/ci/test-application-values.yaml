@@ -1,0 +1,7 @@
+---
+image: "dsbacr.azurecr.io/dsb-norge/test-application"
+tag: "2021.04.26.29720"
+
+springProfiles: "kubernetes,runner"
+
+schedule: "*/1 * * * *"

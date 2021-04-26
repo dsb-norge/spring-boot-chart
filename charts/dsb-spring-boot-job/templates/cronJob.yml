@@ -1,0 +1,77 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedule | quote }}
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      completions: 1
+      parallelism: 1
+      backoffLimit: 3
+      activeDeadlineSeconds: 60
+      template:
+        metadata:
+          labels:
+            app: {{ .Release.Name }}-job
+          annotations:
+            "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
+            # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+            # We create a string based on the chart version, and the resolved configuration values.
+            # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+            checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            NodePool: workers
+          containers:
+            - image: "{{ .Values.image }}:{{ .Values.tag }}"
+              imagePullPolicy: IfNotPresent
+              name: {{ .Release.Name }}-job
+              resources:
+                requests:
+                  memory: {{ .Values.memory_request }}
+                  cpu: {{ .Values.cpu_request }}
+                limits:
+                  memory: {{ .Values.memory_limit }}
+                  cpu: {{ .Values.cpu_limit }}
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: {{ .Values.springProfiles | quote }}
+              {{- if .Values.database_container_enabled }}
+                - name: DATABASE_CONTAINER_USER
+                  # This is hardcoded in the image used:
+                  value: "sa"
+                - name: DATABASE_CONTAINER_PASSWORD
+                  value: {{ .Values.database_container_password | quote }}
+                - name: DATABASE_CONTAINER_HOST_AND_PORT
+                  value: {{ .Release.Name }}-db-svc:1433
+                - name: DATABASE_CONTAINER_DATABASE
+                # This is hardcoded in the image used:
+                  value: "emptydb"
+              {{- end }}
+              envFrom:
+                - configMapRef:
+                    name: "{{ .Release.Name }}-configmap"
+                - secretRef:
+                    name: "{{ .Release.Name }}-secrets"
+              volumeMounts:
+                - mountPath: /tmp
+                  name: tmp-dir
+              securityContext:
+                capabilities:
+                  drop: [ALL]
+                privileged: false
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 3000
+          volumes:
+            - name: tmp-dir
+              emptyDir: {}
