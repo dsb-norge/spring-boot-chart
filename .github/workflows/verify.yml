@@ -22,15 +22,15 @@ jobs:
         with:
           version: v3.4.0
 
+      - name: Run linting
+        run: helm lint charts/*
+
       - uses: actions/setup-python@v2
         with:
           python-version: 3.7
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.0.1
-
-      #- name: Run chart-testing (lint)
-      #  run: ct lint --all
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.1.0
