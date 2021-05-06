@@ -37,7 +37,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
         - name: {{ .Release.Name }}-container
-          image: {{ .Values.image }}:{{ .Values.tag }}
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
           # Sleep before shutdown to finish requests, as suggested here:
           # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
           lifecycle:
