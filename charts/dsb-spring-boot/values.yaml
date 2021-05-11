@@ -1,7 +1,7 @@
 ---
 # Number of pods to create:
 replicas: 2
-# For the pod distruption budget, default is replicas - 1:
+# For the pod disruption budget, default is (replicas - 1):
 minAvailableReplicas:
 
 image:
@@ -18,13 +18,8 @@ springProfiles: "kubernetes"
 # If there is a lot of config, it is useful to use the helm function --set-file.
 config:
 
-# It is possible to use a normal yaml tree here, for example:
-# root:
-#   node1: 1
-#   node2: 2
-#
-# If there is a lot of secrets, it is useful to use the helm function --set-file.
-secrets:
+# Reference secrets that are mounted on the pod:
+secretRefs: []
 
 # Any roles the generated service account should be bound to:
 roles: []
@@ -57,10 +52,5 @@ database_container_password: DoN0tUse1Production
 
 jobs:
 
-# It is possible to use a normal yaml tree here, for example:
-# root:
-#   node1: 1
-#   node2: 2
-#
-# If there is a lot of secrets, it is useful to use the helm function --set-file.
-job_secrets:
+# Reference secrets that are mounted on the cron job pod:
+job_secretRefs:

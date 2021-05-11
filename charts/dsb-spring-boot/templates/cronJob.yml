@@ -48,8 +48,10 @@ spec:
                   memory: "128Mi"
                   cpu: "50m"
               envFrom:
-                - secretRef:
-                    name: {{ $release_name }}-cron-secret
+              {{- range .Values.job_secretRefs }}
+              - secretRef:
+                  name: {{ . | quote }}
+              {{- end }}
               env:
                 - name: TOKEN_URL
                   value: {{ $job.tokenURL }}
