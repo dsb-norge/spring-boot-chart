@@ -31,24 +31,3 @@ See https://stackoverflow.com/questions/60184221/convert-yaml-to-property-file-i
     {{ $prefix | indent 2 }}: {{ $value | quote }}
 {{ end -}}
 {{- end -}}
-
-{{/*
-This is a copy of the above function, but with base64 encoding of the values.
-
-Useful for Kubernetes Secrets.
-*/}}
-{{- define "envifyB64" -}}
-{{- $prefix := index . 0 -}}
-{{- $value := index . 1 -}}
-{{- if kindIs "map" $value -}}
-  {{- range $k, $v := $value -}}
-    {{- if $prefix -}}
-        {{- template "envifyB64" (list (printf "%s.%s" $prefix $k) $v) -}}
-    {{- else -}}
-        {{- template "envifyB64" (list (printf "%s" $k) $v) -}}
-    {{- end -}}
-  {{- end -}}
-{{- else -}}
-    {{ $prefix | indent 2 }}: {{ $value | toString | b64enc }}
-{{ end -}}
-{{- end -}}

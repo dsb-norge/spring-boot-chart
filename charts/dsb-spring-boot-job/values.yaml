@@ -19,13 +19,8 @@ activeDeadlineSeconds:
 # If there is a lot of config, it is useful to use the helm function --set-file.
 config:
 
-# It is possible to use a normal yaml tree here, for example:
-# root:
-#   node1: 1
-#   node2: 2
-#
-# If there is a lot of secrets, it is useful to use the helm function --set-file.
-secrets:
+# Reference secrets that are mounted on the pod:
+secretRefs: []
 
 memory_request: "256Mi"
 memory_limit: "1024Mi"
