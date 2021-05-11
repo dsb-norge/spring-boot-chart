@@ -1,16 +1,15 @@
-{{- range $role := .Values.roles }}
+{{- range $role := .Values.clusterRoles }}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: {{ $.Release.Name }}-{{ $role }}-binding
-  namespace: {{ $.Release.Namespace }}
   labels:
     app: {{ $.Release.Name }}-app
 subjects:
   - kind: ServiceAccount
     name: {{ $.Release.Name }}-service-account
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: {{ $role }}
   apiGroup: rbac.authorization.k8s.io
 {{- end }}

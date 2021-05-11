@@ -22,7 +22,7 @@ config:
 secretRefs: []
 
 # Any roles the generated service account should be bound to:
-roles: []
+clusterRoles: []
 
 # If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
