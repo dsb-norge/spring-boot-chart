@@ -29,7 +29,6 @@ spec:
           restartPolicy: OnFailure
           containers:
             - image: "dsbacr.azurecr.io/dsb-norge/oauth2-api-caller:{{ $job.image_tag }}"
-              imagePullPolicy: IfNotPresent
               name: {{ $job.name }}
               securityContext:
                 capabilities:
