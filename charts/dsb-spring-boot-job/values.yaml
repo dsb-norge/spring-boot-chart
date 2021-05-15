@@ -22,6 +22,9 @@ config:
 # Reference secrets that are mounted on the pod:
 secretRefs: []
 
+# Reference configMaps that are mounted on the pod:
+configMapRefs: []
+
 memory_request: "256Mi"
 memory_limit: "1024Mi"
 

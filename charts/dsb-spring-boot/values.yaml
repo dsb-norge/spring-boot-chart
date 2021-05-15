@@ -21,6 +21,9 @@ config:
 # Reference secrets that are mounted on the pod:
 secretRefs: []
 
+# Reference configMaps that are mounted on the pod:
+configMapRefs: []
+
 # If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
 # If needed, include a path prefix that is removed before sending the request to the pod:

@@ -77,11 +77,15 @@ spec:
               value: "emptydb"
             {{- end }}
           envFrom:
-          {{- range .Values.secretRefs }}
-            - secretRef:
-                name: {{ . | quote }}
-          {{- end }}
+            {{- range .Values.secretRefs }}
+              - secretRef:
+                  name: {{ . | quote }}
+            {{- end }}
             # We place config AFTER secrets, to more easily override with dummy values during development:
+            {{- range .Values.configMapRefs }}
+              - configMapRef:
+                  name: {{ . | quote }}
+            {{- end }}
             {{- if .Values.config  }}
             - configMapRef:
                 name: {{ .Release.Name }}-configmap
