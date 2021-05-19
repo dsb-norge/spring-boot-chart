@@ -53,4 +53,4 @@ database_container_password: DoN0tUse1Production
 jobs:
 
 # Reference secrets that are mounted on the cron job pod:
-job_secretRefs:
+job_secretRefs: []
