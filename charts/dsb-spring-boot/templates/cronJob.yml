@@ -1,6 +1,7 @@
 {{- $release_name := .Release.Name }}
 {{- $release_namespace := .Release.Namespace }}
 {{- $application_web_port := .Values.application_web_port }}
+{{- $job_secretRefs := .Values.job_secretRefs }}
 
 {{- range $job := .Values.jobs }}
 ---
@@ -47,7 +48,7 @@ spec:
                   memory: "128Mi"
                   cpu: "50m"
               envFrom:
-              {{- range .Values.job_secretRefs }}
+              {{- range $job_secretRefs }}
               - secretRef:
                   name: {{ . | quote }}
               {{- end }}
