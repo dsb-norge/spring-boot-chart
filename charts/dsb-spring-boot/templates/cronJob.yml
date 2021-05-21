@@ -65,5 +65,5 @@ spec:
                 - name: API_METHOD
                   value: {{ $job.method | default "POST" | quote }}
                 - name: API_PATH
-                  value: "http://{{ $release_name }}-service.{{ $release_namespace }}.svc.cluster.local:{{ $application_web_port }}{{ $job.apiPath }}"
+                  value: "http://{{ $release_name }}.{{ $release_namespace }}.svc.cluster.local:{{ $application_web_port }}{{ $job.apiPath }}"
 {{- end }}

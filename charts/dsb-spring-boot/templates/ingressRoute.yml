@@ -12,7 +12,7 @@ spec:
     - match: {{ .Values.application_traefik_rule }}
       kind: Rule
       services:
-        - name: {{ .Release.Name }}-service
+        - name: {{ .Release.Name }}
           port: {{ .Values.application_web_port }}
       {{- if .Values.application_traefik_strip_prefix }}
       middlewares:

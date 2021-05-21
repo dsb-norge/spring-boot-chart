@@ -10,7 +10,7 @@ spec:
       image: curlimages/curl:latest
       env:
         - name: SERVICE
-          value: {{ .Release.Name }}-service
+          value: {{ .Release.Name }}
       command:
         - /bin/sh
         - -ec
