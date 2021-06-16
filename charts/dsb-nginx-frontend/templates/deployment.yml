@@ -75,6 +75,3 @@ spec:
             allowPrivilegeEscalation: false
             # Enabling this requires some testing, as nginx writes to /etc/nginx, /var/cache, /tmp etc.
             readOnlyRootFilesystem: false
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 3000
