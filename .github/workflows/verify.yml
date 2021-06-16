@@ -45,8 +45,8 @@ jobs:
       - name: Load custom test application image
         run: |
           az acr login --name dsbacr --username ${{ secrets.AZ_CR_USER }} --password ${{ secrets.AZ_CR_SECRET }}
-          docker pull dsbacr.azurecr.io/dsb-norge/test-application:2021.04.26.29720
-          kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:2021.04.26.29720
+          docker pull dsbacr.azurecr.io/dsb-norge/test-application:2021.06.03.69273
+          kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:2021.06.03.69273
 
       - name: Run chart-testing (install)
         run: ct install --all

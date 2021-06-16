@@ -1,0 +1,9 @@
+{{ if .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.resourceName }}
+  namespace: {{ .Release.Namespace }}
+data:
+{{ template "envify" (list "" .Values.config) }}
+{{ end }}

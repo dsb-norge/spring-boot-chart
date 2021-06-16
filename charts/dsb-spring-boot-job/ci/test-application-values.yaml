@@ -1,6 +1,6 @@
 ---
 image: "dsbacr.azurecr.io/dsb-norge/test-application"
-tag: "2021.04.26.29720"
+tag: "2021.06.03.69273"
 
 springProfiles: "kubernetes,runner"
 

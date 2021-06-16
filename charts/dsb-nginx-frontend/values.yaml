@@ -1,0 +1,38 @@
+---
+# Number of pods to create:
+replicas: 2
+# For the pod disruption budget, default is (replicas - 1):
+minAvailableReplicas:
+
+# name to use in kubernetes resources, must be unique inside a namespace
+resourceName: frontend
+
+image:
+tag:
+
+# It is possible to use a normal yaml tree here, for example:
+# root:
+#   node1: 1
+#   node2: 2
+#
+# If there is a lot of config, it is useful to use the helm function --set-file.
+config:
+
+# Reference secrets that are mounted on the pod:
+secretRefs: []
+
+# Reference configMaps that are mounted on the pod:
+configMapRefs: []
+
+# If the service should be exposed outside the cluster by Traefik, specify the rule:
+application_traefik_rule:
+# If needed, include a path prefix that is removed before sending the request to the pod:
+application_traefik_strip_prefix:
+
+port: 8080
+
+memory_request: "128Mi"
+memory_limit: "256Mi"
+
+cpu_request: "0.2"
+cpu_limit: "0.8"
