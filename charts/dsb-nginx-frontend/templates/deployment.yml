@@ -71,6 +71,11 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+            # Nginx transforms configuration files from env variables at startup:
+            - mountPath: /etc/nginx
+              name: etc-dir
+            - mountPath: /var/cache
+              name: cache-dir
           securityContext:
             capabilities:
               drop: [ALL]
@@ -82,4 +87,8 @@ spec:
             runAsGroup: 3000
       volumes:
         - name: tmp-dir
+          emptyDir: {}
+        - name: etc-dir
+          emptyDir: {}
+        - name: cache-dir
           emptyDir: {}

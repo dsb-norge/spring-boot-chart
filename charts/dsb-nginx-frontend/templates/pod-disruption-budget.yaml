@@ -1,7 +1,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: "{{ .Values.resourceName }}.pdb"
+  name: "{{ .Values.resourceName }}"
 spec:
   minAvailable: {{ default ( sub .Values.replicas 1 ) .Values.minAvailableReplicas }}
   selector:
