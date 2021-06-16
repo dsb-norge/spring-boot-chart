@@ -7,8 +7,8 @@ helm repo update
 helm install traefik traefik/traefik
 
 az acr login -n dsbacr
-docker pull dsbacr.azurecr.io/dsb-norge/test-application:2021.04.26.29720
-kind load docker-image dsbacr.azurecr.io/dsb-norge/test-application:2021.04.26.29720
+docker pull dsbacr.azurecr.io/dsb-norge/test-application:2021.06.03.69273
+kind load docker-image dsbacr.azurecr.io/dsb-norge/test-application:2021.06.03.69273
 
 docker run -it --rm --name ct --volume %cd%:/data quay.io/helmpack/chart-testing:latest sh -c "ct install --all --debug --chart-dirs /data/"
 

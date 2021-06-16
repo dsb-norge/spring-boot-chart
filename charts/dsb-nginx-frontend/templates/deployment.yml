@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.resourceName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.resourceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.resourceName }}
+      annotations:
+        "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
+        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        # We create a string based on the chart version, and the resolved configuration values.
+        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
+    spec:
+      nodeSelector:
+        NodePool: workers
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - {{ .Values.resourceName }}
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: {{ .Values.resourceName }}
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.port }}
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.port }}
+            initialDelaySeconds: 2
+          resources:
+            requests:
+              memory: {{ .Values.memory_request }}
+              cpu: {{ .Values.cpu_request }}
+            limits:
+              memory: {{ .Values.memory_limit }}
+              cpu: {{ .Values.cpu_limit }}
+          envFrom:
+          {{- range .Values.secretRefs }}
+            - secretRef:
+                name: {{ . | quote }}
+          {{- end }}
+          # We place config AFTER secrets, to more easily override with dummy values during development:
+          {{- range .Values.configMapRefs }}
+            - configMapRef:
+                name: {{ . | quote }}
+          {{- end }}
+          {{- if .Values.config  }}
+            - configMapRef:
+                name: {{ .Values.resourceName }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.port }}
+              name: web
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+          securityContext:
+            capabilities:
+              drop: [ALL]
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 3000
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
