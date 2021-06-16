@@ -13,7 +13,7 @@ spec:
       kind: Rule
       services:
         - name: {{ .Values.resourceName }}
-          port: {{ .Values.application_web_port }}
+          port: {{ .Values.port }}
       {{- if .Values.application_traefik_strip_prefix }}
       middlewares:
         - name: {{ .Values.resourceName }}
