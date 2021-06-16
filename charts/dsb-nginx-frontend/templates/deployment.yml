@@ -68,27 +68,13 @@ spec:
           ports:
             - containerPort: {{ .Values.port }}
               name: web
-          volumeMounts:
-            - mountPath: /tmp
-              name: tmp-dir
-            # Nginx transforms configuration files from env variables at startup:
-            - mountPath: /etc/nginx
-              name: etc-dir
-            - mountPath: /var/cache
-              name: cache-dir
           securityContext:
             capabilities:
               drop: [ALL]
             privileged: false
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # Enabling this requires some testing, as nginx writes to /etc/nginx, /var/cache, /tmp etc.
+            readOnlyRootFilesystem: false
             runAsNonRoot: true
             runAsUser: 1000
             runAsGroup: 3000
-      volumes:
-        - name: tmp-dir
-          emptyDir: {}
-        - name: etc-dir
-          emptyDir: {}
-        - name: cache-dir
-          emptyDir: {}
