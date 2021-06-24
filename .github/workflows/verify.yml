@@ -36,12 +36,6 @@ jobs:
         env:
           GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
 
-      - name: Install traefik (needed for ingress crd)
-        run: |
-          helm repo add traefik https://helm.traefik.io/traefik
-          helm repo update
-          helm install traefik traefik/traefik
-
       - name: Load custom test application image
         run: |
           az acr login --name dsbacr --username ${{ secrets.AZ_CR_USER }} --password ${{ secrets.AZ_CR_SECRET }}

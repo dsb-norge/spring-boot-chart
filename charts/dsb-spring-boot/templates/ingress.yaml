@@ -1,0 +1,20 @@
+{{- if .Values.ingress.host -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # Must be a valid DNS name:
+  name: "{{ .Release.Name }}"
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+    - host: "{{ .Values.ingress.host }}"
+      http:
+        paths:
+          - path: "{{ .Values.ingress.path }}"
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Release.Name }}"
+                port:
+                  number: {{ .Values.application_web_port }}
+{{- end -}}

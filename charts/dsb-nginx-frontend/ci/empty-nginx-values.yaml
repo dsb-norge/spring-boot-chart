@@ -6,4 +6,5 @@ name: "test"
 image: "nginxinc/nginx-unprivileged"
 tag: "1.20-alpine"
 
-application_traefik_rule: "Host(`example.com`) && PathPrefix(`/test`)"
+ingress:
+  host: "example.com"

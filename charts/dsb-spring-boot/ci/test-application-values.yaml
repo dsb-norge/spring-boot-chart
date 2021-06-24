@@ -4,4 +4,5 @@ replicas: 2
 image: "dsbacr.azurecr.io/dsb-norge/test-application"
 tag: "2021.06.03.69273"
 
-application_traefik_rule: "Host(`dev-api.eksplosiver.no`) && PathPrefix(`/test`)"
+ingress:
+  host: "example.com"
