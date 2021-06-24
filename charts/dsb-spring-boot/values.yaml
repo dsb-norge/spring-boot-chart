@@ -26,8 +26,6 @@ configMapRefs: []
 
 # If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
-# If needed, include a path prefix that is removed before sending the request to the pod:
-application_traefik_strip_prefix:
 
 application_web_port: 8080
 application_actuator_port: 8180
