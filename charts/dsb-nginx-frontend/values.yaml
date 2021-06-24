@@ -26,8 +26,6 @@ configMapRefs: []
 
 # If the service should be exposed outside the cluster by Traefik, specify the rule:
 application_traefik_rule:
-# If needed, include a path prefix that is removed before sending the request to the pod:
-application_traefik_strip_prefix:
 
 # Port number for nginx
 port: 8080

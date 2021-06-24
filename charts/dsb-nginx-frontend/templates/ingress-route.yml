@@ -14,8 +14,4 @@ spec:
       services:
         - name: {{ .Values.resourceName }}
           port: {{ .Values.port }}
-      {{- if .Values.application_traefik_strip_prefix }}
-      middlewares:
-        - name: {{ .Values.resourceName }}
-      {{- end }}
 {{- end }}
