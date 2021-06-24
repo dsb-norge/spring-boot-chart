@@ -24,8 +24,10 @@ secretRefs: []
 # Reference configMaps that are mounted on the pod:
 configMapRefs: []
 
-# If the service should be exposed outside the cluster by Traefik, specify the rule:
-application_traefik_rule:
+ingress:
+  # Hostname must be provided if Ingress should be enabled.
+  host:
+  path: /
 
 # Port number for nginx
 port: 8080
