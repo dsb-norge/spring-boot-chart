@@ -24,10 +24,9 @@ secretRefs: []
 # Reference configMaps that are mounted on the pod:
 configMapRefs: []
 
-ingress:
-  # Hostname must be provided if Ingress should be enabled.
-  host:
-  path: /
+# Hostname must be provided if Ingress should be enabled.
+ingress_host:
+ingress_path: /
 
 # Port number for nginx
 port: 8080

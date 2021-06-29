@@ -6,5 +6,4 @@ name: "test"
 image: "nginxinc/nginx-unprivileged"
 tag: "1.20-alpine"
 
-ingress:
-  host: "example.com"
+ingress_host: "example.com"
