@@ -1,6 +1,10 @@
 # Helm 3 charts for Spring Boot Applications
 
-Create a new release by comitting a new version in `charts/*/Chart.yaml`.
+Create a new release by committing a new version in `charts/*/Chart.yaml`.
+
+Update the test snapshots on Linux with:
+
+    docker run -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/* 
 
 ## DSB Spring Boot Chart
 

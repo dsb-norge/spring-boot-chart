@@ -1,0 +1,43 @@
+suite: test deployment
+tests:
+  - it: Minimal manifest should match snapshot
+    templates:
+      - deployment.yaml
+      - pod-disruption-budget.yaml
+      - service.yaml
+    set:
+      image: nginx
+      tag: latest
+    asserts:
+      - matchSnapshot: { }
+
+  - it: Full manifest should match snapshot
+    templates:
+      - config-map.yaml
+      - deployment.yaml
+      - ingress.yaml
+      - pod-disruption-budget.yaml
+      - service.yaml
+    set:
+      replicas: 3
+      minAvailableReplicas: 1
+      image: wordpress
+      tag: greatest
+      resourceName: "frontend1"
+      config:
+        root:
+          key1: value1
+          key2: value2
+      secretRefs:
+        - secret1
+      configMapRefs:
+        - configMap1
+      ingress_host: example.com
+      ingress_path: /example
+      port: 80
+      memory_request: "4Mi"
+      memory_limit: "19Mi"
+      cpu_request: "0.3"
+      cpu_limit: "1"
+    asserts:
+      - matchSnapshot: { }
