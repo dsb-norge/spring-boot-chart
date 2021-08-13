@@ -12,6 +12,9 @@ Full manifest should match snapshot:
     apiVersion: batch/v1beta1
     kind: CronJob
     metadata:
+      annotations:
+        key1: value1
+        key2: value2
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -27,7 +30,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.3_config-hash=c6fceeeb1c58e28ffa1680918a005216795caac37e0727458248b7073388fd01
+                checksum: chart-version=2.0.4_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.message_key: message
@@ -98,7 +101,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.0.3_config-hash=c6fceeeb1c58e28ffa1680918a005216795caac37e0727458248b7073388fd01
+            checksum: chart-version=2.0.4_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -155,7 +158,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.3_config-hash=07c9be03719cbb0425366c0e4cf0443347db291f381023a05ef777510f5b7e09
+                checksum: chart-version=2.0.4_config-hash=f15538db5d9d938e85141d4a8db9d69c8a129e36700fa3b50532b8828dcafd7b
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.message_key: message

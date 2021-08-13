@@ -27,6 +27,12 @@ tests:
       minAvailableReplicas: 1
       image: wordpress
       tag: greatest
+      deploymentAnnotations:
+        key1: value1
+        key2: value2
+      cronJobAnnotations:
+        cronKey1: cronValue1
+        cronKey2: cronValue2
       springProfiles: "chart-testing"
       config:
         root:

@@ -2,6 +2,9 @@
 image:
 tag:
 
+# Annotations to put on the CronJob:
+cronJobAnnotations: []
+
 # Default Spring Profile:
 springProfiles: "kubernetes"
 

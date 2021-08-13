@@ -7,6 +7,12 @@ minAvailableReplicas:
 image:
 tag:
 
+# Annotations to put on the Deployment:
+deploymentAnnotations: []
+
+# Annotations to put on every CronJob:
+cronJobAnnotations: []
+
 # Default Spring Profile:
 springProfiles: "kubernetes"
 

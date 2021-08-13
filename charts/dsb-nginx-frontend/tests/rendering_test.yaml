@@ -23,6 +23,9 @@ tests:
       minAvailableReplicas: 1
       image: wordpress
       tag: greatest
+      deploymentAnnotations:
+        key1: value1
+        key2: value2
       resourceName: "frontend1"
       config:
         root:
