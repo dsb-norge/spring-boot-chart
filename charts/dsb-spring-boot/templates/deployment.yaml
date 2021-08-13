@@ -3,6 +3,12 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-deployment
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+    {{- range $key, $val := .Values.deploymentAnnotations }}
+      {{ $key }}: {{ $val | quote }}
+      {{- end }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:

@@ -4,6 +4,12 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  {{- if .Values.cronJobAnnotations }}
+  annotations:
+    {{- range $key, $val := .Values.cronJobAnnotations }}
+      {{ $key }}: {{ $val | quote }}
+      {{- end }}
+  {{- end }}
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedule | quote }}

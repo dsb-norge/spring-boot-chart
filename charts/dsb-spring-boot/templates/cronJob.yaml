@@ -2,6 +2,7 @@
 {{- $release_namespace := .Release.Namespace }}
 {{- $application_web_port := .Values.application_web_port }}
 {{- $job_secretRefs := .Values.job_secretRefs }}
+{{- $cronJobAnnotations := .Values.cronJobAnnotations }}
 
 {{- range $job := .Values.jobs }}
 ---
@@ -10,6 +11,12 @@ kind: CronJob
 metadata:
   name: {{ $release_name }}-cron-{{ $job.name }}
   namespace: {{ $release_namespace }}
+  {{- if $cronJobAnnotations }}
+  annotations:
+    {{- range $key, $val := $cronJobAnnotations }}
+      {{ $key }}: {{ $val | quote }}
+      {{- end }}
+  {{- end }}
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ $job.schedule | quote }}

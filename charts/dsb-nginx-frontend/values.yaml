@@ -10,6 +10,9 @@ resourceName: frontend
 image:
 tag:
 
+# Annotations to put on the Deployment:
+deploymentAnnotations: []
+
 # It is possible to use a normal yaml tree here, for example:
 # root:
 #   node1: 1

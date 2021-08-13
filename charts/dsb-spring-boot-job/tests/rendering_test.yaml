@@ -20,6 +20,9 @@ tests:
       minAvailableReplicas: 1
       image: wordpress
       tag: greatest
+      cronJobAnnotations:
+        key1: value1
+        key2: value2
       springProfiles: "chart-testing"
       schedule: "*/2 * * * *"
       config:

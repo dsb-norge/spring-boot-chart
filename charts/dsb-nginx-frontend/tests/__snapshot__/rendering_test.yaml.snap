@@ -12,6 +12,9 @@ Full manifest should match snapshot:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      annotations:
+        key1: value1
+        key2: value2
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -23,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.1_config-hash=ed646d63cfc341dcd650e5df8d4699c75eb5bd7a9734cd48baccae2ad405594f
+            checksum: chart-version=2.0.2_config-hash=c4b6757985b404fb0551b430d1199996c349e517ba28dce0b372219f50805ebf
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -114,7 +117,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.1
+        chart-version: 2.0.2
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -139,7 +142,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.1_config-hash=113a99154771d290cafc964a1767a238cffb28777466adfc9c3f84479f157c8c
+            checksum: chart-version=2.0.2_config-hash=a432b22bbcc05d8e0e524a04eef32797b8e727a21ab3aa43dc1cf46bb00e84a7
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -206,7 +209,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.1
+        chart-version: 2.0.2
       name: frontend
       namespace: NAMESPACE
     spec:
