@@ -1,0 +1,200 @@
+Full manifest should match snapshot:
+  1: |
+    apiVersion: v1
+    data:
+      root.key1: value1
+      root.key2: value2
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-configmap
+      namespace: NAMESPACE
+  2: |
+    apiVersion: batch/v1beta1
+    kind: CronJob
+    metadata:
+      name: RELEASE-NAME
+      namespace: NAMESPACE
+    spec:
+      concurrencyPolicy: Forbid
+      failedJobsHistoryLimit: 3
+      jobTemplate:
+        spec:
+          activeDeadlineSeconds: null
+          backoffLimit: 3
+          completions: 1
+          parallelism: 1
+          template:
+            metadata:
+              annotations:
+                apparmor.security.beta.kubernetes.io/pod: runtime/default
+                checksum: chart-version=2.0.3_config-hash=c6fceeeb1c58e28ffa1680918a005216795caac37e0727458248b7073388fd01
+                co.elastic.logs/json.add_error_key: "true"
+                co.elastic.logs/json.keys_under_root: "true"
+                co.elastic.logs/json.message_key: message
+                co.elastic.logs/json.overwrite_keys: "true"
+              labels:
+                app: RELEASE-NAME-job
+            spec:
+              containers:
+              - env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: chart-testing
+                - name: DATABASE_CONTAINER_USER
+                  value: sa
+                - name: DATABASE_CONTAINER_PASSWORD
+                  value: password123
+                - name: DATABASE_CONTAINER_HOST_AND_PORT
+                  value: RELEASE-NAME-db-svc:1433
+                - name: DATABASE_CONTAINER_DATABASE
+                  value: emptydb
+                envFrom:
+                - secretRef:
+                    name: secret1
+                - configMapRef:
+                    name: configMap1
+                - configMapRef:
+                    name: RELEASE-NAME-configmap
+                image: wordpress:greatest
+                name: RELEASE-NAME-job
+                resources:
+                  limits:
+                    cpu: 1
+                    memory: 19Mi
+                  requests:
+                    cpu: 0.3
+                    memory: 4Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  privileged: false
+                  readOnlyRootFilesystem: true
+                  runAsGroup: 3000
+                  runAsNonRoot: true
+                  runAsUser: 1000
+                volumeMounts:
+                - mountPath: /tmp
+                  name: tmp-dir
+              nodeSelector:
+                NodePool: workers
+              restartPolicy: OnFailure
+              volumes:
+              - emptyDir: {}
+                name: tmp-dir
+      schedule: '*/2 * * * *'
+      successfulJobsHistoryLimit: 2
+  3: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: RELEASE-NAME-database-deployment
+      namespace: NAMESPACE
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-db-app
+      template:
+        metadata:
+          annotations:
+            checksum: chart-version=2.0.3_config-hash=c6fceeeb1c58e28ffa1680918a005216795caac37e0727458248b7073388fd01
+          labels:
+            app: RELEASE-NAME-db-app
+        spec:
+          containers:
+          - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: password123
+            - name: MSSQL_SA_PASSWORD
+              value: password123
+            image: test-db:v1
+            name: RELEASE-NAME-database-container
+            ports:
+            - containerPort: 1433
+            resources:
+              limits:
+                cpu: "2.5"
+                memory: 2048Mi
+              requests:
+                cpu: "0.2"
+                memory: 1024Mi
+          hostname: RELEASE-NAME-db-svc
+  4: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: RELEASE-NAME-db-svc
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - port: 1433
+        protocol: TCP
+        targetPort: 1433
+      selector:
+        app: RELEASE-NAME-db-app
+Minimal manifest should match snapshot:
+  1: |
+    apiVersion: batch/v1beta1
+    kind: CronJob
+    metadata:
+      name: RELEASE-NAME
+      namespace: NAMESPACE
+    spec:
+      concurrencyPolicy: Forbid
+      failedJobsHistoryLimit: 3
+      jobTemplate:
+        spec:
+          activeDeadlineSeconds: null
+          backoffLimit: 3
+          completions: 1
+          parallelism: 1
+          template:
+            metadata:
+              annotations:
+                apparmor.security.beta.kubernetes.io/pod: runtime/default
+                checksum: chart-version=2.0.3_config-hash=07c9be03719cbb0425366c0e4cf0443347db291f381023a05ef777510f5b7e09
+                co.elastic.logs/json.add_error_key: "true"
+                co.elastic.logs/json.keys_under_root: "true"
+                co.elastic.logs/json.message_key: message
+                co.elastic.logs/json.overwrite_keys: "true"
+              labels:
+                app: RELEASE-NAME-job
+            spec:
+              containers:
+              - env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: kubernetes
+                envFrom: null
+                image: nginx:latest
+                name: RELEASE-NAME-job
+                resources:
+                  limits:
+                    cpu: 2.5
+                    memory: 1024Mi
+                  requests:
+                    cpu: 0.2
+                    memory: 256Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  privileged: false
+                  readOnlyRootFilesystem: true
+                  runAsGroup: 3000
+                  runAsNonRoot: true
+                  runAsUser: 1000
+                volumeMounts:
+                - mountPath: /tmp
+                  name: tmp-dir
+              nodeSelector:
+                NodePool: workers
+              restartPolicy: OnFailure
+              volumes:
+              - emptyDir: {}
+                name: tmp-dir
+      schedule: '*/1 * * * *'
+      successfulJobsHistoryLimit: 2

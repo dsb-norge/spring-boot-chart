@@ -25,6 +25,9 @@ jobs:
       - name: Run linting
         run: helm lint charts/*
 
+      - name: Run Helm Unittests
+        run: docker run --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
+
       - uses: actions/setup-python@v2
         with:
           python-version: 3.7

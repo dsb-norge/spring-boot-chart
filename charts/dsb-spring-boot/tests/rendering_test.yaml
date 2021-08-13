@@ -1,0 +1,64 @@
+suite: test deployment
+tests:
+  - it: Minimal manifest should match snapshot
+    templates:
+      - deployment.yaml
+      - podDisruptionBudget.yaml
+      - service.yaml
+      - serviceAccount.yaml
+    set:
+      image: nginx
+      tag: latest
+    asserts:
+      - matchSnapshot: { }
+  - it: Full manifest should match snapshot
+    templates:
+      - configMap.yaml
+      - cronJob.yaml
+      - databaseDeployment.yaml
+      - databaseService.yaml
+      - deployment.yaml
+      - ingress.yaml
+      - podDisruptionBudget.yaml
+      - service.yaml
+      - serviceAccount.yaml
+    set:
+      replicas: 3
+      minAvailableReplicas: 1
+      image: wordpress
+      tag: greatest
+      springProfiles: "chart-testing"
+      config:
+        root:
+          key1: value1
+          key2: value2
+      secretRefs:
+        - secret1
+      configMapRefs:
+        - configMap1
+      ingress_host: example.com
+      ingress_path: /example
+      application_web_port: 80
+      application_actuator_port: 81
+      prometheus_enabled: "false"
+      prometheus_port: 82
+      prometheus_path: "/path/to/prometheus"
+      memory_request: "4Mi"
+      memory_limit: "19Mi"
+      cpu_request: "0.3"
+      cpu_limit: "1"
+      database_container_enabled: true
+      database_container_image: "test-db:v1"
+      database_container_password: "password123"
+      jobs:
+      - name: cron-example
+        image_tag: greatest
+        schedule: "*/2 * * * *"
+        tokenURL: "https://example.com/token"
+        apiPath: "/do"
+        method: "TRACE"
+      # Reference secrets that are mounted on the cron job pod:
+      job_secretRefs:
+        - jobSecret1
+    asserts:
+      - matchSnapshot: { }

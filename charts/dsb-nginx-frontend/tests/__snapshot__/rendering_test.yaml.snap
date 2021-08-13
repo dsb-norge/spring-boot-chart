@@ -1,0 +1,217 @@
+Full manifest should match snapshot:
+  1: |
+    apiVersion: v1
+    data:
+      root.key1: value1
+      root.key2: value2
+    kind: ConfigMap
+    metadata:
+      name: frontend1
+      namespace: NAMESPACE
+  2: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: frontend1
+      namespace: NAMESPACE
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: frontend1
+      template:
+        metadata:
+          annotations:
+            apparmor.security.beta.kubernetes.io/pod: runtime/default
+            checksum: chart-version=2.0.1_config-hash=ed646d63cfc341dcd650e5df8d4699c75eb5bd7a9734cd48baccae2ad405594f
+            co.elastic.logs/json.add_error_key: "true"
+            co.elastic.logs/json.keys_under_root: "true"
+            co.elastic.logs/json.message_key: message
+            co.elastic.logs/json.overwrite_keys: "true"
+          labels:
+            app: frontend1
+        spec:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - frontend1
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - envFrom:
+            - secretRef:
+                name: secret1
+            - configMapRef:
+                name: configMap1
+            - configMapRef:
+                name: frontend1
+            image: wordpress:greatest
+            livenessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 5
+            name: frontend1
+            ports:
+            - containerPort: 80
+              name: web
+            readinessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 2
+            resources:
+              limits:
+                cpu: 1
+                memory: 19Mi
+              requests:
+                cpu: 0.3
+                memory: 4Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: false
+          nodeSelector:
+            NodePool: workers
+  3: |
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: frontend1
+      namespace: NAMESPACE
+    spec:
+      rules:
+      - host: example.com
+        http:
+          paths:
+          - backend:
+              service:
+                name: frontend1
+                port:
+                  number: 80
+            path: /example
+            pathType: Prefix
+  4: |
+    apiVersion: policy/v1beta1
+    kind: PodDisruptionBudget
+    metadata:
+      name: frontend1
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          app: frontend1
+  5: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        chart-name: dsb-nginx-frontend
+        chart-version: 2.0.1
+      name: frontend1
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - name: web
+        port: 80
+      selector:
+        app: frontend1
+Minimal manifest should match snapshot:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: frontend
+      namespace: NAMESPACE
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: frontend
+      template:
+        metadata:
+          annotations:
+            apparmor.security.beta.kubernetes.io/pod: runtime/default
+            checksum: chart-version=2.0.1_config-hash=113a99154771d290cafc964a1767a238cffb28777466adfc9c3f84479f157c8c
+            co.elastic.logs/json.add_error_key: "true"
+            co.elastic.logs/json.keys_under_root: "true"
+            co.elastic.logs/json.message_key: message
+            co.elastic.logs/json.overwrite_keys: "true"
+          labels:
+            app: frontend
+        spec:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - frontend
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - envFrom: null
+            image: nginx:latest
+            livenessProbe:
+              httpGet:
+                path: /
+                port: 8080
+              initialDelaySeconds: 5
+            name: frontend
+            ports:
+            - containerPort: 8080
+              name: web
+            readinessProbe:
+              httpGet:
+                path: /
+                port: 8080
+              initialDelaySeconds: 2
+            resources:
+              limits:
+                cpu: 0.8
+                memory: 256Mi
+              requests:
+                cpu: 0.2
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: false
+          nodeSelector:
+            NodePool: workers
+  2: |
+    apiVersion: policy/v1beta1
+    kind: PodDisruptionBudget
+    metadata:
+      name: frontend
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          app: frontend
+  3: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        chart-name: dsb-nginx-frontend
+        chart-version: 2.0.1
+      name: frontend
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - name: web
+        port: 8080
+      selector:
+        app: frontend

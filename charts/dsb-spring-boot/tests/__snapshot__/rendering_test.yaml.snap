@@ -1,0 +1,408 @@
+Full manifest should match snapshot:
+  1: |
+    apiVersion: v1
+    data:
+      root.key1: value1
+      root.key2: value2
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-configmap
+      namespace: NAMESPACE
+  2: |
+    apiVersion: batch/v1beta1
+    kind: CronJob
+    metadata:
+      name: RELEASE-NAME-cron-cron-example
+      namespace: NAMESPACE
+    spec:
+      concurrencyPolicy: Forbid
+      failedJobsHistoryLimit: 3
+      jobTemplate:
+        metadata:
+          annotations:
+            co.elastic.logs/json.add_error_key: "true"
+            co.elastic.logs/json.keys_under_root: "true"
+            co.elastic.logs/json.message_key: message
+            co.elastic.logs/json.overwrite_keys: "true"
+        spec:
+          activeDeadlineSeconds: 60
+          backoffLimit: 3
+          completions: 1
+          parallelism: 1
+          template:
+            metadata:
+              labels:
+                app: RELEASE-NAME-cron
+                cron: cron-example
+            spec:
+              containers:
+              - env:
+                - name: TOKEN_URL
+                  value: https://example.com/token
+                - name: CLIENT_ID
+                  value: release-name-cron-client
+                - name: API_METHOD
+                  value: TRACE
+                - name: API_PATH
+                  value: http://RELEASE-NAME.NAMESPACE.svc.cluster.local:80/do
+                envFrom:
+                - secretRef:
+                    name: jobSecret1
+                image: dsbacr.azurecr.io/dsb-norge/oauth2-api-caller:greatest
+                name: cron-example
+                resources:
+                  limits:
+                    cpu: 50m
+                    memory: 128Mi
+                  requests:
+                    cpu: 50m
+                    memory: 64Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  privileged: false
+                  readOnlyRootFilesystem: true
+                  runAsGroup: 3000
+                  runAsNonRoot: true
+                  runAsUser: 1000
+              restartPolicy: OnFailure
+      schedule: '*/2 * * * *'
+      successfulJobsHistoryLimit: 2
+  3: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: RELEASE-NAME-database-deployment
+      namespace: NAMESPACE
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-db-app
+      template:
+        metadata:
+          annotations:
+            checksum: chart-version=3.0.1_config-hash=bab329c949222673c9b73f1a365017d0c708099a4f0b00dc1e09ab1bbea07dd5
+          labels:
+            app: RELEASE-NAME-db-app
+        spec:
+          containers:
+          - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: password123
+            - name: MSSQL_SA_PASSWORD
+              value: password123
+            image: test-db:v1
+            name: RELEASE-NAME-database-container
+            ports:
+            - containerPort: 1433
+            resources:
+              limits:
+                cpu: "2.5"
+                memory: 2048Mi
+              requests:
+                cpu: "0.2"
+                memory: 1024Mi
+          hostname: RELEASE-NAME-db-svc
+  4: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: RELEASE-NAME-db-svc
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - port: 1433
+        protocol: TCP
+        targetPort: 1433
+      selector:
+        app: RELEASE-NAME-db-app
+  5: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: RELEASE-NAME-deployment
+      namespace: NAMESPACE
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-app
+      template:
+        metadata:
+          annotations:
+            apparmor.security.beta.kubernetes.io/pod: runtime/default
+            checksum: chart-version=3.0.1_config-hash=bab329c949222673c9b73f1a365017d0c708099a4f0b00dc1e09ab1bbea07dd5
+            co.elastic.logs/json.add_error_key: "true"
+            co.elastic.logs/json.keys_under_root: "true"
+            co.elastic.logs/json.message_key: message
+            co.elastic.logs/json.overwrite_keys: "true"
+            prometheus.io/path: /path/to/prometheus
+            prometheus.io/port: "82"
+            prometheus.io/scrape: "false"
+          labels:
+            app: RELEASE-NAME-app
+        spec:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - RELEASE-NAME-app
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: chart-testing
+            - name: DATABASE_CONTAINER_USER
+              value: sa
+            - name: DATABASE_CONTAINER_PASSWORD
+              value: password123
+            - name: DATABASE_CONTAINER_HOST_AND_PORT
+              value: RELEASE-NAME-db-svc:1433
+            - name: DATABASE_CONTAINER_DATABASE
+              value: emptydb
+            envFrom:
+            - secretRef:
+                name: secret1
+            - configMapRef:
+                name: configMap1
+            - configMapRef:
+                name: RELEASE-NAME-configmap
+            image: wordpress:greatest
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                  - sh
+                  - -c
+                  - sleep 10
+            livenessProbe:
+              httpGet:
+                path: /actuator/health/liveness
+                port: 81
+              initialDelaySeconds: 15
+            name: RELEASE-NAME-container
+            ports:
+            - containerPort: 80
+              name: web
+            - containerPort: 81
+              name: actuator
+            readinessProbe:
+              httpGet:
+                path: /actuator/health/readiness
+                port: 81
+              initialDelaySeconds: 10
+            resources:
+              limits:
+                cpu: 1
+                memory: 19Mi
+              requests:
+                cpu: 0.3
+                memory: 4Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsGroup: 3000
+              runAsNonRoot: true
+              runAsUser: 1000
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+          nodeSelector:
+            NodePool: workers
+          serviceAccountName: RELEASE-NAME-service-account
+          volumes:
+          - emptyDir: {}
+            name: tmp-dir
+  6: |
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: RELEASE-NAME
+      namespace: NAMESPACE
+    spec:
+      rules:
+      - host: example.com
+        http:
+          paths:
+          - backend:
+              service:
+                name: RELEASE-NAME
+                port:
+                  number: 80
+            path: /example
+            pathType: Prefix
+  7: |
+    apiVersion: policy/v1beta1
+    kind: PodDisruptionBudget
+    metadata:
+      name: RELEASE-NAME.pdb
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-app
+  8: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        chart-name: dsb-spring-boot
+        chart-version: 3.0.1
+        management.port: "81"
+        spring-boot: "true"
+      name: RELEASE-NAME
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - name: web
+        port: 80
+      selector:
+        app: RELEASE-NAME-app
+  9: |
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      labels:
+        app: RELEASE-NAME-app
+      name: RELEASE-NAME-service-account
+      namespace: NAMESPACE
+Minimal manifest should match snapshot:
+  1: |
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: RELEASE-NAME-deployment
+      namespace: NAMESPACE
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-app
+      template:
+        metadata:
+          annotations:
+            apparmor.security.beta.kubernetes.io/pod: runtime/default
+            checksum: chart-version=3.0.1_config-hash=d58de11e0d449994fe6a35bbf8987c622fa082819031642997b2bcb6ca48aaa9
+            co.elastic.logs/json.add_error_key: "true"
+            co.elastic.logs/json.keys_under_root: "true"
+            co.elastic.logs/json.message_key: message
+            co.elastic.logs/json.overwrite_keys: "true"
+            prometheus.io/path: /actuator/prometheus
+            prometheus.io/port: "8180"
+            prometheus.io/scrape: "true"
+          labels:
+            app: RELEASE-NAME-app
+        spec:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - RELEASE-NAME-app
+                topologyKey: kubernetes.io/hostname
+          containers:
+          - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernetes
+            envFrom: null
+            image: nginx:latest
+            lifecycle:
+              preStop:
+                exec:
+                  command:
+                  - sh
+                  - -c
+                  - sleep 10
+            livenessProbe:
+              httpGet:
+                path: /actuator/health/liveness
+                port: 8180
+              initialDelaySeconds: 15
+            name: RELEASE-NAME-container
+            ports:
+            - containerPort: 8080
+              name: web
+            - containerPort: 8180
+              name: actuator
+            readinessProbe:
+              httpGet:
+                path: /actuator/health/readiness
+                port: 8180
+              initialDelaySeconds: 10
+            resources:
+              limits:
+                cpu: 2.5
+                memory: 1024Mi
+              requests:
+                cpu: 0.2
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsGroup: 3000
+              runAsNonRoot: true
+              runAsUser: 1000
+            volumeMounts:
+            - mountPath: /tmp
+              name: tmp-dir
+          nodeSelector:
+            NodePool: workers
+          serviceAccountName: RELEASE-NAME-service-account
+          volumes:
+          - emptyDir: {}
+            name: tmp-dir
+  2: |
+    apiVersion: policy/v1beta1
+    kind: PodDisruptionBudget
+    metadata:
+      name: RELEASE-NAME.pdb
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-app
+  3: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        chart-name: dsb-spring-boot
+        chart-version: 3.0.1
+        management.port: "8180"
+        spring-boot: "true"
+      name: RELEASE-NAME
+      namespace: NAMESPACE
+    spec:
+      ports:
+      - name: web
+        port: 8080
+      selector:
+        app: RELEASE-NAME-app
+  4: |
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      labels:
+        app: RELEASE-NAME-app
+      name: RELEASE-NAME-service-account
+      namespace: NAMESPACE
