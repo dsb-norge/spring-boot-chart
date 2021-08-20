@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.2_config-hash=c4b6757985b404fb0551b430d1199996c349e517ba28dce0b372219f50805ebf
+            checksum: chart-version=2.0.3_config-hash=c4b6757985b404fb0551b430d1199996c349e517ba28dce0b372219f50805ebf
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -102,7 +102,7 @@ Full manifest should match snapshot:
             path: /example
             pathType: Prefix
   4: |
-    apiVersion: policy/v1beta1
+    apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
       name: frontend1
@@ -117,7 +117,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.2
+        chart-version: 2.0.3
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -142,7 +142,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.2_config-hash=a432b22bbcc05d8e0e524a04eef32797b8e727a21ab3aa43dc1cf46bb00e84a7
+            checksum: chart-version=2.0.3_config-hash=a432b22bbcc05d8e0e524a04eef32797b8e727a21ab3aa43dc1cf46bb00e84a7
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -194,7 +194,7 @@ Minimal manifest should match snapshot:
           nodeSelector:
             NodePool: workers
   2: |
-    apiVersion: policy/v1beta1
+    apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
       name: frontend
@@ -209,7 +209,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.2
+        chart-version: 2.0.3
       name: frontend
       namespace: NAMESPACE
     spec:

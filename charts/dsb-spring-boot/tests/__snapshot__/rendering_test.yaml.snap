@@ -9,7 +9,7 @@ Full manifest should match snapshot:
       name: RELEASE-NAME-configmap
       namespace: NAMESPACE
   2: |
-    apiVersion: batch/v1beta1
+    apiVersion: batch/v1
     kind: CronJob
     metadata:
       annotations:
@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.2_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
+            checksum: chart-version=3.0.3_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -142,7 +142,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.2_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
+            checksum: chart-version=3.0.3_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -251,7 +251,7 @@ Full manifest should match snapshot:
             path: /example
             pathType: Prefix
   7: |
-    apiVersion: policy/v1beta1
+    apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
       name: RELEASE-NAME.pdb
@@ -266,7 +266,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.2
+        chart-version: 3.0.3
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -301,7 +301,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.2_config-hash=43d117de46b87da501ca22247af112d0eecb18e9ba09957de4a7bb62196d1de5
+            checksum: chart-version=3.0.3_config-hash=43d117de46b87da501ca22247af112d0eecb18e9ba09957de4a7bb62196d1de5
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -378,7 +378,7 @@ Minimal manifest should match snapshot:
           - emptyDir: {}
             name: tmp-dir
   2: |
-    apiVersion: policy/v1beta1
+    apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
       name: RELEASE-NAME.pdb
@@ -393,7 +393,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.2
+        chart-version: 3.0.3
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
