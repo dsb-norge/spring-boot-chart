@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.3_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
+            checksum: chart-version=3.0.4_config-hash=d46aeda2df1c128a5a0fb2e23067ce0022b374967a4ded8f043892ec7423734d
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -142,7 +142,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.3_config-hash=24ea6e57f97b3b0080afbfc697501b5a11ee53c71ee8efa51bcd13f633025235
+            checksum: chart-version=3.0.4_config-hash=d46aeda2df1c128a5a0fb2e23067ce0022b374967a4ded8f043892ec7423734d
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -191,10 +191,12 @@ Full manifest should match snapshot:
                   - -c
                   - sleep 10
             livenessProbe:
+              failureThreshold: 20
               httpGet:
                 path: /actuator/health/liveness
                 port: 81
               initialDelaySeconds: 15
+              periodSeconds: 15
             name: RELEASE-NAME-container
             ports:
             - containerPort: 80
@@ -202,10 +204,12 @@ Full manifest should match snapshot:
             - containerPort: 81
               name: actuator
             readinessProbe:
+              failureThreshold: 20
               httpGet:
                 path: /actuator/health/readiness
                 port: 81
               initialDelaySeconds: 10
+              periodSeconds: 15
             resources:
               limits:
                 cpu: 1
@@ -266,7 +270,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.3
+        chart-version: 3.0.4
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -301,7 +305,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.3_config-hash=43d117de46b87da501ca22247af112d0eecb18e9ba09957de4a7bb62196d1de5
+            checksum: chart-version=3.0.4_config-hash=207e1a5220ba0a318f85205f25e9a7bcd67a20e222388f59c103f34fddb7b613
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.message_key: message
@@ -336,10 +340,12 @@ Minimal manifest should match snapshot:
                   - -c
                   - sleep 10
             livenessProbe:
+              failureThreshold: 20
               httpGet:
                 path: /actuator/health/liveness
                 port: 8180
               initialDelaySeconds: 15
+              periodSeconds: 15
             name: RELEASE-NAME-container
             ports:
             - containerPort: 8080
@@ -347,10 +353,12 @@ Minimal manifest should match snapshot:
             - containerPort: 8180
               name: actuator
             readinessProbe:
+              failureThreshold: 20
               httpGet:
                 path: /actuator/health/readiness
                 port: 8180
               initialDelaySeconds: 10
+              periodSeconds: 15
             resources:
               limits:
                 cpu: 2.5
@@ -393,7 +401,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.3
+        chart-version: 3.0.4
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

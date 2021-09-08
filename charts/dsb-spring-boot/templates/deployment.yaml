@@ -59,11 +59,15 @@ spec:
               path: /actuator/health/liveness
               port: {{ .Values.application_actuator_port }}
             initialDelaySeconds: 15
+            periodSeconds: {{ .Values.liveness_period_seconds }}
+            failureThreshold: {{ .Values.liveness_failure_threshold }}
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: {{ .Values.application_actuator_port }}
             initialDelaySeconds: 10
+            periodSeconds: {{.Values.readiness_period_seconds }}
+            failureThreshold: {{ .Values.readiness_failure_threshold }}
           resources:
             requests:
               memory: {{ .Values.memory_request }}
