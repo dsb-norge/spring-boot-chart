@@ -59,3 +59,6 @@ jobs:
 
 # Reference secrets that are mounted on the cron job pod:
 job_secretRefs: []
+
+liveness_period_seconds: 15
+liveness_failure_threshold: 20
