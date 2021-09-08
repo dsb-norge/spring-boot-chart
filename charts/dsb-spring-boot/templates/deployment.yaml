@@ -66,6 +66,8 @@ spec:
               path: /actuator/health/readiness
               port: {{ .Values.application_actuator_port }}
             initialDelaySeconds: 10
+            periodSeconds: {{.Values.readiness_period_seconds }}
+            failureThreshold: {{ .Values.readiness_failure_threshold }}
           resources:
             requests:
               memory: {{ .Values.memory_request }}
