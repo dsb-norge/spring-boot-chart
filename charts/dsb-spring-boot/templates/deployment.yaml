@@ -90,7 +90,7 @@ spec:
               # This is hardcoded in the image used:
               value: "emptydb"
             {{- end }}
-            {{- if .Values.java_opts_enabled }}
+            {{- if .Values.java_opts }}
           - name: JAVA_OPTS
             value: {{ .Values.java_opts | quote }}
             {{- end }}
