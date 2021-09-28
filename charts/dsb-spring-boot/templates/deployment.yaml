@@ -90,6 +90,10 @@ spec:
               # This is hardcoded in the image used:
               value: "emptydb"
             {{- end }}
+            {{- if .Values.java_opts_enabled }}
+          - name: JAVA_OPTS
+            value: {{ .Values.java_opts | quote }}
+            {{- end }}
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
