@@ -11,7 +11,7 @@ docker run -it --rm --name ct --volume "$( pwd )":/data quay.io/helmpack/chart-t
 # Run unit tests:
 docker run -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
 # Update snapshots:
-# docker run -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshots charts/*
+# docker run -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/*
 
 # Create Kubernetes cluster:
 kind create cluster --config kind-cluster-config.yaml
