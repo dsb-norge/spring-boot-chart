@@ -1,17 +1,21 @@
 ---
 # Number of pods to create:
 replicas: 2
+
 # For the pod disruption budget, default is (replicas - 1):
 minAvailableReplicas:
 
+# Container image ref for pods
 image:
+
+# Container image tag for pods
 tag:
 
 # Annotations to put on the Deployment:
-deploymentAnnotations: []
+deploymentAnnotations: {}
 
 # Annotations to put on every CronJob:
-cronJobAnnotations: []
+cronJobAnnotations: {}
 
 # Default Spring Profile:
 springProfiles: "kubernetes"
@@ -25,10 +29,10 @@ springProfiles: "kubernetes"
 config:
 
 # Reference secrets that are mounted on the pod:
-secretRefs: []
+secretRefs: {}
 
 # Reference configMaps that are mounted on the pod:
-configMapRefs: []
+configMapRefs: {}
 
 # Hostname must be provided if Ingress should be enabled.
 ingress_host:
@@ -60,7 +64,7 @@ java_opts:
 jobs:
 
 # Reference secrets that are mounted on the cron job pod:
-job_secretRefs: []
+job_secretRefs: {}
 
 liveness_period_seconds: 15
 liveness_failure_threshold: 20
