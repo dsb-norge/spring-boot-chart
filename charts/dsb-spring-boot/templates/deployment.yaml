@@ -19,18 +19,27 @@ spec:
       labels:
         app: {{ .Release.Name }}-app
       annotations:
-        "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
-        "prometheus.io/scrape": {{ .Values.prometheus_enabled | quote }}
-        "prometheus.io/port": {{ .Values.prometheus_port | quote }}
-        "prometheus.io/path": {{ .Values.prometheus_path | quote }}
-        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
-        # We create a string based on the chart version, and the resolved configuration values.
-        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
-        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
-        co.elastic.logs/json.keys_under_root: "true"
-        co.elastic.logs/json.overwrite_keys: "true"
-        co.elastic.logs/json.add_error_key: "true"
-        co.elastic.logs/json.message_key: "message"
+        {{- /*
+        protected pod annotations:
+          checksum: Required for proper pod creation, see below
+          prometheus.io/*: Should not be overwritable as these are defined as separate values (with defaults) in values.yaml
+        */}}
+        {{- $protectedAnnotations := dict   "checksum"              (print "chart-version=" .Chart.Version "_config-hash=" (.Values | toString | sha256sum) ) }}
+        {{- $_ := set $protectedAnnotations "prometheus.io/scrape"  .Values.prometheus_enabled }}
+        {{- $_ := set $protectedAnnotations "prometheus.io/port"    .Values.prometheus_port }}
+        {{- $_ := set $protectedAnnotations "prometheus.io/path"    .Values.prometheus_path }}
+        {{- /*
+        Final pod annotations are the result of proteced merged with overrides, where protected takes precedence */}}
+        {{- $podAnnotations := .Values.podAnnotations }} {{- /* <-- Required to define as variable to support 'podAnnotations: null' */}}
+        {{- $merged := mustMergeOverwrite $podAnnotations $protectedAnnotations }}
+        {{- range $key, $val := $merged }}
+        {{- if $key | eq "checksum" }}
+        # checksum anntotation:
+        #   We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        #   We create a string based on the chart version, and the resolved configuration values.
+        #   See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments{{- end }}
+        {{ $key }}: {{ $val | quote }}
+        {{- end }}
     spec:
       serviceAccountName: {{ .Release.Name }}-service-account
       nodeSelector:
