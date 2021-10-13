@@ -1,0 +1,61 @@
+suite: test pod annotations
+templates:
+  - deployment.yaml
+tests:
+  - it: should support custom pod annotations
+    set:
+      podAnnotations:
+        custom-key: custom value
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations.[custom-key]
+          value: custom value
+  - it: should support overriding default pod annotations
+    set:
+      podAnnotations:
+        co.elastic.logs/json.keys_under_root: "false"
+    asserts:
+      - equal:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+          value: "false"
+  - it: should support removing default pod annotations
+    set:
+      podAnnotations:
+        co.elastic.logs/json.keys_under_root: null
+    asserts:
+      - isNull:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+  - it: should support removing all default pod annotations
+    set:
+      podAnnotations: null
+    asserts:
+      - isNull:
+          path: spec.template.metadata.annotations.[apparmor.security.beta.kubernetes.io/pod]
+      - isNull:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+      - isNull:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.overwrite_keys]
+      - isNull:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.add_error_key]
+      - isNull:
+          path: spec.template.metadata.annotations.[co.elastic.logs/json.message_key]
+  - it: should not overwrite protected pod annotations
+    set:
+      podAnnotations:
+        checksum: "custom value"
+    asserts:
+      - notEqual:
+          path: spec.template.metadata.annotations.checksum
+          value: "custom value"
+  - it: should not remove protected pod annotations
+    set:
+      podAnnotations: null
+    asserts:
+      - isNotNull:
+          path: spec.template.metadata.annotations.checksum
+      - isNotNull:
+          path: spec.template.metadata.annotations.[prometheus.io/path]
+      - isNotNull:
+          path: spec.template.metadata.annotations.[prometheus.io/port]
+      - isNotNull:
+          path: spec.template.metadata.annotations.[prometheus.io/scrape]
