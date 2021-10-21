@@ -37,8 +37,6 @@ tests:
           path: spec.template.metadata.annotations.[co.elastic.logs/json.overwrite_keys]
       - isNull:
           path: spec.template.metadata.annotations.[co.elastic.logs/json.add_error_key]
-      - isNull:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.message_key]
   - it: should not overwrite protected pod annotations
     set:
       podAnnotations:

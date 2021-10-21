@@ -22,7 +22,6 @@ cronJobAnnotations: {}
 # podAnnotations:
 #   my-custom-key: "my custom value"                  # add custom annotation
 #   co.elastic.logs/json.message_key: "my_override"   # override a default
-#   co.elastic.logs/json.keys_under_root: null        # remove a default
 # To remove all defaults and not specify any annotations:
 # podAnnotations: null                                # Note that using empty map {} will not work
 podAnnotations:
@@ -30,7 +29,6 @@ podAnnotations:
   co.elastic.logs/json.keys_under_root: "true"
   co.elastic.logs/json.overwrite_keys: "true"
   co.elastic.logs/json.add_error_key: "true"
-  co.elastic.logs/json.message_key: "message"
 
 # Default Spring Profile:
 springProfiles: "kubernetes"
