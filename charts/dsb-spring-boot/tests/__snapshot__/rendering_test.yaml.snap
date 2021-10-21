@@ -25,7 +25,6 @@ Full manifest should match snapshot:
           annotations:
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.message_key: message
             co.elastic.logs/json.overwrite_keys: "true"
         spec:
           activeDeadlineSeconds: 60
@@ -87,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.7_config-hash=55bfd54f90c75501a43801b8c4fd55b20938a09dcf69e7c59a57a34e1c6ca789
+            checksum: chart-version=3.0.8_config-hash=4f965d30d7b4ea3be59e153102c2dfd125cdce948d3dd2e5d5d066ad3bc6dd50
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -142,10 +141,9 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.7_config-hash=fb378eae67431dc6bde1d674d4023c06b9daca2de00879348685b703f7872188
+            checksum: chart-version=3.0.8_config-hash=b53ad7cde6a73736a45a8edb7614df627ec4900a573fc835040fc8e34f984e65
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.message_key: message
             co.elastic.logs/json.overwrite_keys: "true"
             prometheus.io/path: /path/to/prometheus
             prometheus.io/port: "82"
@@ -270,7 +268,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.7
+        chart-version: 3.0.8
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -305,10 +303,9 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.7_config-hash=eb36f716c180bda06e49470944d35c4e23e06f84a63b67a244e19684114d1388
+            checksum: chart-version=3.0.8_config-hash=d74f75be5ad9974fd05175747a20f6d75eea66f6294708cca2400a7b4f326388
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.message_key: message
             co.elastic.logs/json.overwrite_keys: "true"
             prometheus.io/path: /actuator/prometheus
             prometheus.io/port: "8180"
@@ -401,7 +398,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.7
+        chart-version: 3.0.8
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
