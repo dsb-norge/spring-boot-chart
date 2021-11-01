@@ -1,17 +1,21 @@
 ---
 # Number of pods to create:
 replicas: 2
+
 # For the pod disruption budget, default is (replicas - 1):
 minAvailableReplicas:
 
-# name to use in kubernetes resources, must be unique inside a namespace
+# Name to use in kubernetes resources, must be unique inside a namespace
 resourceName: frontend
 
+# Container image ref for pods
 image:
+
+# Container image tag for pods
 tag:
 
 # Annotations to put on the Deployment:
-deploymentAnnotations: []
+deploymentAnnotations: {}
 
 # It is possible to use a normal yaml tree here, for example:
 # root:
@@ -22,10 +26,10 @@ deploymentAnnotations: []
 config:
 
 # Reference secrets that are mounted on the pod:
-secretRefs: []
+secretRefs: {}
 
 # Reference configMaps that are mounted on the pod:
-configMapRefs: []
+configMapRefs: {}
 
 # Hostname must be provided if Ingress should be enabled.
 ingress_host:
