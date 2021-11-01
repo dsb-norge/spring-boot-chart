@@ -95,3 +95,6 @@ spec:
             allowPrivilegeEscalation: false
             # Enabling this requires some testing, as nginx writes to /etc/nginx, /var/cache, /tmp etc.
             readOnlyRootFilesystem: false
+            # 101 maps to nginx user and nginx group in the nginx image
+            runAsUser: 101
+            runAsGroup: 101
