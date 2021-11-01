@@ -78,6 +78,8 @@ Full manifest should match snapshot:
                 - ALL
               privileged: false
               readOnlyRootFilesystem: false
+              runAsGroup: 101
+              runAsUser: 101
           nodeSelector:
             NodePool: workers
   3: |
@@ -185,6 +187,8 @@ Minimal manifest should match snapshot:
                 - ALL
               privileged: false
               readOnlyRootFilesystem: false
+              runAsGroup: 101
+              runAsUser: 101
           nodeSelector:
             NodePool: workers
   2: |
