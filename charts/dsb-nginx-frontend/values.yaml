@@ -17,6 +17,17 @@ tag:
 # Annotations to put on the Deployment:
 deploymentAnnotations: {}
 
+# Annotations to put on every pod:
+# Usage when applying with values.yaml
+# podAnnotations:
+#   my-custom-key: "my custom value"                  # add custom annotation
+#   co.elastic.logs/json.message_key: "my_override"   # override a default
+# To remove all defaults and not specify any annotations:
+# podAnnotations: null                                # Note that using empty map {} will not work
+podAnnotations:
+  apparmor.security.beta.kubernetes.io/pod: "runtime/default"
+  no.dsb-norge.filebeat/autodiscover-template: "nginx"
+
 # It is possible to use a normal yaml tree here, for example:
 # root:
 #   node1: 1
