@@ -26,10 +26,8 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.4_config-hash=c4b6757985b404fb0551b430d1199996c349e517ba28dce0b372219f50805ebf
-            co.elastic.logs/json.add_error_key: "true"
-            co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.overwrite_keys: "true"
+            checksum: chart-version=2.0.5_config-hash=8c0ab190d9bcdfca21516003152d94d31e8f1c27d4937c485c0a052a04a98415
+            no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
         spec:
@@ -116,7 +114,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.4
+        chart-version: 2.0.5
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -141,10 +139,8 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.4_config-hash=a432b22bbcc05d8e0e524a04eef32797b8e727a21ab3aa43dc1cf46bb00e84a7
-            co.elastic.logs/json.add_error_key: "true"
-            co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.overwrite_keys: "true"
+            checksum: chart-version=2.0.5_config-hash=a0b18f85dda3691f8a604c9c8da969a3d041e9021dd3a9042cf3e0ffdca6ad05
+            no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
         spec:
@@ -207,7 +203,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.4
+        chart-version: 2.0.5
       name: frontend
       namespace: NAMESPACE
     spec:

@@ -19,14 +19,25 @@ spec:
       labels:
         app: {{ .Values.resourceName }}
       annotations:
-        "apparmor.security.beta.kubernetes.io/pod": "runtime/default"
-        # We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
-        # We create a string based on the chart version, and the resolved configuration values.
-        # See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
-        checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
-        co.elastic.logs/json.keys_under_root: "true"
-        co.elastic.logs/json.overwrite_keys: "true"
-        co.elastic.logs/json.add_error_key: "true"
+        {{- /*
+        protected pod annotations:
+          checksum: Required for proper pod creation, see below
+        Additional can be added with:
+          {{- $_ := set $protectedAnnotations "my.custom/annotation"  .Values.myCustomAnnotation }}
+        */}}
+        {{- $protectedAnnotations := dict   "checksum"              (print "chart-version=" .Chart.Version "_config-hash=" (.Values | toString | sha256sum) ) }}
+        {{- /*
+        Final pod annotations are the result of proteced merged with overrides, where protected takes precedence */}}
+        {{- $podAnnotations := .Values.podAnnotations }} {{- /* <-- Required to define as variable to support 'podAnnotations: null' */}}
+        {{- $merged := mustMergeOverwrite $podAnnotations $protectedAnnotations }}
+        {{- range $key, $val := $merged }}
+        {{- if $key | eq "checksum" }}
+        # checksum anntotation:
+        #   We change this annotation on change in chart or parameters, to force re-create of pods (to pick up config changes etc)
+        #   We create a string based on the chart version, and the resolved configuration values.
+        #   See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments{{- end }}
+        {{ $key }}: {{ $val | quote }}
+        {{- end }}
     spec:
       nodeSelector:
         NodePool: workers
