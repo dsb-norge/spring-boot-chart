@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.5_config-hash=419e82c73dd5a215e4a49d45a23be270a507a28c5a46c0e595fedc7a64eaf19c
+            checksum: chart-version=2.0.6_config-hash=419e82c73dd5a215e4a49d45a23be270a507a28c5a46c0e595fedc7a64eaf19c
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -116,7 +116,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.5
+        chart-version: 2.0.6
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -141,7 +141,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.5_config-hash=a0b18f85dda3691f8a604c9c8da969a3d041e9021dd3a9042cf3e0ffdca6ad05
+            checksum: chart-version=2.0.6_config-hash=a0b18f85dda3691f8a604c9c8da969a3d041e9021dd3a9042cf3e0ffdca6ad05
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -207,7 +207,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.5
+        chart-version: 2.0.6
       name: frontend
       namespace: NAMESPACE
     spec:
