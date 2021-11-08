@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.8_config-hash=4f965d30d7b4ea3be59e153102c2dfd125cdce948d3dd2e5d5d066ad3bc6dd50
+            checksum: chart-version=3.0.9_config-hash=407e323df0324aa9221e8888aee2df9ab7ca72ca05ae312882fac72696da531c
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.8_config-hash=b53ad7cde6a73736a45a8edb7614df627ec4900a573fc835040fc8e34f984e65
+            checksum: chart-version=3.0.9_config-hash=ad1b8b2e1b51442ae36f5d429ca65322458daaf838703b90180be6dfcb2ded01
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -173,9 +173,13 @@ Full manifest should match snapshot:
               value: RELEASE-NAME-db-svc:1433
             - name: DATABASE_CONTAINER_DATABASE
               value: emptydb
+            - name: DSB_CERTIFICATE_CERTIFICATE_PATH
+              value: /certificates/dsb-test-virksomhetssertifikat.pfx
             envFrom:
             - secretRef:
                 name: secret1
+            - secretRef:
+                name: DSB_CERTIFICATE_INFO
             - configMapRef:
                 name: configMap1
             - configMapRef:
@@ -228,12 +232,18 @@ Full manifest should match snapshot:
             volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+            - mountPath: /certificates
+              name: DSB_CERTIFICATE
+              readOnly: true
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
           volumes:
           - emptyDir: {}
             name: tmp-dir
+          - name: DSB_CERTIFICATE
+            secret:
+              secretName: DSB_CERTIFICATE_FILE
   6: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -268,7 +278,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.8
+        chart-version: 3.0.9
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -303,7 +313,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.8_config-hash=d74f75be5ad9974fd05175747a20f6d75eea66f6294708cca2400a7b4f326388
+            checksum: chart-version=3.0.9_config-hash=0374a9c012639d81734c1e98ecf42405bbd8a9b13acd5fb96d483e7c85ede482
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -398,7 +408,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.8
+        chart-version: 3.0.9
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

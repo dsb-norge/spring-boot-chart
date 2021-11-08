@@ -99,6 +99,10 @@ spec:
               # This is hardcoded in the image used:
               value: "emptydb"
             {{- end }}
+            {{- range $name, $value := .Values.certificates }}
+            - name: {{ $name }}_CERTIFICATE_PATH
+              value: {{ default "/certificates" $value.mountPath  }}/{{ $value.fileName  }}
+            {{- end }}
             {{- if .Values.java_opts }}
             - name: JAVA_OPTS
               value: {{ .Values.java_opts | quote }}
@@ -107,6 +111,10 @@ spec:
           {{- range .Values.secretRefs }}
             - secretRef:
                 name: {{ . | quote }}
+          {{- end }}
+          {{- range $name, $value := .Values.certificates }}
+            - secretRef:
+                name: {{ $name }}_INFO
           {{- end }}
           # We place config AFTER secrets, to more easily override with dummy values during development:
           {{- range .Values.configMapRefs }}
@@ -125,6 +133,11 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+          {{- range $name, $value := .Values.certificates }}
+            - name: {{ $name }}
+              mountPath: {{ default "/certificates" $value.mountPath }}
+              readOnly: true
+          {{- end }}
           securityContext:
             capabilities:
               drop: [ALL]
@@ -137,3 +150,8 @@ spec:
       volumes:
         - name: tmp-dir
           emptyDir: {}
+      {{- range $name, $value := .Values.certificates }}
+        - name: {{ $name }}
+          secret:
+            secretName: {{ $name }}_FILE
+      {{- end }}
