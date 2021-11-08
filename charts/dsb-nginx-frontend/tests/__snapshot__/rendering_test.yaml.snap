@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.5_config-hash=8c0ab190d9bcdfca21516003152d94d31e8f1c27d4937c485c0a052a04a98415
+            checksum: chart-version=2.0.5_config-hash=419e82c73dd5a215e4a49d45a23be270a507a28c5a46c0e595fedc7a64eaf19c
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
