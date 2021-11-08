@@ -53,6 +53,40 @@ Optional parameters:
 You also require a client secret which is defined like the regular values.secrets only its from `values.job_secrets`
 it needs to define a value called: `CLIENT_SECRET`
 
+### Mount certificates from Azure Key Vault
+
+Define `certificates` entry like below:
+
+    certificates:
+      DSB_CERTIFICATE:
+        key_vault:
+          name: azure_key_vault_name
+          keystore_ref: vaule_for_certificate
+          keystore_password_ref: value_for_password
+          keystore_alias_ref:  value_for_alias
+        isBinary: true
+        fileName: dsb-test-virksomhetssertifikat.pfx
+        mountPath: /certificates
+
+Note that the name of the Map itself. `DSB_CERTIFICATE` in the above example will be used for the resources
+created. As well as environment variables inside the pod
+
+Required parameters:
+* `key_vault.name` - The name of the Azure Key Vault to get the values from
+* `key_vault.keystore_ref` - The name of the certificate/keystore file in Azure Key Vault
+* `key_vault.keystore_password_ref` - The name of the value containing the password to the certificate/keystore file
+* `key_vault.keystore_alias_ref` - The name of the value containing the keystore alias for the given certificate
+* `fileName` - What the file will be called inside the pod when mounted
+
+Optional parameters:
+* `isBinary` - Default: `true` whenever this file is in a binary format or not (PFX is binary, PEM is not)
+* `mountPath` - Default: `/certificates` where the certificate/keystore will be mounted in the pod
+
+Resulting environment variables in pods:
+* `<name>_CERTIFICATE_PATH` - The path of where the certificate is located
+* `<name>_CERTIFICATE_KEYSTORE` - The password to open the certifcate/keystore
+* `<name>_CERTIFICATE_ALIAS` - The alias of the key to use
+
 ## DSB Spring Boot Job Chart
 
 Use this chart for creating a Spring Boot application that should run as a cron job. That is most often a console application.

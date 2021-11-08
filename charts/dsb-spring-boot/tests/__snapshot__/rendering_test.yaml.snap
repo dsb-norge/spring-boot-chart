@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.8_config-hash=4f965d30d7b4ea3be59e153102c2dfd125cdce948d3dd2e5d5d066ad3bc6dd50
+            checksum: chart-version=3.0.9_config-hash=39bd71aa32a0756c3f887d67bd27dcc8445c9e5ad2995ca4b8de2bcb1a80d94a
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.8_config-hash=b53ad7cde6a73736a45a8edb7614df627ec4900a573fc835040fc8e34f984e65
+            checksum: chart-version=3.0.9_config-hash=de4c8a880052ce1c1d6089f4224a40129395b23b991b86b4c7d9d67111f79d2f
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -173,9 +173,13 @@ Full manifest should match snapshot:
               value: RELEASE-NAME-db-svc:1433
             - name: DATABASE_CONTAINER_DATABASE
               value: emptydb
+            - name: DSB_CERTIFICATE_CERTIFICATE_PATH
+              value: /certificates/dsb-test-virksomhetssertifikat.pfx
             envFrom:
             - secretRef:
                 name: secret1
+            - secretRef:
+                name: DSB_CERTIFICATE_INFO
             - configMapRef:
                 name: configMap1
             - configMapRef:
@@ -228,12 +232,18 @@ Full manifest should match snapshot:
             volumeMounts:
             - mountPath: /tmp
               name: tmp-dir
+            - mountPath: /certificates
+              name: DSB_CERTIFICATE
+              readOnly: true
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
           volumes:
           - emptyDir: {}
             name: tmp-dir
+          - name: DSB_CERTIFICATE
+            secret:
+              secretName: DSB_CERTIFICATE_FILE
   6: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -268,7 +278,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.8
+        chart-version: 3.0.9
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -287,6 +297,33 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
+  10: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: DSB_CERTIFICATE_INFO
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+      - key: value_for_password
+        name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
+      - key: value_for_alias
+        name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
+      keyVaultName: azure_key_vault_name
+  11: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: DSB_CERTIFICATE_FILE
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+      - isBinary: true
+        key: vaule_for_certificate
+        name: dsb-test-virksomhetssertifikat.pfx
+      keyVaultName: azure_key_vault_name
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -303,7 +340,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.8_config-hash=d74f75be5ad9974fd05175747a20f6d75eea66f6294708cca2400a7b4f326388
+            checksum: chart-version=3.0.9_config-hash=0374a9c012639d81734c1e98ecf42405bbd8a9b13acd5fb96d483e7c85ede482
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -398,7 +435,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.8
+        chart-version: 3.0.9
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

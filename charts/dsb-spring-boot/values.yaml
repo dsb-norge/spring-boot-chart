@@ -44,6 +44,9 @@ config:
 # Reference secrets that are mounted on the pod:
 secretRefs: {}
 
+# Mount certificates as files with additional environment variables to read them in applications
+certificates: {}
+
 # Reference configMaps that are mounted on the pod:
 configMapRefs: {}
 

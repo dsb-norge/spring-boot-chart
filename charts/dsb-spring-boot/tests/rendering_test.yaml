@@ -22,6 +22,7 @@ tests:
       - podDisruptionBudget.yaml
       - service.yaml
       - serviceAccount.yaml
+      - certificate-secret.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -56,6 +57,14 @@ tests:
       database_container_enabled: true
       database_container_image: "test-db:v1"
       database_container_password: "password123"
+      certificates:
+        DSB_CERTIFICATE:
+          key_vault:
+            name: azure_key_vault_name
+            keystore_ref: vaule_for_certificate
+            keystore_password_ref: value_for_password
+            keystore_alias_ref: value_for_alias
+          fileName: dsb-test-virksomhetssertifikat.pfx
       jobs:
       - name: cron-example
         image_tag: greatest
