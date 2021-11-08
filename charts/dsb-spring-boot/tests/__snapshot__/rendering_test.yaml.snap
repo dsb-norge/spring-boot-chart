@@ -297,6 +297,33 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
+  10: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: DSB_CERTIFICATE_INFO
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+      - key: value_for_password
+        name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
+      - key: value_for_alias
+        name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
+      keyVaultName: azure_key_vault_name
+  11: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: DSB_CERTIFICATE_FILE
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+      - isBinary: true
+        key: vaule_for_certificate
+        name: dsb-test-virksomhetssertifikat.pfx
+      keyVaultName: azure_key_vault_name
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
