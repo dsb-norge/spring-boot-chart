@@ -58,7 +58,7 @@ tests:
       database_container_image: "test-db:v1"
       database_container_password: "password123"
       certificates:
-        DSB_CERTIFICATE:
+        dsb-certificate:
           key_vault:
             name: azure_key_vault_name
             keystore_ref: vaule_for_certificate

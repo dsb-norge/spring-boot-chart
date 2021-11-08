@@ -100,7 +100,7 @@ spec:
               value: "emptydb"
             {{- end }}
             {{- range $name, $value := .Values.certificates }}
-            - name: {{ $name }}_CERTIFICATE_PATH
+            - name: {{ regexReplaceAll "-" $name "_" | upper }}_CERTIFICATE_PATH
               value: {{ default "/certificates" $value.mountPath  }}/{{ $value.fileName  }}
             {{- end }}
             {{- if .Values.java_opts }}
@@ -114,7 +114,7 @@ spec:
           {{- end }}
           {{- range $name, $value := .Values.certificates }}
             - secretRef:
-                name: {{ $name }}_INFO
+                name: {{ $name }}-info
           {{- end }}
           # We place config AFTER secrets, to more easily override with dummy values during development:
           {{- range .Values.configMapRefs }}
@@ -153,5 +153,5 @@ spec:
       {{- range $name, $value := .Values.certificates }}
         - name: {{ $name }}
           secret:
-            secretName: {{ $name }}_FILE
+            secretName: {{ $name }}-file
       {{- end }}

@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.9_config-hash=39bd71aa32a0756c3f887d67bd27dcc8445c9e5ad2995ca4b8de2bcb1a80d94a
+            checksum: chart-version=3.0.9_config-hash=fd0821a4e635e9a57e385c8567ff240e6cccfcd3198c6fc54541b80af752b38e
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.9_config-hash=de4c8a880052ce1c1d6089f4224a40129395b23b991b86b4c7d9d67111f79d2f
+            checksum: chart-version=3.0.9_config-hash=3998baf6ea162972197d9a0292a7487cbfc82dea0bc555f8e25e446d8337feee
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -179,7 +179,7 @@ Full manifest should match snapshot:
             - secretRef:
                 name: secret1
             - secretRef:
-                name: DSB_CERTIFICATE_INFO
+                name: dsb-certificate-info
             - configMapRef:
                 name: configMap1
             - configMapRef:
@@ -233,7 +233,7 @@ Full manifest should match snapshot:
             - mountPath: /tmp
               name: tmp-dir
             - mountPath: /certificates
-              name: DSB_CERTIFICATE
+              name: dsb-certificate
               readOnly: true
           nodeSelector:
             NodePool: workers
@@ -241,9 +241,9 @@ Full manifest should match snapshot:
           volumes:
           - emptyDir: {}
             name: tmp-dir
-          - name: DSB_CERTIFICATE
+          - name: dsb-certificate
             secret:
-              secretName: DSB_CERTIFICATE_FILE
+              secretName: dsb-certificate-file
   6: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -301,7 +301,7 @@ Full manifest should match snapshot:
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
-      name: DSB_CERTIFICATE_INFO
+      name: dsb-certificate-info
       namespace: NAMESPACE
     spec:
       backendType: azureKeyVault
@@ -315,7 +315,7 @@ Full manifest should match snapshot:
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
-      name: DSB_CERTIFICATE_FILE
+      name: dsb-certificate-file
       namespace: NAMESPACE
     spec:
       backendType: azureKeyVault
