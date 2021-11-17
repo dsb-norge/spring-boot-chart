@@ -52,5 +52,5 @@ port: 8080
 memory_request: "128Mi"
 memory_limit: "256Mi"
 
-cpu_request: "0.2"
-cpu_limit: "0.8"
+cpu_request: "50m"
+cpu_limit: "100m"
