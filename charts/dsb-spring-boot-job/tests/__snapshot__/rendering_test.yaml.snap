@@ -30,7 +30,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.6_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
+                checksum: chart-version=2.0.7_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -100,7 +100,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.0.6_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
+            checksum: chart-version=2.0.7_config-hash=9ce8ae231891db9bc63c4cae273adbed21f7800c566a6dfaec7cddc5fea302a9
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -157,7 +157,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.6_config-hash=f15538db5d9d938e85141d4a8db9d69c8a129e36700fa3b50532b8828dcafd7b
+                checksum: chart-version=2.0.7_config-hash=aa6e568e9635eb3ae58a00c11520e5e1d7e373b3d6faeb117962f22713fae031
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -176,7 +176,7 @@ Minimal manifest should match snapshot:
                     cpu: 2.5
                     memory: 1024Mi
                   requests:
-                    cpu: 0.2
+                    cpu: 100m
                     memory: 256Mi
                 securityContext:
                   allowPrivilegeEscalation: false

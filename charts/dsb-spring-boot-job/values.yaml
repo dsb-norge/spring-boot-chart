@@ -31,7 +31,7 @@ configMapRefs: []
 memory_request: "256Mi"
 memory_limit: "1024Mi"
 
-cpu_request: "0.2"
+cpu_request: "100m"
 cpu_limit: "2.5"
 
 # If this is enabled, a docker image with a mssql database is created.
