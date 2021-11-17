@@ -2,25 +2,33 @@
 
 Create a new release by committing a new version in `charts/*/Chart.yaml`.
 
-Update the test snapshots on Linux with:
+## Unit tests
 
-    docker run -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/* 
+### Run unit tests
+```bash
+docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
+```
+
+### Update the test snapshots
+```bash
+docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/*
+```
 
 ## DSB Spring Boot Chart
 
 To debug locally (requires a kubeconfig setup to a live cluster):
 
     helm upgrade --install --debug --dry-run -f example.yaml test-application dsb-spring-boot
-    
+
 The file `example.yaml` could be like this:
 
     ---
     replicas: 2
-    
+
     image: "dsbacr.azurecr.io/dsb-norge/test-application"
     tag: "latest"
-    
-    application_traefik_rule: "Host(`dev-api.eksplosiver.no`) && PathPrefix(`/test`)" 
+
+    application_traefik_rule: "Host(`dev-api.eksplosiver.no`) && PathPrefix(`/test`)"
 
 To actually deploy, omit the --dry-run flag.
 
