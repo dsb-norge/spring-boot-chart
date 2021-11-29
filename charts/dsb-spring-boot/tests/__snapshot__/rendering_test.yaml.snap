@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.11_config-hash=da0765ce35ba581382bb4892b4c5faeda09da35eb66243159c4388f57367b2d8
+            checksum: chart-version=3.0.12_config-hash=68c201fff6f8e6524da6b0a5cd7c11d2c6641802e21fd9a2e0383116f83d627a
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.11_config-hash=3998baf6ea162972197d9a0292a7487cbfc82dea0bc555f8e25e446d8337feee
+            checksum: chart-version=3.0.12_config-hash=8e7ca25741546892b84ec236a47d652934bcc7659c580001a6e2ef70131b1d38
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -278,7 +278,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.11
+        chart-version: 3.0.12
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -340,7 +340,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.11_config-hash=f7d6bf8b36fa4f200cb1ae9b353da8494a2ac2c2ec6ba004694a58706bbc64fd
+            checksum: chart-version=3.0.12_config-hash=36b246a9aaf6300ea3861c32e182c90bf903ec03c3f003db10fe49a9d86916bb
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -435,7 +435,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.11
+        chart-version: 3.0.12
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -454,3 +454,14 @@ Minimal manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
+should render default with PodDisruptionBudget and should match snapshot:
+  1: |
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: RELEASE-NAME.pdb
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-app

@@ -1,3 +1,4 @@
+{{- if (not (eq (toString .Values.createPodDisruptionBudget) "false")) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -7,3 +8,4 @@ spec:
   selector:
     matchLabels:
       app: {{ .Release.Name }}-app
+{{- end }}

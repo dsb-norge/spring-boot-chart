@@ -5,6 +5,9 @@ replicas: 2
 # For the pod disruption budget, default is (replicas - 1):
 minAvailableReplicas:
 
+# Set to false to avoid creating PodDisruptionBudget for pods
+createPodDisruptionBudget: true
+
 # Container image ref for pods
 image:
 
