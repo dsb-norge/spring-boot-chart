@@ -10,7 +10,21 @@ tests:
       tag: latest
     asserts:
       - matchSnapshot: { }
-
+  - it: should render default with PodDisruptionBudget and should match snapshot
+    templates:
+      - pod-disruption-budget.yaml
+    asserts:
+      - matchSnapshot: { }
+      - isKind:
+          of: PodDisruptionBudget
+  - it: should be possible to render without PodDisruptionBudget
+    templates:
+      - pod-disruption-budget.yaml
+    set:
+      createPodDisruptionBudget: false
+    asserts:
+      - hasDocuments:
+          count: 0
   - it: Full manifest should match snapshot
     templates:
       - config-map.yaml
