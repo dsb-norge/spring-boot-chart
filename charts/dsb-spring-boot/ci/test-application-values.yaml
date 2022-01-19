@@ -2,6 +2,6 @@
 replicas: 2
 
 image: "dsbacr.azurecr.io/dsb-norge/test-application"
-tag: "2021.06.03.69273"
+tag: "latest"
 
 ingress_host: "example.com"
