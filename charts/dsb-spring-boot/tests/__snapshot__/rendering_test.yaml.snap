@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.12_config-hash=68c201fff6f8e6524da6b0a5cd7c11d2c6641802e21fd9a2e0383116f83d627a
+            checksum: chart-version=3.0.13_config-hash=59fbe5ba43f4a185c346e42e668c9d29efd997d1f58869e6d1bea82a7ca58d89
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.12_config-hash=8e7ca25741546892b84ec236a47d652934bcc7659c580001a6e2ef70131b1d38
+            checksum: chart-version=3.0.13_config-hash=8e7ca25741546892b84ec236a47d652934bcc7659c580001a6e2ef70131b1d38
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -278,7 +278,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.12
+        chart-version: 3.0.13
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -340,7 +340,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.12_config-hash=36b246a9aaf6300ea3861c32e182c90bf903ec03c3f003db10fe49a9d86916bb
+            checksum: chart-version=3.0.13_config-hash=eaf5ddb4c8ce0087f4decd9260c02d64e5acf53b405c5ca349d2be90bd7b1707
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -435,7 +435,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-spring-boot
-        chart-version: 3.0.12
+        chart-version: 3.0.13
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
