@@ -2,6 +2,15 @@
 
 Create a new release by committing a new version in `charts/*/Chart.yaml`.
 
+## Linting
+```bash
+# Helm
+helm lint charts/*
+
+# Chart-testing
+docker run --pull always -it --rm --name unittest --volume "$(pwd)":"$(pwd)" --workdir "$(pwd)" quay.io/helmpack/chart-testing ct lint --all --validate-maintainers=false
+```
+
 ## Unit tests
 
 ### Run unit tests
