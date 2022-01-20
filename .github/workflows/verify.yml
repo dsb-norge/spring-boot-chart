@@ -28,6 +28,13 @@ jobs:
       - name: Run Helm Unittests
         run: docker run --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
 
+      - name: log into azure container registry (ACR)
+        uses: azure/docker-login@v1
+        with:
+          login-server: dsbacr.azurecr.io
+          username: ${{ secrets.AZ_CR_USER }}
+          password: ${{ secrets.AZ_CR_SECRET }}
+
       - uses: actions/setup-python@v2
         with:
           python-version: 3.7
@@ -44,7 +51,6 @@ jobs:
 
       - name: Load custom test application image
         run: |
-          az acr login --name dsbacr --username ${{ secrets.AZ_CR_USER }} --password ${{ secrets.AZ_CR_SECRET }}
           docker pull dsbacr.azurecr.io/dsb-norge/test-application:latest
           kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:latest
 
