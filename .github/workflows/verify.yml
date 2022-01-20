@@ -20,9 +20,9 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v1
         with:
-          version: v3.6.3
+          version: v3.7.2
 
-      - name: Run linting
+      - name: Run linting (helm)
         run: helm lint charts/*
 
       - name: Run Helm Unittests
@@ -40,7 +40,10 @@ jobs:
           python-version: 3.7
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.1.0
+        uses: helm/chart-testing-action@v2.2.0
+
+      - name: Run linting (ct)
+        run: ct lint --all
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
@@ -51,6 +54,9 @@ jobs:
 
       - name: Load custom test application image
         run: |
+          # Make image(s) available to kind cluster as it has no pullSecrets
+          # K8s defaults to always pull if tag is "latest", this is prevented by having
+          # 'imagePullPolicy: "Never"' in charts/*/ci/*-values.yaml
           docker pull dsbacr.azurecr.io/dsb-norge/test-application:latest
           kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:latest
 

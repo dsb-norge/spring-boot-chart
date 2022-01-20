@@ -2,6 +2,11 @@
 image: "dsbacr.azurecr.io/dsb-norge/test-application"
 tag: "latest"
 
+# Kind cluster should not attempt to pull as it's missing docker credentials
+# The Kubernetes default pull policy is IfNotPresent unless the image tag is :latest
+# or omitted (and implicitly :latest) in which case the default policy is Always.
+imagePullPolicy: "Never"
+
 springProfiles: "kubernetes,runner"
 
 schedule: "*/1 * * * *"

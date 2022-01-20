@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.13_config-hash=59fbe5ba43f4a185c346e42e668c9d29efd997d1f58869e6d1bea82a7ca58d89
+            checksum: chart-version=3.0.13_config-hash=8f26a2f74068c477b9a12b3e55cc0ff82edb038309bd1d85baf5f5b926df7cb2
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.13_config-hash=8e7ca25741546892b84ec236a47d652934bcc7659c580001a6e2ef70131b1d38
+            checksum: chart-version=3.0.13_config-hash=b1cc2ea5755992a5797695bd9842d4c644fb8c6fcb4c514b9b718b39079b091b
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -185,6 +185,7 @@ Full manifest should match snapshot:
             - configMapRef:
                 name: RELEASE-NAME-configmap
             image: wordpress:greatest
+            imagePullPolicy: customValue
             lifecycle:
               preStop:
                 exec:
@@ -340,7 +341,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.13_config-hash=eaf5ddb4c8ce0087f4decd9260c02d64e5acf53b405c5ca349d2be90bd7b1707
+            checksum: chart-version=3.0.13_config-hash=52c4ba0f5c9056805854f2ad5abb688fbd2cac7c5825003fa50efda502512003
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
