@@ -1,6 +1,12 @@
 ---
+# Container image ref for cron job
 image:
+
+# Container image tag for cron job
 tag:
+
+# Possibility to override default imagePullPolicy
+imagePullPolicy:
 
 # Annotations to put on the CronJob:
 cronJobAnnotations: []

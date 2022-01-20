@@ -14,6 +14,9 @@ image:
 # Container image tag for pods
 tag:
 
+# Possibility to override default imagePullPolicy
+imagePullPolicy:
+
 # Annotations to put on the Deployment:
 deploymentAnnotations: {}
 

@@ -57,6 +57,9 @@ spec:
       containers:
         - name: {{ .Release.Name }}-container
           image: "{{ .Values.image }}:{{ .Values.tag }}"
+          {{- if .Values.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          {{- end }}
           # Sleep before shutdown to finish requests, as suggested here:
           # https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#cloud-deployment-kubernetes
           lifecycle:

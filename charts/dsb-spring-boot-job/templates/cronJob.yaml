@@ -40,6 +40,9 @@ spec:
             NodePool: workers
           containers:
             - image: "{{ .Values.image }}:{{ .Values.tag }}"
+              {{- if .Values.imagePullPolicy }}
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              {{- end }}
               name: {{ .Release.Name }}-job
               resources:
                 requests:

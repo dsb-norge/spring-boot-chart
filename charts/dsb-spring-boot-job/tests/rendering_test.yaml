@@ -20,6 +20,7 @@ tests:
       minAvailableReplicas: 1
       image: wordpress
       tag: greatest
+      imagePullPolicy: customValue
       cronJobAnnotations:
         key1: value1
         key2: value2
