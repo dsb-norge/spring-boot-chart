@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
+    app: {{ .Release.Name }}-service
     spring-boot: "true"
     chart-name: "{{ .Chart.Name }}"
     chart-version: "{{ .Chart.Version }}"
@@ -14,5 +15,7 @@ spec:
   ports:
     - name: web
       port: {{ .Values.application_web_port }}
+    - name: actuator
+      port: {{ .Values.application_actuator_port }}
   selector:
     app: {{ .Release.Name }}-app

@@ -1,0 +1,20 @@
+{{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}-monitor
+  labels:
+    release: kube-prometheus
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-service
+  endpoints:
+    - port: actuator
+      path: "{{ .Values.prometheus_path }}"
+      scheme: http
+{{- end }}

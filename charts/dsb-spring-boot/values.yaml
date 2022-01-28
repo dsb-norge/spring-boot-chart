@@ -63,8 +63,7 @@ ingress_path: /
 application_web_port: 8080
 application_actuator_port: 8180
 
-prometheus_enabled: "true"
-prometheus_port: 8180
+prometheus_enabled: "false"
 prometheus_path: "/actuator/prometheus"
 
 memory_request: "256Mi"
