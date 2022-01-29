@@ -25,9 +25,6 @@ spec:
           prometheus.io/*: Should not be overwritable as these are defined as separate values (with defaults) in values.yaml
         */}}
         {{- $protectedAnnotations := dict   "checksum"              (print "chart-version=" .Chart.Version "_config-hash=" (.Values | toString | sha256sum) ) }}
-        {{- $_ := set $protectedAnnotations "prometheus.io/scrape"  .Values.prometheus_enabled }}
-        {{- $_ := set $protectedAnnotations "prometheus.io/port"    .Values.prometheus_port }}
-        {{- $_ := set $protectedAnnotations "prometheus.io/path"    .Values.prometheus_path }}
         {{- /*
         Final pod annotations are the result of proteced merged with overrides, where protected takes precedence */}}
         {{- $podAnnotations := .Values.podAnnotations }} {{- /* <-- Required to define as variable to support 'podAnnotations: null' */}}
@@ -90,6 +87,10 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.springProfiles | quote }}
+            {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
+            - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+              value: {{ .Values.prometheus_enabled }}
+            {{- end }}
             {{- if .Values.database_container_enabled }}
             - name: DATABASE_CONTAINER_USER
               # This is hardcoded in the image used:

@@ -26,6 +26,14 @@ tests:
     asserts:
       - hasDocuments:
           count: 0
+  - it: should be possible to render without ServiceMonitor
+    templates:
+      - serviceMonitor.yaml
+    set:
+      prometheus_enabled: "false"
+    asserts:
+      - hasDocuments:
+          count: 0
   - it: Full manifest should match snapshot
     templates:
       - configMap.yaml
@@ -38,6 +46,7 @@ tests:
       - service.yaml
       - serviceAccount.yaml
       - certificate-secret.yaml
+      - serviceMonitor.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -63,8 +72,7 @@ tests:
       ingress_path: /example
       application_web_port: 80
       application_actuator_port: 81
-      prometheus_enabled: "false"
-      prometheus_port: 82
+      prometheus_enabled: "true"
       prometheus_path: "/path/to/prometheus"
       memory_request: "4Mi"
       memory_limit: "19Mi"

@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.13_config-hash=8f26a2f74068c477b9a12b3e55cc0ff82edb038309bd1d85baf5f5b926df7cb2
+            checksum: chart-version=3.0.14_config-hash=a306457112a64a29a496501b3c650b192d3364a4671a301960ca83f838db924f
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,13 +141,10 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.13_config-hash=b1cc2ea5755992a5797695bd9842d4c644fb8c6fcb4c514b9b718b39079b091b
+            checksum: chart-version=3.0.14_config-hash=6413cae9d88b8807f26099edc976e1d2b59e9c1a0ad2b805fc56a67af63da0c0
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
-            prometheus.io/path: /path/to/prometheus
-            prometheus.io/port: "82"
-            prometheus.io/scrape: "false"
           labels:
             app: RELEASE-NAME-app
         spec:
@@ -165,6 +162,8 @@ Full manifest should match snapshot:
           - env:
             - name: SPRING_PROFILES_ACTIVE
               value: chart-testing
+            - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+              value: true
             - name: DATABASE_CONTAINER_USER
               value: sa
             - name: DATABASE_CONTAINER_PASSWORD
@@ -278,8 +277,9 @@ Full manifest should match snapshot:
     kind: Service
     metadata:
       labels:
+        app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.13
+        chart-version: 3.0.14
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -288,6 +288,8 @@ Full manifest should match snapshot:
       ports:
       - name: web
         port: 80
+      - name: actuator
+        port: 81
       selector:
         app: RELEASE-NAME-app
   9: |
@@ -325,6 +327,25 @@ Full manifest should match snapshot:
         key: vaule_for_certificate
         name: dsb-test-virksomhetssertifikat.pfx
       keyVaultName: azure_key_vault_name
+  12: |
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      labels:
+        release: kube-prometheus
+      name: RELEASE-NAME-monitor
+      namespace: NAMESPACE
+    spec:
+      endpoints:
+      - path: /path/to/prometheus
+        port: actuator
+        scheme: http
+      namespaceSelector:
+        matchNames:
+        - NAMESPACE
+      selector:
+        matchLabels:
+          app: RELEASE-NAME-service
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -341,13 +362,10 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.13_config-hash=52c4ba0f5c9056805854f2ad5abb688fbd2cac7c5825003fa50efda502512003
+            checksum: chart-version=3.0.14_config-hash=ab6db3f6b66b182d4576eb437dfc5556ae4857369aef33e0d18dbe34756df906
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
-            prometheus.io/path: /actuator/prometheus
-            prometheus.io/port: "8180"
-            prometheus.io/scrape: "true"
           labels:
             app: RELEASE-NAME-app
         spec:
@@ -435,8 +453,9 @@ Minimal manifest should match snapshot:
     kind: Service
     metadata:
       labels:
+        app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.13
+        chart-version: 3.0.14
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -445,6 +464,8 @@ Minimal manifest should match snapshot:
       ports:
       - name: web
         port: 8080
+      - name: actuator
+        port: 8180
       selector:
         app: RELEASE-NAME-app
   4: |

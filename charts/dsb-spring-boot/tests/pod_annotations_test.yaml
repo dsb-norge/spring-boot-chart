@@ -51,9 +51,3 @@ tests:
     asserts:
       - isNotNull:
           path: spec.template.metadata.annotations.checksum
-      - isNotNull:
-          path: spec.template.metadata.annotations.[prometheus.io/path]
-      - isNotNull:
-          path: spec.template.metadata.annotations.[prometheus.io/port]
-      - isNotNull:
-          path: spec.template.metadata.annotations.[prometheus.io/scrape]
