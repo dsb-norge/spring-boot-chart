@@ -89,7 +89,7 @@ spec:
               value: {{ .Values.springProfiles | quote }}
             {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
-              value: {{ .Values.prometheus_enabled }}
+              value: {{ .Values.prometheus_enabled | quote }}
             {{- end }}
             {{- if .Values.database_container_enabled }}
             - name: DATABASE_CONTAINER_USER

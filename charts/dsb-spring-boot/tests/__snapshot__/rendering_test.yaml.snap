@@ -86,7 +86,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.14_config-hash=a306457112a64a29a496501b3c650b192d3364a4671a301960ca83f838db924f
+            checksum: chart-version=3.0.15_config-hash=0da84d543386e5d958bceeca78f2d0f7c90b2a8d3b819f73b5aaa41e30b214cd
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -141,7 +141,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.14_config-hash=6413cae9d88b8807f26099edc976e1d2b59e9c1a0ad2b805fc56a67af63da0c0
+            checksum: chart-version=3.0.15_config-hash=6413cae9d88b8807f26099edc976e1d2b59e9c1a0ad2b805fc56a67af63da0c0
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -163,7 +163,7 @@ Full manifest should match snapshot:
             - name: SPRING_PROFILES_ACTIVE
               value: chart-testing
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
-              value: true
+              value: "true"
             - name: DATABASE_CONTAINER_USER
               value: sa
             - name: DATABASE_CONTAINER_PASSWORD
@@ -279,7 +279,7 @@ Full manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.14
+        chart-version: 3.0.15
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -362,7 +362,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.14_config-hash=ab6db3f6b66b182d4576eb437dfc5556ae4857369aef33e0d18dbe34756df906
+            checksum: chart-version=3.0.15_config-hash=ab6db3f6b66b182d4576eb437dfc5556ae4857369aef33e0d18dbe34756df906
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -455,7 +455,7 @@ Minimal manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.14
+        chart-version: 3.0.15
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
