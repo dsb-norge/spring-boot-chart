@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=97db48c2466e3938f7a876c906954537d4ef9b6f6bbb9008dde0ad09db899545
+            checksum: chart-version=2.0.9_config-hash=173b694faf673627dfca3f5aee426083050ddba18c23f315488b2a1c3f325105
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -137,7 +137,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -167,9 +167,12 @@ Full manifest should match snapshot:
           proxy_ssl_server_name on;
           proxy_pass ${LOC_API_PROXY_PASS_HOST};
         }
-      example-server.conf.template: "map $args $prerender_args {\n  default $prerender_ua;\n
-        \ \"~(^|&)_escaped_fragment_=\" 1;\n}\n  \nmap $http_x_prerender $x_prerender
-        {\n  default $prerender_args;\n  \"1\"     0;\n}"
+      example-server.conf.template: |-
+        gzip on;
+        gzip_comp_level 5;
+        gzip_vary on;
+        gzip_min_length 1024;
+        gzip_proxied any;
     kind: ConfigMap
     metadata:
       name: frontend1-template-overrides
@@ -190,7 +193,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=0ada92897fbbb5244d559ea2e905df450cf44e4682c6ac9d6af583886d161a05
+            checksum: chart-version=2.0.9_config-hash=0ada92897fbbb5244d559ea2e905df450cf44e4682c6ac9d6af583886d161a05
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -256,7 +259,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend
       namespace: NAMESPACE
     spec:

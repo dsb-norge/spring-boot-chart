@@ -77,14 +77,10 @@ tests:
           proxy_cache_background_update on;
           proxy_cache example_cache;
         example-server.conf.template: |-
-          map $args $prerender_args {
-            default $prerender_ua;
-            "~(^|&)_escaped_fragment_=" 1;
-          }
-            
-          map $http_x_prerender $x_prerender {
-            default $prerender_args;
-            "1"     0;
-          }
+          gzip on;
+          gzip_comp_level 5;
+          gzip_vary on;
+          gzip_min_length 1024;
+          gzip_proxied any;
     asserts:
       - matchSnapshot: { }
