@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=c4d93ec75302ddbd7e73f728a9c4fc66b1feb99506d53d8f98f3663894db34c1
+            checksum: chart-version=2.0.9_config-hash=173b694faf673627dfca3f5aee426083050ddba18c23f315488b2a1c3f325105
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -80,8 +80,29 @@ Full manifest should match snapshot:
               readOnlyRootFilesystem: false
               runAsGroup: 101
               runAsUser: 101
+            volumeMounts:
+            - mountPath: /etc/nginx/templates/example-cache.conf.template
+              name: templateoverrides
+              subPath: example-cache.conf.template
+            - mountPath: /etc/nginx/templates/example-locations.conf.template
+              name: templateoverrides
+              subPath: example-locations.conf.template
+            - mountPath: /etc/nginx/templates/example-server.conf.template
+              name: templateoverrides
+              subPath: example-server.conf.template
           nodeSelector:
             NodePool: workers
+          volumes:
+          - configMap:
+              items:
+              - key: example-cache.conf.template
+                path: example-cache.conf.template
+              - key: example-locations.conf.template
+                path: example-locations.conf.template
+              - key: example-server.conf.template
+                path: example-server.conf.template
+              name: frontend1-template-overrides
+            name: templateoverrides
   3: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -116,7 +137,7 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -125,6 +146,37 @@ Full manifest should match snapshot:
         port: 80
       selector:
         app: frontend1
+  6: |
+    apiVersion: v1
+    data:
+      example-cache.conf.template: |-
+        proxy_cache_path /tmp/example_cache levels=1:2 keys_zone=example_cache:10m inactive=60m use_temp_path=off;
+        proxy_cache_key "$scheme$request_method$host$request_uri";
+        proxy_cache_methods GET HEAD;
+        proxy_cache_valid 200 10m;
+        proxy_cache_use_stale updating;
+        proxy_cache_background_update on;
+        proxy_cache example_cache;
+      example-locations.conf.template: |-
+        location ~* \.(css|js)$ {
+          expires 30d;
+        }
+
+        location /api/upload/stuff {
+          client_max_body_size 200M;
+          proxy_ssl_server_name on;
+          proxy_pass ${LOC_API_PROXY_PASS_HOST};
+        }
+      example-server.conf.template: |-
+        gzip on;
+        gzip_comp_level 5;
+        gzip_vary on;
+        gzip_min_length 1024;
+        gzip_proxied any;
+    kind: ConfigMap
+    metadata:
+      name: frontend1-template-overrides
+      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -141,7 +193,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=ae9da9c9fb9bc9b0be2beed048e1400c0d1d991770082a0687f7a23d425d4386
+            checksum: chart-version=2.0.9_config-hash=0ada92897fbbb5244d559ea2e905df450cf44e4682c6ac9d6af583886d161a05
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -207,7 +259,7 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend
       namespace: NAMESPACE
     spec:
