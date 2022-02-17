@@ -57,3 +57,11 @@ memory_limit: "256Mi"
 
 cpu_request: "50m"
 cpu_limit: "100m"
+
+# Custom template configuration used to override default configuration
+templateConfigOverrides:
+#  nlfp-locations.conf.template: |-
+#    location ~* \.(css|js)$ {
+#      expires 15d;
+#    }
+#

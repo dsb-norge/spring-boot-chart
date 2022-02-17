@@ -32,6 +32,7 @@ tests:
       - ingress.yaml
       - pod-disruption-budget.yaml
       - service.yaml
+      - nginx-config-override-files.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -56,5 +57,34 @@ tests:
       memory_limit: "19Mi"
       cpu_request: "0.3"
       cpu_limit: "1"
+      templateConfigOverrides:
+        example-locations.conf.template: |-
+          location ~* \.(css|js)$ {
+            expires 30d;
+          }
+          
+          location /api/upload/stuff {
+            client_max_body_size 200M;
+            proxy_ssl_server_name on;
+            proxy_pass ${LOC_API_PROXY_PASS_HOST};
+          }
+        example-cache.conf.template: |-
+          proxy_cache_path /tmp/example_cache levels=1:2 keys_zone=example_cache:10m inactive=60m use_temp_path=off;
+          proxy_cache_key "$scheme$request_method$host$request_uri";
+          proxy_cache_methods GET HEAD;
+          proxy_cache_valid 200 10m;
+          proxy_cache_use_stale updating;
+          proxy_cache_background_update on;
+          proxy_cache example_cache;
+        example-server.conf.template: |-
+          map $args $prerender_args {
+            default $prerender_ua;
+            "~(^|&)_escaped_fragment_=" 1;
+          }
+            
+          map $http_x_prerender $x_prerender {
+            default $prerender_args;
+            "1"     0;
+          }
     asserts:
       - matchSnapshot: { }

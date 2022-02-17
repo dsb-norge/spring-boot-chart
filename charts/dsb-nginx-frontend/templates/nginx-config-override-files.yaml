@@ -1,0 +1,12 @@
+{{- if .Values.templateConfigOverrides }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.resourceName }}-template-overrides
+  namespace: {{ .Release.Namespace }}
+data:
+{{- range $key, $val := .Values.templateConfigOverrides }}
+  {{ $key }}: |-
+{{ $val | indent 4}}
+{{- end }}
+{{- end -}}

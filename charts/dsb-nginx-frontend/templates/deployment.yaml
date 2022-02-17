@@ -98,3 +98,22 @@ spec:
             # 101 maps to nginx user and nginx group in the nginx image
             runAsUser: 101
             runAsGroup: 101
+          {{- if .Values.templateConfigOverrides }}
+          volumeMounts:
+          {{- range $key, $_ := .Values.templateConfigOverrides }}
+            - name: templateoverrides
+              mountPath: /etc/nginx/templates/{{ $key }}
+              subPath: {{ $key }}
+          {{- end }}
+          {{- end }}
+      {{- if .Values.templateConfigOverrides }}
+      volumes:
+      - name: templateoverrides
+        configMap:
+          name: {{ .Values.resourceName }}-template-overrides
+          items:
+          {{- range $key, $_ := .Values.templateConfigOverrides }}
+          - key: {{ $key }}
+            path: {{ $key }}
+          {{- end }}
+      {{- end }}
