@@ -71,6 +71,9 @@ spec:
             limits:
               memory: {{ .Values.memory_limit }}
               cpu: {{ .Values.cpu_limit }}
+          env:
+            - name: MANAGEMENT_LISTEN_PORT
+              value: "8180"
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
@@ -88,6 +91,8 @@ spec:
           ports:
             - containerPort: {{ .Values.port }}
               name: web
+            - containerPort: 8180
+              name: mgmt
           securityContext:
             capabilities:
               drop: [ALL]
@@ -98,3 +103,29 @@ spec:
             # 101 maps to nginx user and nginx group in the nginx image
             runAsUser: 101
             runAsGroup: 101
+        {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
+        - name: {{ .Values.resourceName }}-mgmt
+          image: "{{ .Values.mgmt_image }}:{{ .Values.mgmt_tag }}"
+          args:
+            - '-nginx.scrape-uri=http://localhost:8180/status'
+          ports:
+            - name: prometheus
+              containerPort: 9113
+              protocol: TCP
+          resources:
+            requests:
+              memory: {{ .Values.mgmt_memory_request }}
+              cpu: {{ .Values.mgmt_cpu_request }}
+            limits:
+              memory: {{ .Values.mgmt_memory_limit }}
+              cpu: {{ .Values.mgmt_cpu_limit }}
+          securityContext:
+            capabilities:
+              drop: [ALL]
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+        {{- end }}

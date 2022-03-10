@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=c4d93ec75302ddbd7e73f728a9c4fc66b1feb99506d53d8f98f3663894db34c1
+            checksum: chart-version=2.0.9_config-hash=722b3b50b7aa8a15fa50e95804c2b90b22c62728e11941dc750b3d0fda1c404c
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -42,7 +42,10 @@ Full manifest should match snapshot:
                     - frontend1
                 topologyKey: kubernetes.io/hostname
           containers:
-          - envFrom:
+          - env:
+            - name: MANAGEMENT_LISTEN_PORT
+              value: "8180"
+            envFrom:
             - secretRef:
                 name: secret1
             - configMapRef:
@@ -59,6 +62,8 @@ Full manifest should match snapshot:
             ports:
             - containerPort: 80
               name: web
+            - containerPort: 8180
+              name: mgmt
             readinessProbe:
               httpGet:
                 path: /
@@ -80,6 +85,31 @@ Full manifest should match snapshot:
               readOnlyRootFilesystem: false
               runAsGroup: 101
               runAsUser: 101
+          - args:
+            - -nginx.scrape-uri=http://localhost:8180/status
+            image: nginx/nginx-prometheus-exporter:0.10.0
+            name: frontend1-mgmt
+            ports:
+            - containerPort: 9113
+              name: prometheus
+              protocol: TCP
+            resources:
+              limits:
+                cpu: 1
+                memory: 19Mi
+              requests:
+                cpu: 0.3
+                memory: 4Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsGroup: 1000
+              runAsNonRoot: true
+              runAsUser: 1000
           nodeSelector:
             NodePool: workers
   3: |
@@ -116,15 +146,37 @@ Full manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend1
       namespace: NAMESPACE
     spec:
       ports:
       - name: web
         port: 80
+      - name: status
+        port: 8180
+      - name: prometheus
+        port: 9113
       selector:
         app: frontend1
+  6: |
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      labels:
+        release: kube-prometheus
+      name: RELEASE-NAME-monitor
+      namespace: NAMESPACE
+    spec:
+      endpoints:
+      - interval: 30s
+        port: prometheus
+      namespaceSelector:
+        matchNames:
+        - NAMESPACE
+      selector:
+        matchLabels:
+          app: frontend1
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -141,7 +193,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.8_config-hash=ae9da9c9fb9bc9b0be2beed048e1400c0d1d991770082a0687f7a23d425d4386
+            checksum: chart-version=2.0.9_config-hash=b7c74ad57c29490bc19d2c02be8f5d68a002e345cfcce9bec2c448d748b515ea
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -157,7 +209,10 @@ Minimal manifest should match snapshot:
                     - frontend
                 topologyKey: kubernetes.io/hostname
           containers:
-          - envFrom: null
+          - env:
+            - name: MANAGEMENT_LISTEN_PORT
+              value: "8180"
+            envFrom: null
             image: nginx:latest
             livenessProbe:
               httpGet:
@@ -168,6 +223,8 @@ Minimal manifest should match snapshot:
             ports:
             - containerPort: 8080
               name: web
+            - containerPort: 8180
+              name: mgmt
             readinessProbe:
               httpGet:
                 path: /
@@ -207,13 +264,15 @@ Minimal manifest should match snapshot:
     metadata:
       labels:
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.8
+        chart-version: 2.0.9
       name: frontend
       namespace: NAMESPACE
     spec:
       ports:
       - name: web
         port: 8080
+      - name: status
+        port: 8180
       selector:
         app: frontend
 should render default with PodDisruptionBudget and should match snapshot:

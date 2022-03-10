@@ -10,5 +10,11 @@ spec:
   ports:
     - name: web
       port: {{ .Values.port }}
+    - name: status
+      port: 8180
+    {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
+    - name: prometheus
+      port: 9113
+    {{- end }}
   selector:
     app: {{ .Values.resourceName }}

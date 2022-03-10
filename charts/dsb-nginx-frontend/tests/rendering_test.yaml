@@ -32,6 +32,7 @@ tests:
       - ingress.yaml
       - pod-disruption-budget.yaml
       - service.yaml
+      - serviceMonitor.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -56,5 +57,10 @@ tests:
       memory_limit: "19Mi"
       cpu_request: "0.3"
       cpu_limit: "1"
+      prometheus_enabled: "true"
+      mgmt_memory_request: "4Mi"
+      mgmt_memory_limit: "19Mi"
+      mgmt_cpu_request: "0.3"
+      mgmt_cpu_limit: "1"
     asserts:
       - matchSnapshot: { }
