@@ -12,7 +12,7 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app: {{ .Values.resourceName }}
+      app: {{ .Values.resourceName }}-service
   endpoints:
     - port: prometheus
       interval: 30s
