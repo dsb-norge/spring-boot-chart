@@ -58,7 +58,7 @@ memory_limit: "256Mi"
 cpu_request: "50m"
 cpu_limit: "100m"
 
-prometheus_enabled: "false"
+prometheus_enabled: "true"
 mgmt_image: "nginx/nginx-prometheus-exporter"
 mgmt_tag: "0.10.0"
 mgmt_memory_request: "64Mi"

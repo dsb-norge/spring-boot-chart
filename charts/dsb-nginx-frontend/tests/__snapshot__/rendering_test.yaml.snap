@@ -26,7 +26,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.10_config-hash=722b3b50b7aa8a15fa50e95804c2b90b22c62728e11941dc750b3d0fda1c404c
+            checksum: chart-version=2.0.11_config-hash=722b3b50b7aa8a15fa50e95804c2b90b22c62728e11941dc750b3d0fda1c404c
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -87,6 +87,7 @@ Full manifest should match snapshot:
               runAsUser: 101
           - args:
             - -nginx.scrape-uri=http://localhost:8180/status
+            - -prometheus.const-labels=application=RELEASE-NAME
             image: nginx/nginx-prometheus-exporter:0.10.0
             name: frontend1-mgmt
             ports:
@@ -147,7 +148,7 @@ Full manifest should match snapshot:
       labels:
         app: frontend1-service
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.10
+        chart-version: 2.0.11
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -194,7 +195,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.10_config-hash=b7c74ad57c29490bc19d2c02be8f5d68a002e345cfcce9bec2c448d748b515ea
+            checksum: chart-version=2.0.11_config-hash=4c573f78384264e049846840cd5ba73f3ee5278d19377cb3951b74c7a7f4cf3b
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -247,6 +248,32 @@ Minimal manifest should match snapshot:
               readOnlyRootFilesystem: false
               runAsGroup: 101
               runAsUser: 101
+          - args:
+            - -nginx.scrape-uri=http://localhost:8180/status
+            - -prometheus.const-labels=application=RELEASE-NAME
+            image: nginx/nginx-prometheus-exporter:0.10.0
+            name: frontend-mgmt
+            ports:
+            - containerPort: 9113
+              name: prometheus
+              protocol: TCP
+            resources:
+              limits:
+                cpu: 50m
+                memory: 128Mi
+              requests:
+                cpu: 10m
+                memory: 64Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsGroup: 1000
+              runAsNonRoot: true
+              runAsUser: 1000
           nodeSelector:
             NodePool: workers
   2: |
@@ -266,7 +293,7 @@ Minimal manifest should match snapshot:
       labels:
         app: frontend-service
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.10
+        chart-version: 2.0.11
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -275,6 +302,8 @@ Minimal manifest should match snapshot:
         port: 8080
       - name: status
         port: 8180
+      - name: prometheus
+        port: 9113
       selector:
         app: frontend
 should render default with PodDisruptionBudget and should match snapshot:
