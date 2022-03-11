@@ -15,6 +15,7 @@ Full manifest should match snapshot:
       annotations:
         cronKey1: cronValue1
         cronKey2: cronValue2
+        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: RELEASE-NAME-cron-cron-example
       namespace: NAMESPACE
     spec:
@@ -86,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.15_config-hash=0da84d543386e5d958bceeca78f2d0f7c90b2a8d3b819f73b5aaa41e30b214cd
+            checksum: chart-version=3.0.16_config-hash=2deedeb64e697236d04bcad6c67b721f3e55a443aca4408ce14db9713620a7fc
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -130,6 +131,7 @@ Full manifest should match snapshot:
       annotations:
         key1: value1
         key2: value2
+        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: RELEASE-NAME-deployment
       namespace: NAMESPACE
     spec:
@@ -141,7 +143,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.15_config-hash=6413cae9d88b8807f26099edc976e1d2b59e9c1a0ad2b805fc56a67af63da0c0
+            checksum: chart-version=3.0.16_config-hash=0661591856467242d0f69eee981a5c0ca709c0cb70240fc11c0a669f0693f552
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -279,7 +281,7 @@ Full manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.15
+        chart-version: 3.0.16
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -351,6 +353,8 @@ Minimal manifest should match snapshot:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      annotations:
+        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: RELEASE-NAME-deployment
       namespace: NAMESPACE
     spec:
@@ -362,7 +366,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.15_config-hash=ab6db3f6b66b182d4576eb437dfc5556ae4857369aef33e0d18dbe34756df906
+            checksum: chart-version=3.0.16_config-hash=6e2fde274a4a3195d2bdb0f3940a8e201e9be5750d6871d8eb20dcf03b1c0162
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -455,7 +459,7 @@ Minimal manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         chart-name: dsb-spring-boot
-        chart-version: 3.0.15
+        chart-version: 3.0.16
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

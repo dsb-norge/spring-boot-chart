@@ -22,7 +22,6 @@ spec:
         {{- /*
         protected pod annotations:
           checksum: Required for proper pod creation, see below
-          prometheus.io/*: Should not be overwritable as these are defined as separate values (with defaults) in values.yaml
         */}}
         {{- $protectedAnnotations := dict   "checksum"              (print "chart-version=" .Chart.Version "_config-hash=" (.Values | toString | sha256sum) ) }}
         {{- /*
