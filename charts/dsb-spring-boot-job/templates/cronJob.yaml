@@ -54,18 +54,16 @@ spec:
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: {{ .Values.springProfiles | quote }}
-              {{- if .Values.database_container_enabled }}
+                {{- if .Values.database_container.enabled }}
                 - name: DATABASE_CONTAINER_USER
-                  # This is hardcoded in the image used:
-                  value: "sa"
+                  value: {{ .Values.database_container.user | quote }}
                 - name: DATABASE_CONTAINER_PASSWORD
-                  value: {{ .Values.database_container_password | quote }}
+                  value: {{ .Values.database_container.password | quote }}
                 - name: DATABASE_CONTAINER_HOST_AND_PORT
-                  value: {{ .Release.Name }}-db-svc:1433
+                  value: "{{ .Release.Name }}-db-svc:1433"
                 - name: DATABASE_CONTAINER_DATABASE
-                # This is hardcoded in the image used:
-                  value: "emptydb"
-              {{- end }}
+                  value: {{ .Values.database_container.database | quote }}
+                {{- end }}
               envFrom:
               {{- range .Values.secretRefs }}
               - secretRef:

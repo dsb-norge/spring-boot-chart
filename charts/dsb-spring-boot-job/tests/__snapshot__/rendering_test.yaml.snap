@@ -31,7 +31,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.9_config-hash=b664de26ad7a4bf5bb74ad48df89abd2a53c03b3e230ee32c10179d00d57ca1e
+                checksum: chart-version=2.0.10_config-hash=a85429c673336daf8c32b26877727bc34b7420b8afe870153f2c131bb3e7b212
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -43,13 +43,13 @@ Full manifest should match snapshot:
                 - name: SPRING_PROFILES_ACTIVE
                   value: chart-testing
                 - name: DATABASE_CONTAINER_USER
-                  value: sa
+                  value: custom user
                 - name: DATABASE_CONTAINER_PASSWORD
                   value: password123
                 - name: DATABASE_CONTAINER_HOST_AND_PORT
                   value: RELEASE-NAME-db-svc:1433
                 - name: DATABASE_CONTAINER_DATABASE
-                  value: emptydb
+                  value: test-data
                 envFrom:
                 - secretRef:
                     name: secret1
@@ -102,7 +102,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.0.9_config-hash=b664de26ad7a4bf5bb74ad48df89abd2a53c03b3e230ee32c10179d00d57ca1e
+            checksum: chart-version=2.0.10_config-hash=a85429c673336daf8c32b26877727bc34b7420b8afe870153f2c131bb3e7b212
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -161,7 +161,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.9_config-hash=79040dee7f778492430c3f5394059ee2aa9be3933b8ce4b2aa8ca06c808c400d
+                checksum: chart-version=2.0.10_config-hash=1741536f6c9c1a2ae0695a75f035622656bc80d94ade5e60461114a2cdbdc675
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"

@@ -78,9 +78,12 @@ tests:
       memory_limit: "19Mi"
       cpu_request: "0.3"
       cpu_limit: "1"
-      database_container_enabled: true
-      database_container_image: "test-db:v1"
-      database_container_password: "password123"
+      database_container:
+        enabled: true
+        image: "test-db:v1"
+        database: "test-data"
+        user: "custom user"
+        password: "password123"
       certificates:
         dsb-certificate:
           key_vault:

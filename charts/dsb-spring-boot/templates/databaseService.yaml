@@ -1,4 +1,4 @@
-{{ if .Values.database_container_enabled }}
+{{ if .Values.database_container.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
