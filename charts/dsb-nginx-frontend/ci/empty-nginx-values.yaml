@@ -7,3 +7,5 @@ image: "nginxinc/nginx-unprivileged"
 tag: "1.20-alpine"
 
 ingress_host: "example.com"
+
+prometheus_enabled: false
