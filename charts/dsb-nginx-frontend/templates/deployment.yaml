@@ -108,7 +108,7 @@ spec:
           image: "{{ .Values.mgmt_image }}:{{ .Values.mgmt_tag }}"
           args:
             - '-nginx.scrape-uri=http://localhost:8180/status'
-            - '-prometheus.const-labels=application={{ .Release.Name }}'
+            - '-prometheus.const-labels={{ .Values.prometheus_tag | default "nginx-app" }}={{ .Release.Name }}'
           ports:
             - name: prometheus
               containerPort: 9113
