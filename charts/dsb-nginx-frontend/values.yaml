@@ -49,6 +49,14 @@ configMapRefs: {}
 ingress_host:
 ingress_path: /
 
+# If there are multiple hostnames for the given service
+#
+# ingress:
+#   - host: farligeprodukter.no
+#   - host: www.farligeprodukter.no
+#     path: /something
+ingress:
+
 # Port number for nginx
 port: 8080
 

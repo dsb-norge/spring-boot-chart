@@ -64,3 +64,18 @@ tests:
       mgmt_cpu_limit: "1"
     asserts:
       - matchSnapshot: { }
+  - it: Support multiple ingress hosts
+    templates:
+      - ingress.yaml
+      - service.yaml
+    set:
+     image: nginx
+     tag: latest
+     prometheus_enabled: false
+     ingress:
+        - host: example.com
+        - host: www.example.com
+        - host: admin.example.com
+          path: /secret
+    asserts:
+      - matchSnapshot: { }
