@@ -45,7 +45,10 @@ cpu_limit: "2.5"
 # If this is enabled, a docker image with a mssql database is created.
 # The following env variables are then added to the pod:
 # DATABASE_CONTAINER_USER, DATABASE_CONTAINER_PASSWORD, DATABASE_CONTAINER_HOST_AND_PORT and DATABASE_CONTAINER_DATABASE
-database_container_enabled: false
-database_container_image: "dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest"
-# This is hardcoded in the image used:
-database_container_password: DoN0tUse1Production
+database_container:
+  enabled: false
+  image: "dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest"
+  # Depends on what image is used:
+  database: emptydb               # env: DATABASE_CONTAINER_DATABASE
+  user: sa                        # env: DATABASE_CONTAINER_USER
+  password: DoN0tUse1Production   # env: DATABASE_CONTAINER_PASSWORD

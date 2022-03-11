@@ -1,4 +1,4 @@
-{{ if .Values.database_container_enabled }}
+{{ if .Values.database_container.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,7 +22,7 @@ spec:
       hostname: "{{ .Release.Name }}-db-svc"
       containers:
         - name: "{{ .Release.Name }}-database-container"
-          image: "{{ .Values.database_container_image }}"
+          image: "{{ .Values.database_container.image }}"
           resources:
             requests:
               memory: "1024Mi"
@@ -34,9 +34,9 @@ spec:
           - name: ACCEPT_EULA
             value: "Y"
           - name: SA_PASSWORD
-            value: {{ .Values.database_container_password | quote }}
+            value: {{ .Values.database_container.password | quote }}
           - name: MSSQL_SA_PASSWORD
-            value: {{ .Values.database_container_password | quote }}
+            value: {{ .Values.database_container.password | quote }}
           ports:
           - containerPort: 1433
 {{ end }}
