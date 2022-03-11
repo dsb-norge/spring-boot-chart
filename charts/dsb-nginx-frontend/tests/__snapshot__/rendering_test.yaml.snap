@@ -15,6 +15,7 @@ Full manifest should match snapshot:
       annotations:
         key1: value1
         key2: value2
+        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -26,7 +27,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.12_config-hash=ae890a47adfaf5f58631b4f491f7290f83579cce4531d189c8cbfe4c40126772
+            checksum: chart-version=2.0.13_config-hash=199f1fae9cb615f4b2829a39a5a71f35b7db2c658b7e4750e70d82c7244b9fe5
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -148,7 +149,7 @@ Full manifest should match snapshot:
       labels:
         app: frontend1-service
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.12
+        chart-version: 2.0.13
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -184,6 +185,8 @@ Minimal manifest should match snapshot:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      annotations:
+        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -195,7 +198,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.12_config-hash=13ea1cd70518781086ae57941b0138f496740343ffa3595a20c8bb314c04d26a
+            checksum: chart-version=2.0.13_config-hash=e683cf0187b8354fcf1e5fc10b24295d7f508d34efe3e16ff04bdb9da7897f4e
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -293,7 +296,7 @@ Minimal manifest should match snapshot:
       labels:
         app: frontend-service
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.12
+        chart-version: 2.0.13
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -352,7 +355,7 @@ Support multiple ingress hosts:
       labels:
         app: frontend-service
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.12
+        chart-version: 2.0.13
       name: frontend
       namespace: NAMESPACE
     spec:

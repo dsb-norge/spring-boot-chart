@@ -1,0 +1,12 @@
+---
+job_secretRefs:
+  - jobSecret1
+application_web_port: 80
+jobs:
+  - name: cron-example
+    image_tag: greatest
+    schedule: "*/2 * * * *"
+    tokenURL: "https://example.com/token"
+    apiPath: "/do"
+    method: "TRACE"
+...

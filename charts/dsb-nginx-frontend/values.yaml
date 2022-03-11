@@ -18,7 +18,9 @@ image:
 tag:
 
 # Annotations to put on the Deployment:
-deploymentAnnotations: {}
+deploymentAnnotations:
+  # dsb-norge org. in Snyk
+  orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
 
 # Annotations to put on every pod:
 # Usage when applying with values.yaml

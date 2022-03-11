@@ -1,0 +1,37 @@
+---
+suite: test deployment annotations
+templates:
+  - deployment.yaml
+tests:
+  - it: should support custom deployment annotations
+    set:
+      deploymentAnnotations:
+        custom-key: custom value
+    asserts:
+      - equal:
+          path: metadata.annotations.[custom-key]
+          value: custom value
+  - it: should support custom deployment annotations without removing default deployment annotations
+    set:
+      deploymentAnnotations:
+        custom-key: custom value
+    asserts:
+      - equal:
+          path: metadata.annotations.[orgs.k8s.snyk.io/v1]
+          value: "3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d"
+  - it: should support overriding default deployment annotations
+    set:
+      deploymentAnnotations:
+        orgs.k8s.snyk.io/v1: "non-default-value"
+    asserts:
+      - equal:
+          path: metadata.annotations.[orgs.k8s.snyk.io/v1]
+          value: "non-default-value"
+  - it: should support removing default deployment annotations
+    set:
+      deploymentAnnotations:
+        orgs.k8s.snyk.io/v1: null
+    asserts:
+      - isNull:
+          path: metadata.annotations
+...
