@@ -84,6 +84,10 @@ tests:
         database: "test-data"
         user: "custom user"
         password: "password123"
+      dashboard:
+        name: "Rendering test"
+        component: "Backend API"
+        partOf: "Verification stuff"
       certificates:
         dsb-certificate:
           key_vault:

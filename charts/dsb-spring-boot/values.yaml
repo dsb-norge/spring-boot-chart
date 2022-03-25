@@ -99,3 +99,12 @@ liveness_failure_threshold: 20
 
 readiness_period_seconds: 15
 readiness_failure_threshold: 20
+
+# Values giving recommended lables to resources. making them easier
+# to recognize in different dashboard applications
+#
+# dashboard:
+#   name:       The name of the application - Example: mysql - Default: Release Name
+#   component:  The component within the architecture - Example: database - Default: API
+#   partOf:     The name of a higher level application this one is part of - Example: wordpress - Default Release Name
+dashboard: {}

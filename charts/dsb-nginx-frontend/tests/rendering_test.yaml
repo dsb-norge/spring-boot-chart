@@ -62,6 +62,10 @@ tests:
       mgmt_memory_limit: "19Mi"
       mgmt_cpu_request: "0.3"
       mgmt_cpu_limit: "1"
+      dashboard:
+        name: "Rendering test"
+        component: "Frontend"
+        partOf: "Verification stuff"
     asserts:
       - matchSnapshot: { }
   - it: Support multiple ingress hosts
