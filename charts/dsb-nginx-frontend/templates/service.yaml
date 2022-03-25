@@ -7,6 +7,11 @@ metadata:
     chart-name: "{{ .Chart.Name }}"
     chart-version: "{{ .Chart.Version }}"
     app: "{{ .Values.resourceName }}-service"
+    app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
+    app.kubernetes.io/version: {{ .Values.tag }}
+    app.kubernetes.io/component: {{ .Values.dashboard.component | default "Frontend" }}
+    app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   ports:
     - name: web

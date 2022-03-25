@@ -18,6 +18,11 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}-app
+        app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.tag }}
+        app.kubernetes.io/component: {{ .Values.dashboard.component | default "API" }}
+        app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
       annotations:
         {{- /*
         protected pod annotations:

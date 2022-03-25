@@ -11,6 +11,11 @@ metadata:
     # Picked up by Spring Boot Admin:
     # https://codecentric.github.io/spring-boot-admin/current/#_converting_serviceinstances
     management.port: "{{ .Values.application_actuator_port }}"
+    app.kubernetes.io/name: {{ .Values.dashboard.name | default .Release.Name }}
+    app.kubernetes.io/version: {{ .Values.tag }}
+    app.kubernetes.io/component: {{ .Values.dashboard.component | default "API" }}
+    app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   ports:
     - name: web
