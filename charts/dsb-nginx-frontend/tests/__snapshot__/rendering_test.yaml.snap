@@ -2,6 +2,7 @@ Full manifest should match snapshot:
   1: |
     apiVersion: v1
     data:
+      LOC_API_PROXY_PASS_HOST: https://www.dsb.no
       root.key1: value1
       root.key2: value2
     kind: ConfigMap
@@ -27,7 +28,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.17_config-hash=f46a8f615194f7e99bcf90598f05fd947f947256a8fa4967a2780daffc2cfd88
+            checksum: chart-version=2.0.18_config-hash=5c5d7141be417a0acabee29dff1d5e6a79a0a3d4d291b11e1059ba8a87b6f0af
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -161,7 +162,7 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.17
+        chart-version: 2.0.18
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -210,7 +211,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.17_config-hash=b47bbd5d4c513bf0e85087958c794bc4558ac8887fcf3e698995fa2150fddeb6
+            checksum: chart-version=2.0.18_config-hash=0ea695b53c938fdedce5c7f0f4d0f7381608de303c5fab564dc122fd60113055
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -235,7 +236,7 @@ Minimal manifest should match snapshot:
             - name: MANAGEMENT_LISTEN_PORT
               value: "8180"
             - name: LOC_SOCKET_PROXY_PASS_HOST
-              value: ${LOC_API_PROXY_PASS_HOST}
+              value: null
             envFrom: null
             image: nginx:latest
             livenessProbe:
@@ -320,7 +321,7 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.17
+        chart-version: 2.0.18
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -384,7 +385,7 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.17
+        chart-version: 2.0.18
       name: frontend
       namespace: NAMESPACE
     spec:

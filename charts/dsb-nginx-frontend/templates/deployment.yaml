@@ -81,7 +81,7 @@ spec:
               value: "8180"
             {{- if (not (eq (toString .Values.websocket.enabled) "true")) }}
             - name: LOC_SOCKET_PROXY_PASS_HOST
-              value: "${LOC_API_PROXY_PASS_HOST}"
+              value: {{ .Values.config.LOC_API_PROXY_PASS_HOST }}
             {{- else }}
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: {{ .Values.websocket.host }}

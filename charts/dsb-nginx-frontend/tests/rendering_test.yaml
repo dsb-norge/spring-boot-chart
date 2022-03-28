@@ -43,6 +43,7 @@ tests:
         key2: value2
       resourceName: "frontend1"
       config:
+        LOC_API_PROXY_PASS_HOST: "https://www.dsb.no"
         root:
           key1: value1
           key2: value2

@@ -39,7 +39,7 @@ podAnnotations:
 #   node2: 2
 #
 # If there is a lot of config, it is useful to use the helm function --set-file.
-config:
+config: {}
 
 # Reference secrets that are mounted on the pod:
 secretRefs: {}
