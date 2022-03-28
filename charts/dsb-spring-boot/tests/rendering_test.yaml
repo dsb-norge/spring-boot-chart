@@ -47,6 +47,8 @@ tests:
       - serviceAccount.yaml
       - certificate-secret.yaml
       - serviceMonitor.yaml
+      - clusterRole.yaml
+      - clusterRoleBinding.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -88,6 +90,28 @@ tests:
         name: "Rendering test"
         component: "Backend API"
         partOf: "Verification stuff"
+      rbac:
+        enabled: true
+        roles:
+          podPermission:
+            apiGroups:
+              - ""
+              - apps
+            resources:
+              - pods
+              - deployments
+            verbs:
+              - list
+              - watch
+              - get
+          nodePermissions:
+            apiGroups:
+              - ""
+            resources:
+              - nodes
+            verbs:
+              - list
+              - get
       certificates:
         dsb-certificate:
           key_vault:

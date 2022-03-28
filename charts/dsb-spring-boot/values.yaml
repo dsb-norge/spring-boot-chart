@@ -108,3 +108,7 @@ readiness_failure_threshold: 20
 #   component:  The component within the architecture - Example: database - Default: API
 #   partOf:     The name of a higher level application this one is part of - Example: wordpress - Default Release Name
 dashboard: {}
+
+rbac:
+  enabled: false
+  roles: {}
