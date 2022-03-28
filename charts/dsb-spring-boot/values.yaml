@@ -112,3 +112,7 @@ dashboard: {}
 rbac:
   enabled: false
   roles: {}
+
+websocket:
+  enabled: false
+  port: 9091

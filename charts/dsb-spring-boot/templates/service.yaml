@@ -22,5 +22,9 @@ spec:
       port: {{ .Values.application_web_port }}
     - name: actuator
       port: {{ .Values.application_actuator_port }}
+    {{- if .Values.websocket.enabled }}
+    - name: websocket
+      port: {{ .Values.websocket.port }}
+    {{- end }}
   selector:
     app: {{ .Release.Name }}-app

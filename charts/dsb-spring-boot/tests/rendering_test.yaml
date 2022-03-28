@@ -90,6 +90,8 @@ tests:
         name: "Rendering test"
         component: "Backend API"
         partOf: "Verification stuff"
+      websocket:
+        enabled: true
       rbac:
         enabled: true
         roles:
