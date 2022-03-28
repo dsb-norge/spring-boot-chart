@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.18_config-hash=9901036d63a37415ea9e159e14dfb567738e8c17e5e1c027a8f7d60d22aa15c6
+            checksum: chart-version=3.0.19_config-hash=241d62a54c05cb987f57cbedee237584010c73d231f8622cee85637af173c119
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -143,7 +143,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.18_config-hash=f79c2dc0f6928c9f5cc08523ca60b7cc17ee32dc6436b513671b44edf0b26550
+            checksum: chart-version=3.0.19_config-hash=2250a820a0bdc4f1708b1a81c451b9a1084025a3b97e3ff2b9d17b8944f549e8
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -291,7 +291,7 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.18
+        chart-version: 3.0.19
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -358,6 +358,44 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-service
+  13: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: RELEASE-NAME-cr
+      namespace: NAMESPACE
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - nodes
+      verbs:
+      - list
+      - get
+    - apiGroups:
+      - ""
+      - apps
+      resources:
+      - pods
+      - deployments
+      verbs:
+      - list
+      - watch
+      - get
+  14: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: RELEASE-NAME-crb
+      namespace: NAMESPACE
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: RELEASE-NAME-cr
+    subjects:
+    - kind: ServiceAccount
+      name: RELEASE-NAME-service-account
+      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -376,7 +414,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.18_config-hash=00439a8c21a137adc2076f08c02b6a99a822bf0210fce86ded55d1e68c096332
+            checksum: chart-version=3.0.19_config-hash=a3d953426134ec8a82f73f828b3fe9c1167f66062335868acf1421ffaa8f957d
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -479,7 +517,7 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.18
+        chart-version: 3.0.19
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
