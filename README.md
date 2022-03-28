@@ -104,6 +104,43 @@ Resulting environment variables in pods:
 * `<name>_CERTIFICATE_KEYSTORE` - The password to open the certifcate/keystore
 * `<name>_CERTIFICATE_ALIAS` - The alias of the key to use
 
+
+### RBAC
+
+To enable RBAC roles to be created set the value `rbac.enabled` to `true`.
+then add any amount of entries like below. Note that the names `podPermission`, `nodePermission` is not
+used for anything other than a way to document the given permissions below.
+
+the api group `""` is the CoreApi of kubernetes.
+
+These roles will be given to the deployment ServiceAccount which again is automatically mounted into the pods `/var/run/secrets/kubernetes.io/serviceaccount`
+directory and can be used to authenticate against the kubernetes API
+
+```
+rbac:
+  enabled: true
+  roles:
+    podPermission:
+      apiGroups:
+        - ""
+        - apps
+      resources:
+        - pods
+        - deployments
+      verbs:
+        - list
+        - watch
+        - get
+    nodePermissions:
+      apiGroups:
+        - ""
+      resources:
+        - nodes
+      verbs:
+        - list
+        - get
+```
+
 ## DSB Spring Boot Job Chart
 
 Use this chart for creating a Spring Boot application that should run as a cron job. That is most often a console application.

@@ -10,3 +10,31 @@ tag: "latest"
 imagePullPolicy: "Never"
 
 ingress_host: "example.com"
+
+dashboard:
+  name: "kind-k8s-test"
+  component: "backend-api"
+  partOf: "verification-stuff"
+
+rbac:
+  enabled: true
+  roles:
+    podPermission:
+      apiGroups:
+        - ""
+        - apps
+      resources:
+        - pods
+        - deployments
+      verbs:
+        - list
+        - watch
+        - get
+    nodePermissions:
+      apiGroups:
+        - ""
+      resources:
+        - nodes
+      verbs:
+        - list
+        - get
