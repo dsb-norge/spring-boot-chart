@@ -66,6 +66,9 @@ tests:
         name: "Rendering test"
         component: "Frontend"
         partOf: "Verification stuff"
+      websocket:
+        enabled: true
+        host: ws://websocket.host.com:9091
     asserts:
       - matchSnapshot: { }
   - it: Support multiple ingress hosts

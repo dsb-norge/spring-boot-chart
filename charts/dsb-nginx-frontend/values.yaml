@@ -84,3 +84,7 @@ mgmt_cpu_limit: "50m"
 #   component:  The component within the architecture - Example: database - Default: API
 #   partOf:     The name of a higher level application this one is part of - Example: wordpress - Default Release Name
 dashboard: {}
+
+websocket:
+  enabled: false
+  path: /

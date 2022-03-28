@@ -79,6 +79,13 @@ spec:
           env:
             - name: MANAGEMENT_LISTEN_PORT
               value: "8180"
+            {{- if (not (eq (toString .Values.websocket.enabled) "true")) }}
+            - name: LOC_SOCKET_PROXY_PASS_HOST
+              value: "${LOC_API_PROXY_PASS_HOST}"
+            {{- else }}
+            - name: LOC_SOCKET_PROXY_PASS_HOST
+              value: {{ .Values.websocket.host }}
+            {{- end }}
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
