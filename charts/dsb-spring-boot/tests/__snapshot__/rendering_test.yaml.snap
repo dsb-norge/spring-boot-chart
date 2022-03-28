@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.20_config-hash=f308acbb9543e18efb69f593623ade41e26bddf548a105ece8b57939a67d168a
+            checksum: chart-version=3.0.21_config-hash=c2d1f42c8903d11f05ac7dfdf6e04ec66c4078b2b1a4d4ca4bd008a6f1b5f4f3
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -143,7 +143,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.20_config-hash=004e38a8801e1d79bf0e957a8e959a6b17fc3057d48df3b30389915c30d1e41f
+            checksum: chart-version=3.0.21_config-hash=004e38a8801e1d79bf0e957a8e959a6b17fc3057d48df3b30389915c30d1e41f
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -172,7 +172,7 @@ Full manifest should match snapshot:
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
               value: "true"
             - name: SPRING_RSOCKET_SERVER_PORT
-              value: 9091
+              value: "9091"
             - name: SPRING_RSOCKET_SERVER_TRANSPORT
               value: websocket
             - name: SPRING_RSOCKET_SERVER_MAPPING_PATH
@@ -297,7 +297,7 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.20
+        chart-version: 3.0.21
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -422,7 +422,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.20_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
+            checksum: chart-version=3.0.21_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -525,7 +525,7 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.20
+        chart-version: 3.0.21
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

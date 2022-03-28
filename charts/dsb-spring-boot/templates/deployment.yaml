@@ -95,9 +95,9 @@ spec:
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
               value: {{ .Values.prometheus_enabled | quote }}
             {{- end }}
-            {{- if (not (eq (toString .Values.websocket.enabled) "false")) }}
+            {{- if .Values.websocket.enabled }}
             - name: SPRING_RSOCKET_SERVER_PORT
-              value: {{ .Values.websocket.port }}
+              value: {{ .Values.websocket.port | quote }}
             - name: SPRING_RSOCKET_SERVER_TRANSPORT
               value: "websocket"
             - name: SPRING_RSOCKET_SERVER_MAPPING_PATH
