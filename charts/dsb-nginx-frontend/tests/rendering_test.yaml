@@ -67,6 +67,7 @@ tests:
         name: "Rendering test"
         component: "Frontend"
         partOf: "Verification stuff"
+        createdBy: "https://github.com/dsb-norge/helm-charts"
       websocket:
         enabled: true
         host: ws://websocket.host.com:9091
