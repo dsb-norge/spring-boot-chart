@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.21_config-hash=c2d1f42c8903d11f05ac7dfdf6e04ec66c4078b2b1a4d4ca4bd008a6f1b5f4f3
+            checksum: chart-version=3.0.22_config-hash=96f4965b1913aaba3df9f12c95e8be3dac676ad3f06f143e9871f2956f37a2ae
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -143,17 +143,21 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.21_config-hash=004e38a8801e1d79bf0e957a8e959a6b17fc3057d48df3b30389915c30d1e41f
+            checksum: chart-version=3.0.22_config-hash=8503c52a0bbb1ead00b53832defe57968c3a5bff9005dc21710b6c97e8ecffb3
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
           labels:
             app: RELEASE-NAME-app
             app.kubernetes.io/component: Backend API
+            app.kubernetes.io/created-by: https://github.com/dsb-norge/helm-charts
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
+            helm.sh/chart: dsb-spring-boot-3.0.22
+            helm.sh/chart-name: dsb-spring-boot
+            helm.sh/chart-version: 3.0.22
         spec:
           affinity:
             podAntiAffinity:
@@ -292,12 +296,16 @@ Full manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         app.kubernetes.io/component: Backend API
+        app.kubernetes.io/created-by: https://github.com/dsb-norge/helm-charts
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.21
+        chart-version: 3.0.22
+        helm.sh/chart: dsb-spring-boot-3.0.22
+        helm.sh/chart-name: dsb-spring-boot
+        helm.sh/chart-version: 3.0.22
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -422,17 +430,21 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.21_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
+            checksum: chart-version=3.0.22_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
           labels:
             app: RELEASE-NAME-app
             app.kubernetes.io/component: API
+            app.kubernetes.io/created-by: Helm
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
+            helm.sh/chart: dsb-spring-boot-3.0.22
+            helm.sh/chart-name: dsb-spring-boot
+            helm.sh/chart-version: 3.0.22
         spec:
           affinity:
             podAntiAffinity:
@@ -520,12 +532,16 @@ Minimal manifest should match snapshot:
       labels:
         app: RELEASE-NAME-service
         app.kubernetes.io/component: API
+        app.kubernetes.io/created-by: Helm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: RELEASE-NAME
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.21
+        chart-version: 3.0.22
+        helm.sh/chart: dsb-spring-boot-3.0.22
+        helm.sh/chart-name: dsb-spring-boot
+        helm.sh/chart-version: 3.0.22
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

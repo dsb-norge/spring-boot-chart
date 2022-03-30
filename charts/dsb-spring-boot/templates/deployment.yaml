@@ -23,6 +23,10 @@ spec:
         app.kubernetes.io/component: {{ .Values.dashboard.component | default "API" }}
         app.kubernetes.io/part-of: {{ .Values.dashboard.partOf | default .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/created-by: {{ .Values.dashboard.createdBy | default .Release.Service }}
+        helm.sh/chart-name: {{ .Chart.Name }}
+        helm.sh/chart-version: {{ .Chart.Version | replace "+" "_" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
       annotations:
         {{- /*
         protected pod annotations:

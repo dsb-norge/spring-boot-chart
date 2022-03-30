@@ -28,15 +28,19 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.18_config-hash=5c5d7141be417a0acabee29dff1d5e6a79a0a3d4d291b11e1059ba8a87b6f0af
+            checksum: chart-version=2.0.19_config-hash=22fab82f7cea67ab87c05e83af13b8fefe27bad9d7d9f8f21ee78b8638c9b73f
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
             app.kubernetes.io/component: Frontend
+            app.kubernetes.io/created-by: https://github.com/dsb-norge/helm-charts
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
+            helm.sh/chart: dsb-nginx-frontend-2.0.19
+            helm.sh/chart-name: dsb-nginx-frontend
+            helm.sh/chart-version: 2.0.19
         spec:
           affinity:
             podAntiAffinity:
@@ -157,12 +161,16 @@ Full manifest should match snapshot:
       labels:
         app: frontend1-service
         app.kubernetes.io/component: Frontend
+        app.kubernetes.io/created-by: https://github.com/dsb-norge/helm-charts
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.18
+        chart-version: 2.0.19
+        helm.sh/chart: dsb-nginx-frontend-2.0.19
+        helm.sh/chart-name: dsb-nginx-frontend
+        helm.sh/chart-version: 2.0.19
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -211,15 +219,19 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.18_config-hash=0ea695b53c938fdedce5c7f0f4d0f7381608de303c5fab564dc122fd60113055
+            checksum: chart-version=2.0.19_config-hash=0ea695b53c938fdedce5c7f0f4d0f7381608de303c5fab564dc122fd60113055
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
             app.kubernetes.io/component: Frontend
+            app.kubernetes.io/created-by: Helm
             app.kubernetes.io/managed-by: Helm
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
+            helm.sh/chart: dsb-nginx-frontend-2.0.19
+            helm.sh/chart-name: dsb-nginx-frontend
+            helm.sh/chart-version: 2.0.19
         spec:
           affinity:
             podAntiAffinity:
@@ -316,12 +328,16 @@ Minimal manifest should match snapshot:
       labels:
         app: frontend-service
         app.kubernetes.io/component: Frontend
+        app.kubernetes.io/created-by: Helm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: RELEASE-NAME
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.18
+        chart-version: 2.0.19
+        helm.sh/chart: dsb-nginx-frontend-2.0.19
+        helm.sh/chart-name: dsb-nginx-frontend
+        helm.sh/chart-version: 2.0.19
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -380,12 +396,16 @@ Support multiple ingress hosts:
       labels:
         app: frontend-service
         app.kubernetes.io/component: Frontend
+        app.kubernetes.io/created-by: Helm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: RELEASE-NAME
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.0.18
+        chart-version: 2.0.19
+        helm.sh/chart: dsb-nginx-frontend-2.0.19
+        helm.sh/chart-name: dsb-nginx-frontend
+        helm.sh/chart-version: 2.0.19
       name: frontend
       namespace: NAMESPACE
     spec:

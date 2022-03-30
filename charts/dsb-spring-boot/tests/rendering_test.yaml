@@ -90,6 +90,7 @@ tests:
         name: "Rendering test"
         component: "Backend API"
         partOf: "Verification stuff"
+        createdBy: "https://github.com/dsb-norge/helm-charts"
       websocket:
         enabled: true
       rbac:
