@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.22_config-hash=96f4965b1913aaba3df9f12c95e8be3dac676ad3f06f143e9871f2956f37a2ae
+            checksum: chart-version=3.0.23_config-hash=b5c86148b6d39166eb1b436257fd45b9fe92c4b9bb3d79f38ed791da546b4ba5
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -143,7 +143,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.22_config-hash=8503c52a0bbb1ead00b53832defe57968c3a5bff9005dc21710b6c97e8ecffb3
+            checksum: chart-version=3.0.23_config-hash=c68ce5c3cd4033cb518ebd2db2eb96ca6977648c688aa7a0e83d1a912b40af92
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -155,9 +155,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-spring-boot-3.0.22
+            helm.sh/chart: dsb-spring-boot-3.0.23
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 3.0.22
+            helm.sh/chart-version: 3.0.23
         spec:
           affinity:
             podAntiAffinity:
@@ -191,6 +191,8 @@ Full manifest should match snapshot:
               value: test-data
             - name: DSB_CERTIFICATE_CERTIFICATE_PATH
               value: /certificates/dsb-test-virksomhetssertifikat.pfx
+            - name: ANSIBLE_CA_CONFIG_PATH
+              value: /config/ansible-ca.pem
             envFrom:
             - secretRef:
                 name: secret1
@@ -252,6 +254,9 @@ Full manifest should match snapshot:
             - mountPath: /certificates
               name: dsb-certificate
               readOnly: true
+            - mountPath: /config
+              name: ansible-ca
+              readOnly: true
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
@@ -261,6 +266,9 @@ Full manifest should match snapshot:
           - name: dsb-certificate
             secret:
               secretName: dsb-certificate-file
+          - configMap:
+              name: ansible-ca-file
+            name: ansible-ca
   6: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -302,10 +310,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.22
-        helm.sh/chart: dsb-spring-boot-3.0.22
+        chart-version: 3.0.23
+        helm.sh/chart: dsb-spring-boot-3.0.23
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 3.0.22
+        helm.sh/chart-version: 3.0.23
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -412,6 +420,17 @@ Full manifest should match snapshot:
     - kind: ServiceAccount
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
+  15: |
+    apiVersion: v1
+    data:
+      ansible-ca.pem: |
+        -----BEGIN CERTIFICATE-----
+        MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
+        -----END CERTIFICATE-----
+    kind: ConfigMap
+    metadata:
+      name: ansible-ca-file
+      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -430,7 +449,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.22_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
+            checksum: chart-version=3.0.23_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -442,9 +461,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-spring-boot-3.0.22
+            helm.sh/chart: dsb-spring-boot-3.0.23
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 3.0.22
+            helm.sh/chart-version: 3.0.23
         spec:
           affinity:
             podAntiAffinity:
@@ -538,10 +557,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.22
-        helm.sh/chart: dsb-spring-boot-3.0.22
+        chart-version: 3.0.23
+        helm.sh/chart: dsb-spring-boot-3.0.23
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 3.0.22
+        helm.sh/chart-version: 3.0.23
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

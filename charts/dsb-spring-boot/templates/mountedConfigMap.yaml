@@ -1,0 +1,13 @@
+{{- $release_name := .Release.Name }}
+{{- $release_namespace := .Release.Namespace }}
+
+{{- range $name, $value := .Values.mountedConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-file
+  namespace: {{ $release_namespace }}
+data:
+  {{ $value.fileName }}: |
+{{ tpl $value.content $ | indent 4 }}
+{{- end }}

@@ -121,6 +121,10 @@ spec:
             - name: {{ regexReplaceAll "-" $name "_" | upper }}_CERTIFICATE_PATH
               value: {{ default "/certificates" $value.mountPath  }}/{{ $value.fileName  }}
             {{- end }}
+            {{- range $name, $value := .Values.mountedConfig }}
+            - name: {{ regexReplaceAll "-" $name "_" | upper }}_CONFIG_PATH
+              value: {{ default "/config" $value.mountPath  }}/{{ $value.fileName  }}
+            {{- end }}
             {{- if .Values.java_opts }}
             - name: JAVA_OPTS
               value: {{ .Values.java_opts | quote }}
@@ -156,6 +160,11 @@ spec:
               mountPath: {{ default "/certificates" $value.mountPath }}
               readOnly: true
           {{- end }}
+          {{- range $name, $value := .Values.mountedConfig }}
+            - name: {{ $name }}
+              mountPath: {{ default "/config" $value.mountPath }}
+              readOnly: true
+          {{- end }}
           securityContext:
             capabilities:
               drop: [ALL]
@@ -172,4 +181,9 @@ spec:
         - name: {{ $name }}
           secret:
             secretName: {{ $name }}-file
+      {{- end }}
+      {{- range $name, $value := .Values.mountedConfig }}
+        - name: {{ $name }}
+          configMap:
+            name: {{ $name }}-file
       {{- end }}
