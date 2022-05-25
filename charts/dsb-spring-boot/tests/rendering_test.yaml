@@ -49,6 +49,7 @@ tests:
       - serviceMonitor.yaml
       - clusterRole.yaml
       - clusterRoleBinding.yaml
+      - mountedConfigMap.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -123,6 +124,13 @@ tests:
             keystore_password_ref: value_for_password
             keystore_alias_ref: value_for_alias
           fileName: dsb-test-virksomhetssertifikat.pfx
+      mountedConfig:
+        ansible-ca:
+          fileName: ansible-ca.pem
+          content: |
+            -----BEGIN CERTIFICATE-----
+            MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
+            -----END CERTIFICATE-----
       jobs:
       - name: cron-example
         image_tag: greatest
