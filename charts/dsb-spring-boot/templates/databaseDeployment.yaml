@@ -20,6 +20,8 @@ spec:
         checksum: "chart-version={{ .Chart.Version }}_config-hash={{ .Values | toString | sha256sum }}"
     spec:
       hostname: "{{ .Release.Name }}-db-svc"
+      nodeSelector:
+        NodePool: workers
       containers:
         - name: "{{ .Release.Name }}-database-container"
           image: "{{ .Values.database_container.image }}"
