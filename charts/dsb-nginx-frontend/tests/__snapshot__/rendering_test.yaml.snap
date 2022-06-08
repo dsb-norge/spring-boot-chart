@@ -28,7 +28,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.20_config-hash=22fab82f7cea67ab87c05e83af13b8fefe27bad9d7d9f8f21ee78b8638c9b73f
+            checksum: chart-version=2.0.20_config-hash=ef510a404e47ae3668d5eb3385a29defcd238a6ef887fe988fc48ec6e94beb4f
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -59,11 +59,11 @@ Full manifest should match snapshot:
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: ws://websocket.host.com:9091
             - name: LOC_API_PROXY_READ_TIMEOUT
-              value: null
+              value: 120
             - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: null
+              value: 120
             - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: null
+              value: 120
             envFrom:
             - secretRef:
                 name: secret1
@@ -225,7 +225,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.0.20_config-hash=0ea695b53c938fdedce5c7f0f4d0f7381608de303c5fab564dc122fd60113055
+            checksum: chart-version=2.0.20_config-hash=4c363e2c592a660639f746d47dcd3cbc029196626763ee7977ca09bb6af95b64
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -256,11 +256,11 @@ Minimal manifest should match snapshot:
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: null
             - name: LOC_API_PROXY_READ_TIMEOUT
-              value: null
+              value: 120
             - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: null
+              value: 120
             - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: null
+              value: 120
             envFrom: null
             image: nginx:latest
             livenessProbe:
