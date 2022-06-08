@@ -59,11 +59,11 @@ Full manifest should match snapshot:
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: ws://websocket.host.com:9091
             - name: LOC_API_PROXY_READ_TIMEOUT
-              value: 120
+              value: "120"
             - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: 120
+              value: "120"
             - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: 120
+              value: "120"
             envFrom:
             - secretRef:
                 name: secret1
@@ -256,11 +256,11 @@ Minimal manifest should match snapshot:
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: null
             - name: LOC_API_PROXY_READ_TIMEOUT
-              value: 120
+              value: "120"
             - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: 120
+              value: "120"
             - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: 120
+              value: "120"
             envFrom: null
             image: nginx:latest
             livenessProbe:
