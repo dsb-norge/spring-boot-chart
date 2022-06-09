@@ -90,6 +90,12 @@ spec:
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: {{ .Values.websocket.host }}
             {{- end }}
+            - name: LOC_API_PROXY_READ_TIMEOUT
+              value: "{{ .Values.proxy_read_timeout }}"
+            - name: LOC_API_PROXY_CONNECT_TIMEOUT
+              value: "{{ .Values.proxy_connect_timeout }}"
+            - name: LOC_API_PROXY_SEND_TIMEOUT
+              value: "{{ .Values.proxy_send_timeout }}"
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
