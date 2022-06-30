@@ -7,6 +7,7 @@ tests:
       image: nginx
       tag: latest
       schedule: "*/1 * * * *"
+      suspend: true
     asserts:
       - matchSnapshot: { }
   - it: Full manifest should match snapshot

@@ -19,6 +19,10 @@ springProfiles: "kubernetes"
 # Example:  */1 * * * *
 schedule:
 
+# If it is set to true, all subsequent executions are suspended. This setting does not apply to already started executions
+# https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/#suspend:
+suspend: false
+
 # Max lifetime of the pod:
 activeDeadlineSeconds:
 

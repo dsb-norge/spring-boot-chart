@@ -31,7 +31,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.10_config-hash=a85429c673336daf8c32b26877727bc34b7420b8afe870153f2c131bb3e7b212
+                checksum: chart-version=2.0.11_config-hash=48fd685d69783bc027d1a0bb1acdc68e79bf4cfcd177a6b6b1a378857b5028cd
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -88,6 +88,7 @@ Full manifest should match snapshot:
                 name: tmp-dir
       schedule: '*/2 * * * *'
       successfulJobsHistoryLimit: 2
+      suspend: false
   3: |
     apiVersion: apps/v1
     kind: Deployment
@@ -102,7 +103,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.0.10_config-hash=a85429c673336daf8c32b26877727bc34b7420b8afe870153f2c131bb3e7b212
+            checksum: chart-version=2.0.11_config-hash=48fd685d69783bc027d1a0bb1acdc68e79bf4cfcd177a6b6b1a378857b5028cd
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -161,7 +162,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.10_config-hash=1741536f6c9c1a2ae0695a75f035622656bc80d94ade5e60461114a2cdbdc675
+                checksum: chart-version=2.0.11_config-hash=dd8f6eeff1c575014d4c6262407338497e89719733680b084f79037e7d0aa7bc
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -203,3 +204,4 @@ Minimal manifest should match snapshot:
                 name: tmp-dir
       schedule: '*/1 * * * *'
       successfulJobsHistoryLimit: 2
+      suspend: true
