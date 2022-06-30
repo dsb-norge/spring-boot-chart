@@ -13,6 +13,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedule | quote }}
+  suspend: {{ .Values.suspend | default false }}
   failedJobsHistoryLimit: 3
   successfulJobsHistoryLimit: 2
   jobTemplate:
