@@ -87,7 +87,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.24_config-hash=7b232550511542446008e698b1c99e80f48888a5958e8144ff60be1f4521b48d
+            checksum: chart-version=3.0.25_config-hash=199cbf54cc1c1370151f4fd08e9d538e04bec849e88bb7aea4c7488fc9baecc2
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -145,7 +145,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.24_config-hash=c68ce5c3cd4033cb518ebd2db2eb96ca6977648c688aa7a0e83d1a912b40af92
+            checksum: chart-version=3.0.25_config-hash=a4979142d124de91d528527da058ab6fbb33976bfa831d001e1af508ecce59ac
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -157,9 +157,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-spring-boot-3.0.24
+            helm.sh/chart: dsb-spring-boot-3.0.25
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 3.0.24
+            helm.sh/chart-version: 3.0.25
         spec:
           affinity:
             podAntiAffinity:
@@ -195,6 +195,10 @@ Full manifest should match snapshot:
               value: /certificates/dsb-test-virksomhetssertifikat.pfx
             - name: ANSIBLE_CA_CONFIG_PATH
               value: /config/ansible-ca.pem
+            - name: JAVA_OPTS
+              value: -XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M
+            - name: BPL_JVM_HEAD_ROOM
+              value: "12.34"
             envFrom:
             - secretRef:
                 name: secret1
@@ -312,10 +316,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.24
-        helm.sh/chart: dsb-spring-boot-3.0.24
+        chart-version: 3.0.25
+        helm.sh/chart: dsb-spring-boot-3.0.25
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 3.0.24
+        helm.sh/chart-version: 3.0.25
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -451,7 +455,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.24_config-hash=960d159c783f52bcbffb7f41a05e83ac27f8fd2a2cd3f227dfa9cf0136755de3
+            checksum: chart-version=3.0.25_config-hash=421eef4777f4e6681b3b4537b79cbfffbebfff85b44b536e518a65de708894bf
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -463,9 +467,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-spring-boot-3.0.24
+            helm.sh/chart: dsb-spring-boot-3.0.25
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 3.0.24
+            helm.sh/chart-version: 3.0.25
         spec:
           affinity:
             podAntiAffinity:
@@ -559,10 +563,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 3.0.24
-        helm.sh/chart: dsb-spring-boot-3.0.24
+        chart-version: 3.0.25
+        helm.sh/chart: dsb-spring-boot-3.0.25
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 3.0.24
+        helm.sh/chart-version: 3.0.25
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

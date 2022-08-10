@@ -89,6 +89,13 @@ database_container:
 
 java_opts:
 
+# Headroom to specify to JVM memory calculator
+# Percentage of total memory available which will be left unallocated to cover JVM overhead.
+# Default is not specified ie. use paketo default.
+#   ref. https://paketo.io/docs/howto/java/#configure-the-jvm-at-runtime
+#   and https://github.com/cloudfoundry/java-buildpack-memory-calculator
+jvm_head_room:
+
 jobs:
 
 # Reference secrets that are mounted on the cron job pod:

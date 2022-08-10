@@ -1,0 +1,36 @@
+---
+suite: test deployment environment variables
+templates:
+  - deployment.yaml
+tests:
+  - it: should render without JAVA_OPTS as default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: JAVA_OPTS
+  - it: should render JAVA_OPTS as environment variables
+    set:
+      java_opts: "-XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: JAVA_OPTS
+            value: "-XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M"
+  - it: should render without BPL_JVM_HEAD_ROOM as default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BPL_JVM_HEAD_ROOM
+  - it: should render BPL_JVM_HEAD_ROOM as environment variables
+    set:
+      jvm_head_room: 12.34
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BPL_JVM_HEAD_ROOM
+            value: "12.34"
+...
