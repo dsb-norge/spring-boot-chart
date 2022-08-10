@@ -129,6 +129,10 @@ spec:
             - name: JAVA_OPTS
               value: {{ .Values.java_opts | quote }}
             {{- end }}
+            {{- if .Values.jvm_head_room }}
+            - name: BPL_JVM_HEAD_ROOM
+              value: {{ .Values.jvm_head_room | quote }}
+            {{- end }}
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
