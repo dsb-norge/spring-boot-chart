@@ -9,71 +9,6 @@ Full manifest should match snapshot:
       name: RELEASE-NAME-configmap
       namespace: NAMESPACE
   2: |
-    apiVersion: batch/v1
-    kind: CronJob
-    metadata:
-      annotations:
-        cronKey1: cronValue1
-        cronKey2: cronValue2
-        orgs.k8s.snyk.io/v1: 3c6b0e2e-36a2-4c0e-93c8-3ba8c87dd75d
-      name: RELEASE-NAME-cron-cron-example
-      namespace: NAMESPACE
-    spec:
-      concurrencyPolicy: Forbid
-      failedJobsHistoryLimit: 3
-      jobTemplate:
-        metadata:
-          annotations:
-            co.elastic.logs/json.add_error_key: "true"
-            co.elastic.logs/json.keys_under_root: "true"
-            co.elastic.logs/json.overwrite_keys: "true"
-        spec:
-          activeDeadlineSeconds: 60
-          backoffLimit: 3
-          completions: 1
-          parallelism: 1
-          template:
-            metadata:
-              labels:
-                app: RELEASE-NAME-cron
-                cron: cron-example
-            spec:
-              containers:
-              - env:
-                - name: TOKEN_URL
-                  value: https://example.com/token
-                - name: CLIENT_ID
-                  value: release-name-cron-client
-                - name: API_METHOD
-                  value: TRACE
-                - name: API_PATH
-                  value: http://RELEASE-NAME.NAMESPACE.svc.cluster.local:80/do
-                envFrom:
-                - secretRef:
-                    name: jobSecret1
-                image: dsbacr.azurecr.io/dsb-norge/oauth2-api-caller:greatest
-                name: cron-example
-                resources:
-                  limits:
-                    cpu: 50m
-                    memory: 128Mi
-                  requests:
-                    cpu: 50m
-                    memory: 64Mi
-                securityContext:
-                  allowPrivilegeEscalation: false
-                  capabilities:
-                    drop:
-                    - ALL
-                  privileged: false
-                  readOnlyRootFilesystem: true
-                  runAsGroup: 3000
-                  runAsNonRoot: true
-                  runAsUser: 1000
-              restartPolicy: OnFailure
-      schedule: '*/2 * * * *'
-      successfulJobsHistoryLimit: 2
-  3: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -87,7 +22,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=3.0.25_config-hash=199cbf54cc1c1370151f4fd08e9d538e04bec849e88bb7aea4c7488fc9baecc2
+            checksum: chart-version=3.0.25_config-hash=ea8a4231dd9b84f51bbcde4982d5a137081a9d6003b321bc48ad800af7a4d9e4
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -113,7 +48,7 @@ Full manifest should match snapshot:
           hostname: RELEASE-NAME-db-svc
           nodeSelector:
             NodePool: workers
-  4: |
+  3: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -126,7 +61,7 @@ Full manifest should match snapshot:
         targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
-  5: |
+  4: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -145,7 +80,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.25_config-hash=a4979142d124de91d528527da058ab6fbb33976bfa831d001e1af508ecce59ac
+            checksum: chart-version=3.0.25_config-hash=061e6e84781cf0741fa9b91ee4d52624b75daab2f69d6c858bd072260a1d88c6
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -275,7 +210,7 @@ Full manifest should match snapshot:
           - configMap:
               name: ansible-ca-file
             name: ansible-ca
-  6: |
+  5: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -293,7 +228,7 @@ Full manifest should match snapshot:
                   number: 80
             path: /example
             pathType: Prefix
-  7: |
+  6: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
@@ -303,7 +238,7 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-app
-  8: |
+  7: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -334,7 +269,7 @@ Full manifest should match snapshot:
         port: 9091
       selector:
         app: RELEASE-NAME-app
-  9: |
+  8: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -342,7 +277,7 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  10: |
+  9: |
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
@@ -356,7 +291,7 @@ Full manifest should match snapshot:
       - key: value_for_alias
         name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
       keyVaultName: azure_key_vault_name
-  11: |
+  10: |
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
@@ -369,7 +304,7 @@ Full manifest should match snapshot:
         key: vaule_for_certificate
         name: dsb-test-virksomhetssertifikat.pfx
       keyVaultName: azure_key_vault_name
-  12: |
+  11: |
     apiVersion: monitoring.coreos.com/v1
     kind: ServiceMonitor
     metadata:
@@ -388,7 +323,7 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-service
-  13: |
+  12: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -412,7 +347,7 @@ Full manifest should match snapshot:
       - list
       - watch
       - get
-  14: |
+  13: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -426,7 +361,7 @@ Full manifest should match snapshot:
     - kind: ServiceAccount
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  15: |
+  14: |
     apiVersion: v1
     data:
       ansible-ca.pem: |
@@ -455,7 +390,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=3.0.25_config-hash=421eef4777f4e6681b3b4537b79cbfffbebfff85b44b536e518a65de708894bf
+            checksum: chart-version=3.0.25_config-hash=b8559f471bee7b55b178c662f0f62f5aff7df5248c7591b8ddbbb3db296fcd0e
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"

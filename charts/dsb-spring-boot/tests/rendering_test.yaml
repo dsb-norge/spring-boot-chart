@@ -37,7 +37,6 @@ tests:
   - it: Full manifest should match snapshot
     templates:
       - configMap.yaml
-      - cronJob.yaml
       - databaseDeployment.yaml
       - databaseService.yaml
       - deployment.yaml
@@ -59,9 +58,6 @@ tests:
       deploymentAnnotations:
         key1: value1
         key2: value2
-      cronJobAnnotations:
-        cronKey1: cronValue1
-        cronKey2: cronValue2
       springProfiles: "chart-testing"
       config:
         root:
@@ -133,15 +129,5 @@ tests:
             -----BEGIN CERTIFICATE-----
             MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
             -----END CERTIFICATE-----
-      jobs:
-      - name: cron-example
-        image_tag: greatest
-        schedule: "*/2 * * * *"
-        tokenURL: "https://example.com/token"
-        apiPath: "/do"
-        method: "TRACE"
-      # Reference secrets that are mounted on the cron job pod:
-      job_secretRefs:
-        - jobSecret1
     asserts:
       - matchSnapshot: { }
