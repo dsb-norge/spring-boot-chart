@@ -22,7 +22,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=4.0.0_config-hash=f8f5034e7d67f0d3b18707e504c3bf718ecf1704a2b6a9330617af5aab2f08b3
+            checksum: chart-version=4.1.0_config-hash=25bb574790b8c4f1a83c55fca97463112f9d0b8eac2840f5d1864af733b6efd8
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -80,7 +80,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.0.0_config-hash=061e6e84781cf0741fa9b91ee4d52624b75daab2f69d6c858bd072260a1d88c6
+            checksum: chart-version=4.1.0_config-hash=d4999089ecfc7f4583a1960dce2d1a58a2331255ad54861ed5ac48986f329416
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -92,9 +92,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-spring-boot-4.0.0
+            helm.sh/chart: dsb-spring-boot-4.1.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.0.0
+            helm.sh/chart-version: 4.1.0
         spec:
           affinity:
             podAntiAffinity:
@@ -143,6 +143,14 @@ Full manifest should match snapshot:
                 name: configMap1
             - configMapRef:
                 name: RELEASE-NAME-configmap
+            - secretRef:
+                name: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+            - configMapRef:
+                name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+            - secretRef:
+                name: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+            - configMapRef:
+                name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
             image: wordpress:greatest
             imagePullPolicy: customValue
             lifecycle:
@@ -198,6 +206,30 @@ Full manifest should match snapshot:
             - mountPath: /config
               name: ansible-ca
               readOnly: true
+            - mountPath: /custom/file/paths/are/supported
+              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+              readOnly: true
+              subPath: bf2727f85b33281f
+            - mountPath: /hardcoded/path/of/secret/as/file
+              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+              readOnly: true
+              subPath: 5251feedd63c7723
+            - mountPath: /mnt/9e717efb70949021/68db8538e5026d9f
+              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+              readOnly: true
+              subPath: 68db8538e5026d9f
+            - mountPath: /mnt/127cf7b855142ab1/6ed738c95f993853
+              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+              readOnly: true
+              subPath: 6ed738c95f993853
+            - mountPath: /secret_in_2_file
+              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+              readOnly: true
+              subPath: 74575ba0f9ab4322
+            - mountPath: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+              readOnly: true
+              subPath: c37bc3a2edadc0ed
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
@@ -210,6 +242,18 @@ Full manifest should match snapshot:
           - configMap:
               name: ansible-ca-file
             name: ansible-ca
+          - csi:
+              driver: secrets-store.csi.k8s.io
+              readOnly: true
+              volumeAttributes:
+                secretProviderClass: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+            name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+          - csi:
+              driver: secrets-store.csi.k8s.io
+              readOnly: true
+              volumeAttributes:
+                secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+            name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
   5: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -251,10 +295,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 4.0.0
-        helm.sh/chart: dsb-spring-boot-4.0.0
+        chart-version: 4.1.0
+        helm.sh/chart: dsb-spring-boot-4.1.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.0.0
+        helm.sh/chart-version: 4.1.0
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -372,6 +416,73 @@ Full manifest should match snapshot:
     metadata:
       name: ansible-ca-file
       namespace: NAMESPACE
+  15: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev1
+        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName:
+          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n
+          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
+          |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n
+          \   objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
+      provider: azure
+      secretObjects:
+      - data:
+        - key: name.of.env.variable.holding.key.in.pem.format
+          objectName: bf2727f85b33281f
+        secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+        type: Opaque
+  16: |
+    apiVersion: v1
+    data:
+      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
+      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+  17: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev2
+        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName:
+          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n
+          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
+          |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n
+          \   objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
+      provider: azure
+      secretObjects:
+      - data:
+        - key: key_in_2_var
+          objectName: 6ed738c95f993853
+        secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+        type: Opaque
+  18: |
+    apiVersion: v1
+    data:
+      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
@@ -390,7 +501,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.0.0_config-hash=b8559f471bee7b55b178c662f0f62f5aff7df5248c7591b8ddbbb3db296fcd0e
+            checksum: chart-version=4.1.0_config-hash=a810c15bea32008a81d1eb477c3910683db48f1db0fd0308b5acb40e3fbecf13
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -402,9 +513,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-spring-boot-4.0.0
+            helm.sh/chart: dsb-spring-boot-4.1.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.0.0
+            helm.sh/chart-version: 4.1.0
         spec:
           affinity:
             podAntiAffinity:
@@ -498,10 +609,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 4.0.0
-        helm.sh/chart: dsb-spring-boot-4.0.0
+        chart-version: 4.1.0
+        helm.sh/chart: dsb-spring-boot-4.1.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.0.0
+        helm.sh/chart-version: 4.1.0
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
