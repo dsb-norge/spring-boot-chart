@@ -151,6 +151,11 @@ spec:
             - configMapRef:
                 name: {{ .Release.Name }}-configmap
           {{- end }}
+          {{- /* env config from dsb-azure-csi-key-vault-provider */ -}}
+          {{- include "dackvp.render-kubernetes-env-config" (list
+            .Values.azureKeyVault.vaults
+            .Values.azureKeyVault.defaultValues
+            .Release.Name) | indent 12 }}
           ports:
             - containerPort: {{ .Values.application_web_port }}
               name: web
@@ -169,6 +174,11 @@ spec:
               mountPath: {{ default "/config" $value.mountPath }}
               readOnly: true
           {{- end }}
+          {{- /* volume mounts from dsb-azure-csi-key-vault-provider */ -}}
+          {{- include "dackvp.render-kubernetes-volume-mounts" (list
+            .Values.azureKeyVault.vaults
+            .Values.azureKeyVault.defaultValues
+            .Release.Name) | indent 12 }}
           securityContext:
             capabilities:
               drop: [ALL]
@@ -191,3 +201,8 @@ spec:
           configMap:
             name: {{ $name }}-file
       {{- end }}
+      {{- /* volumes from dsb-azure-csi-key-vault-provider */ -}}
+      {{- include "dackvp.render-kubernetes-volumes" (list
+        .Values.azureKeyVault.vaults
+        .Values.azureKeyVault.defaultValues
+        .Release.Name) | indent 8 }}
