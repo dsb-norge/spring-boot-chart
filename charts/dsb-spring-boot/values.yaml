@@ -1,4 +1,9 @@
 ---
+# global values
+# in order to have global defaults across multiple charts, the following is supported:
+#   'global.azureKeyVaultDefaultValues' if defined will take precedence over 'azureKeyVault.defaultValues'
+global: {}
+
 # Number of pods to create:
 replicas: 2
 
@@ -59,6 +64,7 @@ configMapRefs: {}
 azureKeyVault:
   # Values that are used if not explicitly defined for the KVs in 'vaults'
   # Normally ArgoCD will define these for a given runtime environment
+  # if 'global.azureKeyVaultDefaultValues' is defined it will take precedence
   defaultValues: {}
     # tenantId: GUID # default value for tenant ID of the key vault(s)
     # clientId: GUID # default value for client id of the managed identity to use as identity when accessing key vault(s)
@@ -196,3 +202,4 @@ rbac:
 websocket:
   enabled: false
   port: 9091
+...
