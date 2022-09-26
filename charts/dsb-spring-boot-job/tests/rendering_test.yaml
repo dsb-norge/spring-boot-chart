@@ -16,6 +16,7 @@ tests:
       - cronJob.yaml
       - databaseDeployment.yaml
       - databaseService.yaml
+      - csi-secrets-store-azure.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -62,5 +63,36 @@ tests:
       # Reference secrets that are mounted on the cron job pod:
       job_secretRefs:
         - jobSecret1
+      azureKeyVault:
+        defaultValues:
+          tenantId: b2255c28-9e28-4641-a6bc-b63391d59143
+          clientId: b2255c28-9e28-4641-a6bc-b63391d59144
+          kvName: kv-rg00-ss0-render-dev2
+        vaults:
+          myKv1:
+            tenantId: b2255c28-9e28-4641-a6bc-b63391d59141
+            clientId: b2255c28-9e28-4641-a6bc-b63391d59142
+            kvName: kv-rg00-ss0-render-dev1
+            keys:
+              - nameInKv: "name-of-key-in-vault"
+                mountAsEnv: "name.of.env.variable.holding.key.in.pem.format"
+                fileMountPathEnvName: "name.of.env.variable.holding.path.to.key.as.file"
+                fileMountPath: "/custom/file/paths/are/supported"
+            secrets:
+              - nameInKv: "name-of-secret-in-vault"
+                fileMountPath: "/hardcoded/path/of/secret/as/file"
+            certs:
+              - nameInKv: "name-of-cert-in-vault"
+                fileMountPathEnvName: "name.of.env.variable.holding.path.to.cert.as.file"
+          myKv2:
+            keys:
+              - nameInKv: "name-of-key-in-vault"
+                mountAsEnv: "key_in_2_var"
+            secrets:
+              - nameInKv: "name-of-secret-in-vault"
+                fileMountPath: "/secret_in_2_file"
+            certs:
+              - nameInKv: "name-of-cert-in-vault"
+                fileMountPathEnvName: "cert_in_2_file_path_var"
     asserts:
       - matchSnapshot: { }

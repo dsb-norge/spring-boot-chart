@@ -55,7 +55,7 @@ spec:
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: {{ .Values.springProfiles | quote }}
-                {{- if .Values.database_container.enabled }}
+              {{- if .Values.database_container.enabled }}
                 - name: DATABASE_CONTAINER_USER
                   value: {{ .Values.database_container.user | quote }}
                 - name: DATABASE_CONTAINER_PASSWORD
@@ -64,7 +64,7 @@ spec:
                   value: "{{ .Release.Name }}-db-svc:1433"
                 - name: DATABASE_CONTAINER_DATABASE
                   value: {{ .Values.database_container.database | quote }}
-                {{- end }}
+              {{- end }}
               envFrom:
               {{- range .Values.secretRefs }}
               - secretRef:
@@ -79,9 +79,19 @@ spec:
               - configMapRef:
                   name: {{ .Release.Name }}-configmap
               {{- end }}
+              {{- /* env config from dsb-azure-csi-key-vault-provider */ -}}
+              {{- include "dackvp.render-kubernetes-env-config" (list
+              .Values.azureKeyVault.vaults
+              ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
+              .Release.Name) | indent 14 }}
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+              {{- /* volume mounts from dsb-azure-csi-key-vault-provider */ -}}
+              {{- include "dackvp.render-kubernetes-volume-mounts" (list
+                .Values.azureKeyVault.vaults
+                ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
+                .Release.Name) | indent 16 }}
               securityContext:
                 capabilities:
                   drop: [ALL]
@@ -94,3 +104,8 @@ spec:
           volumes:
             - name: tmp-dir
               emptyDir: {}
+          {{- /* volumes from dsb-azure-csi-key-vault-provider */ -}}
+          {{- include "dackvp.render-kubernetes-volumes" (list
+            .Values.azureKeyVault.vaults
+            ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
+            .Release.Name) | indent 12 }}
