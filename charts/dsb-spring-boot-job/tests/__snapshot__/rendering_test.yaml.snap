@@ -31,7 +31,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.11_config-hash=48fd685d69783bc027d1a0bb1acdc68e79bf4cfcd177a6b6b1a378857b5028cd
+                checksum: chart-version=2.1.0_config-hash=e4a195d47108081f462ed2186e930730cc6bea90255b0e28ab46ac212d8ae0dd
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -57,6 +57,14 @@ Full manifest should match snapshot:
                     name: configMap1
                 - configMapRef:
                     name: RELEASE-NAME-configmap
+                - secretRef:
+                    name: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+                - configMapRef:
+                    name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+                - secretRef:
+                    name: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+                - configMapRef:
+                    name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
                 image: wordpress:greatest
                 imagePullPolicy: customValue
                 name: RELEASE-NAME-job
@@ -80,12 +88,48 @@ Full manifest should match snapshot:
                 volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+                - mountPath: /custom/file/paths/are/supported
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: bf2727f85b33281f
+                - mountPath: /hardcoded/path/of/secret/as/file
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: 5251feedd63c7723
+                - mountPath: /mnt/9e717efb70949021/68db8538e5026d9f
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: 68db8538e5026d9f
+                - mountPath: /mnt/127cf7b855142ab1/6ed738c95f993853
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: 6ed738c95f993853
+                - mountPath: /secret_in_2_file
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: 74575ba0f9ab4322
+                - mountPath: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: c37bc3a2edadc0ed
               nodeSelector:
                 NodePool: workers
               restartPolicy: OnFailure
               volumes:
               - emptyDir: {}
                 name: tmp-dir
+              - csi:
+                  driver: secrets-store.csi.k8s.io
+                  readOnly: true
+                  volumeAttributes:
+                    secretProviderClass: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+                name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+              - csi:
+                  driver: secrets-store.csi.k8s.io
+                  readOnly: true
+                  volumeAttributes:
+                    secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+                name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
       schedule: '*/2 * * * *'
       successfulJobsHistoryLimit: 2
       suspend: false
@@ -103,7 +147,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.0.11_config-hash=48fd685d69783bc027d1a0bb1acdc68e79bf4cfcd177a6b6b1a378857b5028cd
+            checksum: chart-version=2.1.0_config-hash=736b869424567db8ec7cf1fa8633f19ed61ae1375ee91d31397f167d3a450440
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -140,6 +184,73 @@ Full manifest should match snapshot:
         targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
+  5: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev1
+        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName:
+          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n
+          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
+          |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n
+          \   objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
+      provider: azure
+      secretObjects:
+      - data:
+        - key: name.of.env.variable.holding.key.in.pem.format
+          objectName: bf2727f85b33281f
+        secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+        type: Opaque
+  6: |
+    apiVersion: v1
+    data:
+      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
+      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+  7: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev2
+        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName:
+          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n
+          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
+          |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n
+          \   objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
+      provider: azure
+      secretObjects:
+      - data:
+        - key: key_in_2_var
+          objectName: 6ed738c95f993853
+        secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+        type: Opaque
+  8: |
+    apiVersion: v1
+    data:
+      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: batch/v1
@@ -162,7 +273,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.0.11_config-hash=dd8f6eeff1c575014d4c6262407338497e89719733680b084f79037e7d0aa7bc
+                checksum: chart-version=2.1.0_config-hash=c37e837d369a2b77b4804e4d73a1bd4364d5bead86c38a0a544c852e61ff43a5
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"

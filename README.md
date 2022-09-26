@@ -23,6 +23,15 @@ docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintu
 docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/*
 ```
 
+### Debug errors like `error converting YAML to JSON: yaml: line X`
+
+Runnning the command
+```bash
+helm template -f example.yaml test-application [CHART_NAME] > output.yaml
+```
+
+will produce an output structure in output.yaml making it easier to see indenting faults or similar
+
 ## DSB Spring Boot Chart
 
 To debug locally (requires a kubeconfig setup to a live cluster):

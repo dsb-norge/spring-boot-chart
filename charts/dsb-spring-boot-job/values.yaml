@@ -1,4 +1,9 @@
 ---
+# global values
+# in order to have global defaults across multiple charts, the following is supported:
+#   'global.azureKeyVaultDefaultValues' if defined will take precedence over 'azureKeyVault.defaultValues'
+global: {}
+
 # Container image ref for cron job
 image:
 
@@ -40,6 +45,90 @@ secretRefs: []
 # Reference configMaps that are mounted on the pod:
 configMapRefs: []
 
+# Configuration of objects to mount from Azure Key Vault using Secrets Store CSI driver
+azureKeyVault:
+  # Values that are used if not explicitly defined for the KVs in 'vaults'
+  # Normally ArgoCD will define these for a given runtime environment
+  # if 'global.azureKeyVaultDefaultValues' is defined it will take precedence
+  defaultValues: {}
+    # tenantId: GUID # default value for tenant ID of the key vault(s)
+    # clientId: GUID # default value for client id of the managed identity to use as identity when accessing key vault(s)
+  # kvName: string # default value for name of the key vault(s)
+  # Multiple vaults can be mounted simultaneously
+  vaults: {}
+    #  The below example definition does not explicitly define all required fields and thus requires 'defaultValues' above to be defined
+    # minimalDef: # <-- friendly definition name, can be anything
+    #   secrets:
+    #     - nameInKv: name-of-my-secret # required
+    #       mountAsEnv: "name.of.env.variable.holding.value.of.my.secret" # optional, this is the name of the env var containing the secret value inside the container
+    #
+    #  This example definition is explicit and does not require 'defaultValues' to be defined.
+    #  It also shows various types of configurations supported.
+    # exhaustiveDef:
+    #   # tenant ID of the key vault
+    #   tenantId: GUID
+    #   # client id of the managed identity to use as identity when accessing key vaults objects,
+    #   # client must have been given access through access policies or RBAC
+    #   clientId: GUID
+    #   # name of the key vault
+    #   kvName: string
+    #   keys: # <-- kv object types supported are keys, secrets and certs
+    #     - nameInKv: name-of-key-in-vault                                            # required
+    #       mountAsEnv: "name.of.env.variable.holding.key.in.pem.format"              # optional
+    #       fileMountPathEnvName: "name.of.env.variable.holding.path.to.key.as.file"  # optional
+    #       fileMountPath: "/custom/file/paths/are/supported"                         # optional
+    #     - nameInKv: name-of-key-in-vault
+    #       mountAsEnv: "the.same.object.can.be.mounted.as.multiple.vars"
+    #     - nameInKv: name-of-key-in-vault
+    #       fileMountPath: "/the/same/object/can/be/mounted/as/multiple/files"
+    #     - nameInKv: name-of-another-key-in-vault
+    #       mountAsEnv: "not_really_necessary_to_specify_fileMountPath"
+    #   secrets:
+    #     # keys, secrets and certs all support the same configuration parameters
+    #     - nameInKv: name-of-secret-in-vault
+    #       mountAsEnv: "name.of.env.variable.holding.value.of.secret"
+    #       fileMountPathEnvName: "name.of.env.variable.holding.path.to.secret.as.file"
+    #       fileMountPath: "/hardcoded/path/of/secret/as/file"
+    #   certs:
+    #     - nameInKv: name-of-cert-in-vault
+    #       mountAsEnv: "name.of.env.variable.holding.cert.in.pem.format"
+    #       fileMountPathEnvName: "name.of.env.variable.holding.path.to.cert.as.file"
+    #       fileMountPath: "/hardcoded/path/of/cert/as/file"
+    #
+    #  This example shows additional details about how to work with certificates in Azure key vaults
+    #  Note: When a Key Vault certificate is created, an addressable key and secret are also created with the same name.
+    #        The Key Vault key allows key operations and the Key Vault secret allows retrieval of the certificate value
+    #        as a secret. A Key Vault certificate also contains public x509 certificate metadata.
+    #  The following assumes that a key vault _certificate_ object named "my-cert" exists in the key vault
+    #  'defaultValues' are used for tenant id, client id and name of key vault
+    # kvWithCert:
+    #
+    #   # Obtain the certificate
+    #   # Note: For chain of certificates, using object type cert only returns the Server certificate and not the entire chain.
+    #   certs:
+    #     - nameInKv: my-cert
+    #       mountAsEnv: "name.of.env.variable.holding.my-cert.in.pem.format"
+    #
+    #   # Obtain the public key: the public key is stored in a Key Vault key, we can retrieve it by using object type key
+    #   keys:
+    #     - nameInKv: my-cert
+    #       mountAsEnv: "name.of.env.variable.holding.public.key.of.my-cert.in.pem.format"
+    #
+    #   # Obtain the private key and certificate
+    #   # the private key is stored in a Key Vault secret with the public certificate included, it can be retrieve by using object type secret
+    #   # Note: For chain of certificates, using object type secret returns entire certificate chain along with the private key.
+    #   secrets:
+    #     - nameInKv: my-cert
+    #       mountAsEnv: "name.of.env.variable.holding.private.key.and.entire.chain.of.my-cert.in.pem.format"
+    #     # Secrets also supports two additional parameters to help with mounting certificates in containers
+    #     #  fileMountFormat - default is "pem",    must be one of ["pem", "pfx"]
+    #     #  secretEncoding  - default is "utf-8",  must be one of ["utf-8", "hex", "base64"]
+    #     # Here is how to mount the entire certificate chain along with the private key in binary pfx format:
+    #     - nameInKv: my-cert
+    #       fileMountFormat: pfx
+    #       secretEncoding: base64
+  #       fileMountPath: "/path/of/my-cert.pfx"
+
 memory_request: "256Mi"
 memory_limit: "1024Mi"
 
@@ -56,3 +145,4 @@ database_container:
   database: emptydb               # env: DATABASE_CONTAINER_DATABASE
   user: sa                        # env: DATABASE_CONTAINER_USER
   password: DoN0tUse1Production   # env: DATABASE_CONTAINER_PASSWORD
+...
