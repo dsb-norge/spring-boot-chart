@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -115,6 +116,10 @@ spec:
               name: web
             - containerPort: 8180
               name: mgmt
+          {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+          {{- toYaml .Values.extraVolumeMounts  | nindent 12 }}
+          {{- end }}
           securityContext:
             capabilities:
               drop: [ALL]
@@ -152,3 +157,8 @@ spec:
             runAsUser: 1000
             runAsGroup: 1000
         {{- end }}
+{{- if .Values.extraVolumes }}
+      volumes:
+{{- toYaml .Values.extraVolumes  | nindent 8 }}
+{{- end }}
+...

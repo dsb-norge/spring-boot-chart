@@ -47,6 +47,21 @@ secretRefs: {}
 # Reference configMaps that are mounted on the pod:
 configMapRefs: {}
 
+# bring your own volumes
+extraVolumes: []
+# - csi:
+#     driver: secrets-store.csi.k8s.io
+#     readOnly: true
+#     volumeAttributes:
+#       secretProviderClass: "my-key-vault-from-azure" # created elsewhere
+#   name: "my-key-vault-volume"
+
+# bring your own volume mounts
+extraVolumeMounts: []
+# - name: my-key-vault-volume
+#   mountPath: /mnt/dsb/key-vault
+#   readOnly: true
+
 # Hostname must be provided if Ingress should be enabled.
 ingress_host:
 ingress_path: /

@@ -51,6 +51,22 @@ tests:
         - secret1
       configMapRefs:
         - configMap1
+      extraVolumes:
+        - csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "my-key-vault-from-azure"
+          name: "my-key-vault-volume"
+        - name: my-empty-dir
+          emptyDir: {}
+      extraVolumeMounts:
+        - name: my-key-vault-volume
+          mountPath: /mnt/dsb/key-vault
+          readOnly: true
+        - name: my-key-vault-volume-2
+          mountPath: /mnt/dsb/key-second-vault
+          readOnly: true
       ingress_host: example.com
       ingress_path: /example
       port: 80
