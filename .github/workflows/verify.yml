@@ -32,8 +32,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: dsbacr.azurecr.io
-          username: ${{ secrets.AZ_CR_USER }}
-          password: ${{ secrets.AZ_CR_SECRET }}
+          username: ${{ vars.ORG_AZURE_CONTAINER_REGISTRY_USER }}
+          password: ${{ secrets.ORG_AZURE_CONTAINER_REGISTRY_PASSWORD }}
 
       - uses: actions/setup-python@v2
         with:
