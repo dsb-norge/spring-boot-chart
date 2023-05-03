@@ -26,7 +26,7 @@ jobs:
         run: helm lint charts/*
 
       - name: Run Helm Unittests
-        run: docker run --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
+        run: docker run --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest charts/*
 
       - name: log into azure container registry (ACR)
         uses: azure/docker-login@v1

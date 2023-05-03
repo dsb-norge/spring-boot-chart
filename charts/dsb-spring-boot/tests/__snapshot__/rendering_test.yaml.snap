@@ -27,24 +27,24 @@ Full manifest should match snapshot:
             app: RELEASE-NAME-db-app
         spec:
           containers:
-          - env:
-            - name: ACCEPT_EULA
-              value: "Y"
-            - name: SA_PASSWORD
-              value: password123
-            - name: MSSQL_SA_PASSWORD
-              value: password123
-            image: test-db:v1
-            name: RELEASE-NAME-database-container
-            ports:
-            - containerPort: 1433
-            resources:
-              limits:
-                cpu: "2.5"
-                memory: 2048Mi
-              requests:
-                cpu: "0.2"
-                memory: 1024Mi
+            - env:
+                - name: ACCEPT_EULA
+                  value: "Y"
+                - name: SA_PASSWORD
+                  value: password123
+                - name: MSSQL_SA_PASSWORD
+                  value: password123
+              image: test-db:v1
+              name: RELEASE-NAME-database-container
+              ports:
+                - containerPort: 1433
+              resources:
+                limits:
+                  cpu: "2.5"
+                  memory: 2048Mi
+                requests:
+                  cpu: "0.2"
+                  memory: 1024Mi
           hostname: RELEASE-NAME-db-svc
           nodeSelector:
             NodePool: workers
@@ -56,9 +56,9 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       ports:
-      - port: 1433
-        protocol: TCP
-        targetPort: 1433
+        - port: 1433
+          protocol: TCP
+          targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
   4: |
@@ -99,161 +99,161 @@ Full manifest should match snapshot:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - RELEASE-NAME-app
-                topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - RELEASE-NAME-app
+                  topologyKey: kubernetes.io/hostname
           containers:
-          - env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: chart-testing
-            - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
-              value: "true"
-            - name: SPRING_RSOCKET_SERVER_PORT
-              value: "9091"
-            - name: SPRING_RSOCKET_SERVER_TRANSPORT
-              value: websocket
-            - name: SPRING_RSOCKET_SERVER_MAPPING_PATH
-              value: /socket
-            - name: DATABASE_CONTAINER_USER
-              value: custom user
-            - name: DATABASE_CONTAINER_PASSWORD
-              value: password123
-            - name: DATABASE_CONTAINER_HOST_AND_PORT
-              value: RELEASE-NAME-db-svc:1433
-            - name: DATABASE_CONTAINER_DATABASE
-              value: test-data
-            - name: DSB_CERTIFICATE_CERTIFICATE_PATH
-              value: /certificates/dsb-test-virksomhetssertifikat.pfx
-            - name: ANSIBLE_CA_CONFIG_PATH
-              value: /config/ansible-ca.pem
-            - name: JAVA_OPTS
-              value: -XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M
-            - name: BPL_JVM_HEAD_ROOM
-              value: "12.34"
-            envFrom:
-            - secretRef:
-                name: secret1
-            - secretRef:
-                name: dsb-certificate-info
-            - configMapRef:
-                name: configMap1
-            - configMapRef:
-                name: RELEASE-NAME-configmap
-            - secretRef:
-                name: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
-            - configMapRef:
-                name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
-            - secretRef:
-                name: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
-            - configMapRef:
-                name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
-            image: wordpress:greatest
-            imagePullPolicy: customValue
-            lifecycle:
-              preStop:
-                exec:
-                  command:
-                  - sh
-                  - -c
-                  - sleep 10
-            livenessProbe:
-              failureThreshold: 20
-              httpGet:
-                path: /actuator/health/liveness
-                port: 81
-              initialDelaySeconds: 15
-              periodSeconds: 15
-            name: RELEASE-NAME-container
-            ports:
-            - containerPort: 80
-              name: web
-            - containerPort: 81
-              name: actuator
-            readinessProbe:
-              failureThreshold: 20
-              httpGet:
-                path: /actuator/health/readiness
-                port: 81
-              initialDelaySeconds: 10
-              periodSeconds: 15
-            resources:
-              limits:
-                cpu: 1
-                memory: 19Mi
-              requests:
-                cpu: 0.3
-                memory: 4Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: true
-              runAsGroup: 3000
-              runAsNonRoot: true
-              runAsUser: 1000
-            volumeMounts:
-            - mountPath: /tmp
-              name: tmp-dir
-            - mountPath: /certificates
-              name: dsb-certificate
-              readOnly: true
-            - mountPath: /config
-              name: ansible-ca
-              readOnly: true
-            - mountPath: /custom/file/paths/are/supported
-              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
-              readOnly: true
-              subPath: bf2727f85b33281f
-            - mountPath: /hardcoded/path/of/secret/as/file
-              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
-              readOnly: true
-              subPath: 5251feedd63c7723
-            - mountPath: /mnt/9e717efb70949021/68db8538e5026d9f
-              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
-              readOnly: true
-              subPath: 68db8538e5026d9f
-            - mountPath: /mnt/127cf7b855142ab1/6ed738c95f993853
-              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
-              readOnly: true
-              subPath: 6ed738c95f993853
-            - mountPath: /secret_in_2_file
-              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
-              readOnly: true
-              subPath: 74575ba0f9ab4322
-            - mountPath: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
-              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
-              readOnly: true
-              subPath: c37bc3a2edadc0ed
+            - env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: chart-testing
+                - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+                  value: "true"
+                - name: SPRING_RSOCKET_SERVER_PORT
+                  value: "9091"
+                - name: SPRING_RSOCKET_SERVER_TRANSPORT
+                  value: websocket
+                - name: SPRING_RSOCKET_SERVER_MAPPING_PATH
+                  value: /socket
+                - name: DATABASE_CONTAINER_USER
+                  value: custom user
+                - name: DATABASE_CONTAINER_PASSWORD
+                  value: password123
+                - name: DATABASE_CONTAINER_HOST_AND_PORT
+                  value: RELEASE-NAME-db-svc:1433
+                - name: DATABASE_CONTAINER_DATABASE
+                  value: test-data
+                - name: DSB_CERTIFICATE_CERTIFICATE_PATH
+                  value: /certificates/dsb-test-virksomhetssertifikat.pfx
+                - name: ANSIBLE_CA_CONFIG_PATH
+                  value: /config/ansible-ca.pem
+                - name: JAVA_OPTS
+                  value: -XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M
+                - name: BPL_JVM_HEAD_ROOM
+                  value: "12.34"
+              envFrom:
+                - secretRef:
+                    name: secret1
+                - secretRef:
+                    name: dsb-certificate-info
+                - configMapRef:
+                    name: configMap1
+                - configMapRef:
+                    name: RELEASE-NAME-configmap
+                - secretRef:
+                    name: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+                - configMapRef:
+                    name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+                - secretRef:
+                    name: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+                - configMapRef:
+                    name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
+              image: wordpress:greatest
+              imagePullPolicy: customValue
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - sleep 10
+              livenessProbe:
+                failureThreshold: 20
+                httpGet:
+                  path: /actuator/health/liveness
+                  port: 81
+                initialDelaySeconds: 15
+                periodSeconds: 15
+              name: RELEASE-NAME-container
+              ports:
+                - containerPort: 80
+                  name: web
+                - containerPort: 81
+                  name: actuator
+              readinessProbe:
+                failureThreshold: 20
+                httpGet:
+                  path: /actuator/health/readiness
+                  port: 81
+                initialDelaySeconds: 10
+                periodSeconds: 15
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 19Mi
+                requests:
+                  cpu: 0.3
+                  memory: 4Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsGroup: 3000
+                runAsNonRoot: true
+                runAsUser: 1000
+              volumeMounts:
+                - mountPath: /tmp
+                  name: tmp-dir
+                - mountPath: /certificates
+                  name: dsb-certificate
+                  readOnly: true
+                - mountPath: /config
+                  name: ansible-ca
+                  readOnly: true
+                - mountPath: /custom/file/paths/are/supported
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: bf2727f85b33281f
+                - mountPath: /hardcoded/path/of/secret/as/file
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: 5251feedd63c7723
+                - mountPath: /mnt/9e717efb70949021/68db8538e5026d9f
+                  name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+                  readOnly: true
+                  subPath: 68db8538e5026d9f
+                - mountPath: /mnt/127cf7b855142ab1/6ed738c95f993853
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: 6ed738c95f993853
+                - mountPath: /secret_in_2_file
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: 74575ba0f9ab4322
+                - mountPath: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+                  name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+                  readOnly: true
+                  subPath: c37bc3a2edadc0ed
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
           volumes:
-          - emptyDir: {}
-            name: tmp-dir
-          - name: dsb-certificate
-            secret:
-              secretName: dsb-certificate-file
-          - configMap:
-              name: ansible-ca-file
-            name: ansible-ca
-          - csi:
-              driver: secrets-store.csi.k8s.io
-              readOnly: true
-              volumeAttributes:
-                secretProviderClass: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
-            name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
-          - csi:
-              driver: secrets-store.csi.k8s.io
-              readOnly: true
-              volumeAttributes:
-                secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
-            name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
+            - emptyDir: {}
+              name: tmp-dir
+            - name: dsb-certificate
+              secret:
+                secretName: dsb-certificate-file
+            - configMap:
+                name: ansible-ca-file
+              name: ansible-ca
+            - csi:
+                driver: secrets-store.csi.k8s.io
+                readOnly: true
+                volumeAttributes:
+                  secretProviderClass: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+              name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
+            - csi:
+                driver: secrets-store.csi.k8s.io
+                readOnly: true
+                volumeAttributes:
+                  secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+              name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
   5: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -262,16 +262,16 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       rules:
-      - host: example.com
-        http:
-          paths:
-          - backend:
-              service:
-                name: RELEASE-NAME
-                port:
-                  number: 80
-            path: /example
-            pathType: Prefix
+        - host: example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: RELEASE-NAME
+                    port:
+                      number: 80
+                path: /example
+                pathType: Prefix
   6: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
@@ -305,12 +305,12 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       ports:
-      - name: web
-        port: 80
-      - name: actuator
-        port: 81
-      - name: websocket
-        port: 9091
+        - name: web
+          port: 80
+        - name: actuator
+          port: 81
+        - name: websocket
+          port: 9091
       selector:
         app: RELEASE-NAME-app
   8: |
@@ -330,10 +330,10 @@ Full manifest should match snapshot:
     spec:
       backendType: azureKeyVault
       data:
-      - key: value_for_password
-        name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
-      - key: value_for_alias
-        name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
+        - key: value_for_password
+          name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
+        - key: value_for_alias
+          name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
       keyVaultName: azure_key_vault_name
   10: |
     apiVersion: kubernetes-client.io/v1
@@ -344,9 +344,9 @@ Full manifest should match snapshot:
     spec:
       backendType: azureKeyVault
       data:
-      - isBinary: true
-        key: vaule_for_certificate
-        name: dsb-test-virksomhetssertifikat.pfx
+        - isBinary: true
+          key: vaule_for_certificate
+          name: dsb-test-virksomhetssertifikat.pfx
       keyVaultName: azure_key_vault_name
   11: |
     apiVersion: monitoring.coreos.com/v1
@@ -358,12 +358,12 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       endpoints:
-      - path: /path/to/prometheus
-        port: actuator
-        scheme: http
+        - path: /path/to/prometheus
+          port: actuator
+          scheme: http
       namespaceSelector:
         matchNames:
-        - NAMESPACE
+          - NAMESPACE
       selector:
         matchLabels:
           app: RELEASE-NAME-service
@@ -374,23 +374,23 @@ Full manifest should match snapshot:
       name: RELEASE-NAME-cr
       namespace: NAMESPACE
     rules:
-    - apiGroups:
-      - ""
-      resources:
-      - nodes
-      verbs:
-      - list
-      - get
-    - apiGroups:
-      - ""
-      - apps
-      resources:
-      - pods
-      - deployments
-      verbs:
-      - list
-      - watch
-      - get
+      - apiGroups:
+          - ""
+        resources:
+          - nodes
+        verbs:
+          - list
+          - get
+      - apiGroups:
+          - ""
+          - apps
+        resources:
+          - pods
+          - deployments
+        verbs:
+          - list
+          - watch
+          - get
   13: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
@@ -402,9 +402,9 @@ Full manifest should match snapshot:
       kind: ClusterRole
       name: RELEASE-NAME-cr
     subjects:
-    - kind: ServiceAccount
-      name: RELEASE-NAME-service-account
-      namespace: NAMESPACE
+      - kind: ServiceAccount
+        name: RELEASE-NAME-service-account
+        namespace: NAMESPACE
   14: |
     apiVersion: v1
     data:
@@ -425,22 +425,18 @@ Full manifest should match snapshot:
     spec:
       parameters:
         keyvaultName: kv-rg00-ss0-render-dev1
-        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName:
-          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n
-          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
-          |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n
-          \   objectType: \"cert\"\n"
+        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
         tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
         usePodIdentity: "false"
         useVMManagedIdentity: "true"
         userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
       provider: azure
       secretObjects:
-      - data:
-        - key: name.of.env.variable.holding.key.in.pem.format
-          objectName: bf2727f85b33281f
-        secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
-        type: Opaque
+        - data:
+            - key: name.of.env.variable.holding.key.in.pem.format
+              objectName: bf2727f85b33281f
+          secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+          type: Opaque
   16: |
     apiVersion: v1
     data:
@@ -459,22 +455,18 @@ Full manifest should match snapshot:
     spec:
       parameters:
         keyvaultName: kv-rg00-ss0-render-dev2
-        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName:
-          \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n
-          \   objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  -
-          |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n
-          \   objectType: \"cert\"\n"
+        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
         tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
         usePodIdentity: "false"
         useVMManagedIdentity: "true"
         userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
       provider: azure
       secretObjects:
-      - data:
-        - key: key_in_2_var
-          objectName: 6ed738c95f993853
-        secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
-        type: Opaque
+        - data:
+            - key: key_in_2_var
+              objectName: 6ed738c95f993853
+          secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+          type: Opaque
   18: |
     apiVersion: v1
     data:
@@ -520,72 +512,72 @@ Minimal manifest should match snapshot:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - RELEASE-NAME-app
-                topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - RELEASE-NAME-app
+                  topologyKey: kubernetes.io/hostname
           containers:
-          - env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: kubernetes
-            envFrom: null
-            image: nginx:latest
-            lifecycle:
-              preStop:
-                exec:
-                  command:
-                  - sh
-                  - -c
-                  - sleep 10
-            livenessProbe:
-              failureThreshold: 20
-              httpGet:
-                path: /actuator/health/liveness
-                port: 8180
-              initialDelaySeconds: 15
-              periodSeconds: 15
-            name: RELEASE-NAME-container
-            ports:
-            - containerPort: 8080
-              name: web
-            - containerPort: 8180
-              name: actuator
-            readinessProbe:
-              failureThreshold: 20
-              httpGet:
-                path: /actuator/health/readiness
-                port: 8180
-              initialDelaySeconds: 10
-              periodSeconds: 15
-            resources:
-              limits:
-                cpu: 2.5
-                memory: 1024Mi
-              requests:
-                cpu: 100m
-                memory: 256Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: true
-              runAsGroup: 3000
-              runAsNonRoot: true
-              runAsUser: 1000
-            volumeMounts:
-            - mountPath: /tmp
-              name: tmp-dir
+            - env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: kubernetes
+              envFrom: null
+              image: nginx:latest
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - sleep 10
+              livenessProbe:
+                failureThreshold: 20
+                httpGet:
+                  path: /actuator/health/liveness
+                  port: 8180
+                initialDelaySeconds: 15
+                periodSeconds: 15
+              name: RELEASE-NAME-container
+              ports:
+                - containerPort: 8080
+                  name: web
+                - containerPort: 8180
+                  name: actuator
+              readinessProbe:
+                failureThreshold: 20
+                httpGet:
+                  path: /actuator/health/readiness
+                  port: 8180
+                initialDelaySeconds: 10
+                periodSeconds: 15
+              resources:
+                limits:
+                  cpu: 2.5
+                  memory: 1024Mi
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsGroup: 3000
+                runAsNonRoot: true
+                runAsUser: 1000
+              volumeMounts:
+                - mountPath: /tmp
+                  name: tmp-dir
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
           volumes:
-          - emptyDir: {}
-            name: tmp-dir
+            - emptyDir: {}
+              name: tmp-dir
   2: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
@@ -619,10 +611,10 @@ Minimal manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       ports:
-      - name: web
-        port: 8080
-      - name: actuator
-        port: 8180
+        - name: web
+          port: 8080
+        - name: actuator
+          port: 8180
       selector:
         app: RELEASE-NAME-app
   4: |

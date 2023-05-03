@@ -8,7 +8,7 @@ tests:
         custom-key: custom value
     asserts:
       - equal:
-          path: spec.template.metadata.annotations.[custom-key]
+          path: spec.template.metadata.annotations["custom-key"]
           value: custom value
   - it: should support overriding default pod annotations
     set:
@@ -16,7 +16,7 @@ tests:
         no.dsb-norge.filebeat/autodiscover-template: "some template"
     asserts:
       - equal:
-          path: spec.template.metadata.annotations.[no.dsb-norge.filebeat/autodiscover-template]
+          path: spec.template.metadata.annotations["no.dsb-norge.filebeat/autodiscover-template"]
           value: "some template"
   - it: should support removing default pod annotations
     set:
@@ -24,15 +24,15 @@ tests:
         no.dsb-norge.filebeat/autodiscover-template: null
     asserts:
       - isNull:
-          path: spec.template.metadata.annotations.[no.dsb-norge.filebeat/autodiscover-template]
+          path: spec.template.metadata.annotations["no.dsb-norge.filebeat/autodiscover-template"]
   - it: should support removing all default pod annotations
     set:
       podAnnotations: null
     asserts:
       - isNull:
-          path: spec.template.metadata.annotations.[apparmor.security.beta.kubernetes.io/pod]
+          path: spec.template.metadata.annotations["apparmor.security.beta.kubernetes.io/pod"]
       - isNull:
-          path: spec.template.metadata.annotations.[no.dsb-norge.filebeat/autodiscover-template]
+          path: spec.template.metadata.annotations["no.dsb-norge.filebeat/autodiscover-template"]
   - it: should not overwrite protected pod annotations
     set:
       podAnnotations:
