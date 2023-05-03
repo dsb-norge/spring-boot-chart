@@ -15,12 +15,12 @@ docker run --pull always -it --rm --name unittest --volume "$(pwd)":"$(pwd)" --w
 
 ### Run unit tests
 ```bash
-docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 charts/*
+docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest charts/*
 ```
 
 ### Update the test snapshots
 ```bash
-docker run --pull always -it --rm --name unittest --volume "$(pwd)":/apps quintush/helm-unittest --helm3 --update-snapshot charts/*
+docker run --user 1001:1001 --pull always -it --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest --update-snapshot charts/*
 ```
 
 ### Debug errors like `error converting YAML to JSON: yaml: line X`

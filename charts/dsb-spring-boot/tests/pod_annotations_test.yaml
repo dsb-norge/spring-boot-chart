@@ -8,7 +8,7 @@ tests:
         custom-key: custom value
     asserts:
       - equal:
-          path: spec.template.metadata.annotations.[custom-key]
+          path: spec.template.metadata.annotations["custom-key"]
           value: custom value
   - it: should support overriding default pod annotations
     set:
@@ -16,7 +16,7 @@ tests:
         co.elastic.logs/json.keys_under_root: "false"
     asserts:
       - equal:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+          path: spec.template.metadata.annotations["co.elastic.logs/json.keys_under_root"]
           value: "false"
   - it: should support removing default pod annotations
     set:
@@ -24,19 +24,19 @@ tests:
         co.elastic.logs/json.keys_under_root: null
     asserts:
       - isNull:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+          path: spec.template.metadata.annotations["co.elastic.logs/json.keys_under_root"]
   - it: should support removing all default pod annotations
     set:
       podAnnotations: null
     asserts:
       - isNull:
-          path: spec.template.metadata.annotations.[apparmor.security.beta.kubernetes.io/pod]
+          path: spec.template.metadata.annotations["apparmor.security.beta.kubernetes.io/pod"]
       - isNull:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.keys_under_root]
+          path: spec.template.metadata.annotations["co.elastic.logs/json.keys_under_root"]
       - isNull:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.overwrite_keys]
+          path: spec.template.metadata.annotations["co.elastic.logs/json.overwrite_keys"]
       - isNull:
-          path: spec.template.metadata.annotations.[co.elastic.logs/json.add_error_key]
+          path: spec.template.metadata.annotations["co.elastic.logs/json.add_error_key"]
   - it: should not overwrite protected pod annotations
     set:
       podAnnotations:

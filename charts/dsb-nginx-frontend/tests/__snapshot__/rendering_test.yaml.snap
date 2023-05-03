@@ -45,109 +45,109 @@ Full manifest should match snapshot:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - frontend1
-                topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - frontend1
+                  topologyKey: kubernetes.io/hostname
           containers:
-          - env:
-            - name: MANAGEMENT_LISTEN_PORT
-              value: "8180"
-            - name: LOC_SOCKET_PROXY_PASS_HOST
-              value: ws://websocket.host.com:9091
-            - name: LOC_API_PROXY_READ_TIMEOUT
-              value: "120"
-            - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: "120"
-            - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: "120"
-            envFrom:
-            - secretRef:
-                name: secret1
-            - configMapRef:
-                name: configMap1
-            - configMapRef:
-                name: frontend1
-            image: wordpress:greatest
-            livenessProbe:
-              httpGet:
-                path: /
-                port: 80
-              initialDelaySeconds: 5
-            name: frontend1
-            ports:
-            - containerPort: 80
-              name: web
-            - containerPort: 8180
-              name: mgmt
-            readinessProbe:
-              httpGet:
-                path: /
-                port: 80
-              initialDelaySeconds: 2
-            resources:
-              limits:
-                cpu: 1
-                memory: 19Mi
-              requests:
-                cpu: 0.3
-                memory: 4Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: false
-              runAsGroup: 101
-              runAsUser: 101
-            volumeMounts:
-            - mountPath: /mnt/dsb/key-vault
-              name: my-key-vault-volume
-              readOnly: true
-            - mountPath: /mnt/dsb/key-second-vault
-              name: my-key-vault-volume-2
-              readOnly: true
-          - args:
-            - -nginx.scrape-uri=http://localhost:8180/status
-            - -prometheus.const-labels=nginxapp=RELEASE-NAME
-            image: nginx/nginx-prometheus-exporter:0.10.0
-            name: frontend1-mgmt
-            ports:
-            - containerPort: 9113
-              name: prometheus
-              protocol: TCP
-            resources:
-              limits:
-                cpu: 1
-                memory: 19Mi
-              requests:
-                cpu: 0.3
-                memory: 4Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: true
-              runAsGroup: 1000
-              runAsNonRoot: true
-              runAsUser: 1000
+            - env:
+                - name: MANAGEMENT_LISTEN_PORT
+                  value: "8180"
+                - name: LOC_SOCKET_PROXY_PASS_HOST
+                  value: ws://websocket.host.com:9091
+                - name: LOC_API_PROXY_READ_TIMEOUT
+                  value: "120"
+                - name: LOC_API_PROXY_CONNECT_TIMEOUT
+                  value: "120"
+                - name: LOC_API_PROXY_SEND_TIMEOUT
+                  value: "120"
+              envFrom:
+                - secretRef:
+                    name: secret1
+                - configMapRef:
+                    name: configMap1
+                - configMapRef:
+                    name: frontend1
+              image: wordpress:greatest
+              livenessProbe:
+                httpGet:
+                  path: /
+                  port: 80
+                initialDelaySeconds: 5
+              name: frontend1
+              ports:
+                - containerPort: 80
+                  name: web
+                - containerPort: 8180
+                  name: mgmt
+              readinessProbe:
+                httpGet:
+                  path: /
+                  port: 80
+                initialDelaySeconds: 2
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 19Mi
+                requests:
+                  cpu: 0.3
+                  memory: 4Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: false
+                runAsGroup: 101
+                runAsUser: 101
+              volumeMounts:
+                - mountPath: /mnt/dsb/key-vault
+                  name: my-key-vault-volume
+                  readOnly: true
+                - mountPath: /mnt/dsb/key-second-vault
+                  name: my-key-vault-volume-2
+                  readOnly: true
+            - args:
+                - -nginx.scrape-uri=http://localhost:8180/status
+                - -prometheus.const-labels=nginxapp=RELEASE-NAME
+              image: nginx/nginx-prometheus-exporter:0.10.0
+              name: frontend1-mgmt
+              ports:
+                - containerPort: 9113
+                  name: prometheus
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 19Mi
+                requests:
+                  cpu: 0.3
+                  memory: 4Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsGroup: 1000
+                runAsNonRoot: true
+                runAsUser: 1000
           nodeSelector:
             NodePool: workers
           volumes:
-          - csi:
-              driver: secrets-store.csi.k8s.io
-              readOnly: true
-              volumeAttributes:
-                secretProviderClass: my-key-vault-from-azure
-            name: my-key-vault-volume
-          - emptyDir: {}
-            name: my-empty-dir
+            - csi:
+                driver: secrets-store.csi.k8s.io
+                readOnly: true
+                volumeAttributes:
+                  secretProviderClass: my-key-vault-from-azure
+              name: my-key-vault-volume
+            - emptyDir: {}
+              name: my-empty-dir
   3: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
@@ -156,16 +156,16 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       rules:
-      - host: example.com
-        http:
-          paths:
-          - backend:
-              service:
-                name: frontend1
-                port:
-                  number: 80
-            path: /example
-            pathType: Prefix
+        - host: example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend1
+                    port:
+                      number: 80
+                path: /example
+                pathType: Prefix
   4: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
@@ -197,12 +197,12 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       ports:
-      - name: web
-        port: 80
-      - name: status
-        port: 8180
-      - name: prometheus
-        port: 9113
+        - name: web
+          port: 80
+        - name: status
+          port: 8180
+        - name: prometheus
+          port: 9113
       selector:
         app: frontend1
   6: |
@@ -215,11 +215,11 @@ Full manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       endpoints:
-      - interval: 30s
-        port: prometheus
+        - interval: 30s
+          port: prometheus
       namespaceSelector:
         matchNames:
-        - NAMESPACE
+          - NAMESPACE
       selector:
         matchLabels:
           app: frontend1-service
@@ -258,85 +258,85 @@ Minimal manifest should match snapshot:
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - frontend
-                topologyKey: kubernetes.io/hostname
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - frontend
+                  topologyKey: kubernetes.io/hostname
           containers:
-          - env:
-            - name: MANAGEMENT_LISTEN_PORT
-              value: "8180"
-            - name: LOC_SOCKET_PROXY_PASS_HOST
-              value: null
-            - name: LOC_API_PROXY_READ_TIMEOUT
-              value: "120"
-            - name: LOC_API_PROXY_CONNECT_TIMEOUT
-              value: "120"
-            - name: LOC_API_PROXY_SEND_TIMEOUT
-              value: "120"
-            envFrom: null
-            image: nginx:latest
-            livenessProbe:
-              httpGet:
-                path: /
-                port: 8080
-              initialDelaySeconds: 5
-            name: frontend
-            ports:
-            - containerPort: 8080
-              name: web
-            - containerPort: 8180
-              name: mgmt
-            readinessProbe:
-              httpGet:
-                path: /
-                port: 8080
-              initialDelaySeconds: 2
-            resources:
-              limits:
-                cpu: 100m
-                memory: 256Mi
-              requests:
-                cpu: 50m
-                memory: 128Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: false
-              runAsGroup: 101
-              runAsUser: 101
-          - args:
-            - -nginx.scrape-uri=http://localhost:8180/status
-            - -prometheus.const-labels=nginxapp=RELEASE-NAME
-            image: nginx/nginx-prometheus-exporter:0.10.0
-            name: frontend-mgmt
-            ports:
-            - containerPort: 9113
-              name: prometheus
-              protocol: TCP
-            resources:
-              limits:
-                cpu: 50m
-                memory: 128Mi
-              requests:
-                cpu: 10m
-                memory: 64Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                - ALL
-              privileged: false
-              readOnlyRootFilesystem: true
-              runAsGroup: 1000
-              runAsNonRoot: true
-              runAsUser: 1000
+            - env:
+                - name: MANAGEMENT_LISTEN_PORT
+                  value: "8180"
+                - name: LOC_SOCKET_PROXY_PASS_HOST
+                  value: null
+                - name: LOC_API_PROXY_READ_TIMEOUT
+                  value: "120"
+                - name: LOC_API_PROXY_CONNECT_TIMEOUT
+                  value: "120"
+                - name: LOC_API_PROXY_SEND_TIMEOUT
+                  value: "120"
+              envFrom: null
+              image: nginx:latest
+              livenessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 5
+              name: frontend
+              ports:
+                - containerPort: 8080
+                  name: web
+                - containerPort: 8180
+                  name: mgmt
+              readinessProbe:
+                httpGet:
+                  path: /
+                  port: 8080
+                initialDelaySeconds: 2
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 256Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: false
+                runAsGroup: 101
+                runAsUser: 101
+            - args:
+                - -nginx.scrape-uri=http://localhost:8180/status
+                - -prometheus.const-labels=nginxapp=RELEASE-NAME
+              image: nginx/nginx-prometheus-exporter:0.10.0
+              name: frontend-mgmt
+              ports:
+                - containerPort: 9113
+                  name: prometheus
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 128Mi
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsGroup: 1000
+                runAsNonRoot: true
+                runAsUser: 1000
           nodeSelector:
             NodePool: workers
   2: |
@@ -370,12 +370,12 @@ Minimal manifest should match snapshot:
       namespace: NAMESPACE
     spec:
       ports:
-      - name: web
-        port: 8080
-      - name: status
-        port: 8180
-      - name: prometheus
-        port: 9113
+        - name: web
+          port: 8080
+        - name: status
+          port: 8180
+        - name: prometheus
+          port: 9113
       selector:
         app: frontend
 Support multiple ingress hosts:
@@ -387,36 +387,36 @@ Support multiple ingress hosts:
       namespace: NAMESPACE
     spec:
       rules:
-      - host: example.com
-        http:
-          paths:
-          - backend:
-              service:
-                name: frontend
-                port:
-                  number: 8080
-            path: /
-            pathType: Prefix
-      - host: www.example.com
-        http:
-          paths:
-          - backend:
-              service:
-                name: frontend
-                port:
-                  number: 8080
-            path: /
-            pathType: Prefix
-      - host: admin.example.com
-        http:
-          paths:
-          - backend:
-              service:
-                name: frontend
-                port:
-                  number: 8080
-            path: /secret
-            pathType: Prefix
+        - host: example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /
+                pathType: Prefix
+        - host: www.example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /
+                pathType: Prefix
+        - host: admin.example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /secret
+                pathType: Prefix
   2: |
     apiVersion: v1
     kind: Service
@@ -438,10 +438,10 @@ Support multiple ingress hosts:
       namespace: NAMESPACE
     spec:
       ports:
-      - name: web
-        port: 8080
-      - name: status
-        port: 8180
+        - name: web
+          port: 8080
+        - name: status
+          port: 8180
       selector:
         app: frontend
 should render default with PodDisruptionBudget and should match snapshot:
