@@ -16,6 +16,38 @@ dashboard:
   component: "backend-api"
   partOf: "verification-stuff"
 
+config:
+  spring:
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            jwk-set-uri: "https://www.dsb.no"
+        client:
+          provider:
+            keycloak-service-account:
+              authorization-uri: "https://www.dsb.no"
+              token-uri: "https://www.dsb.no"
+              jwk-set-uri: "https://www.dsb.no"
+          registration:
+            service-account-test-application:
+              provider: keycloak-service-account
+              client-id: example-application
+              client-secret: not_used
+              authorization-grant-type: client_credentials
+  frontend-config:
+    keycloak-config:
+      realm: example
+      url: "https://www.dsb.no"
+      clientId: example-application-frontend
+      logoutRedirectUri: "https://www.dsb.no"
+  testapp:
+    self-uri: "http://localhost:8080"
+    svc-account-client-registration-id: "service-account-test-application"
+    jwk-set-uri:
+      example: "https://www.dsb.no"
+      ServiceAccount: "https://www.dsb.no"
+
 rbac:
   enabled: true
   roles:
