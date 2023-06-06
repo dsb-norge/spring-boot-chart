@@ -1,5 +1,70 @@
 Full manifest should match snapshot:
   1: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: dsb-certificate-info
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+        - key: value_for_password
+          name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
+        - key: value_for_alias
+          name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
+      keyVaultName: azure_key_vault_name
+  2: |
+    apiVersion: kubernetes-client.io/v1
+    kind: ExternalSecret
+    metadata:
+      name: dsb-certificate-file
+      namespace: NAMESPACE
+    spec:
+      backendType: azureKeyVault
+      data:
+        - isBinary: true
+          key: vaule_for_certificate
+          name: dsb-test-virksomhetssertifikat.pfx
+      keyVaultName: azure_key_vault_name
+  3: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: RELEASE-NAME-cr
+      namespace: NAMESPACE
+    rules:
+      - apiGroups:
+          - ""
+        resources:
+          - nodes
+        verbs:
+          - list
+          - get
+      - apiGroups:
+          - ""
+          - apps
+        resources:
+          - pods
+          - deployments
+        verbs:
+          - list
+          - watch
+          - get
+  4: |
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: RELEASE-NAME-crb
+      namespace: NAMESPACE
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: RELEASE-NAME-cr
+    subjects:
+      - kind: ServiceAccount
+        name: RELEASE-NAME-service-account
+        namespace: NAMESPACE
+  5: |
     apiVersion: v1
     data:
       root.key1: value1
@@ -8,7 +73,66 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-configmap
       namespace: NAMESPACE
-  2: |
+  6: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev1
+        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
+      provider: azure
+      secretObjects:
+        - data:
+            - key: name.of.env.variable.holding.key.in.pem.format
+              objectName: bf2727f85b33281f
+          secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+          type: Opaque
+  7: |
+    apiVersion: v1
+    data:
+      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
+      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+  8: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev2
+        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
+      provider: azure
+      secretObjects:
+        - data:
+            - key: key_in_2_var
+              objectName: 6ed738c95f993853
+          secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+          type: Opaque
+  9: |
+    apiVersion: v1
+    data:
+      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+  10: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -48,7 +172,7 @@ Full manifest should match snapshot:
           hostname: RELEASE-NAME-db-svc
           nodeSelector:
             NodePool: workers
-  3: |
+  11: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -61,7 +185,7 @@ Full manifest should match snapshot:
           targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
-  4: |
+  12: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -254,7 +378,7 @@ Full manifest should match snapshot:
                 volumeAttributes:
                   secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
               name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
-  5: |
+  13: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -272,7 +396,18 @@ Full manifest should match snapshot:
                       number: 80
                 path: /example
                 pathType: Prefix
-  6: |
+  14: |
+    apiVersion: v1
+    data:
+      ansible-ca.pem: |
+        -----BEGIN CERTIFICATE-----
+        MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
+        -----END CERTIFICATE-----
+    kind: ConfigMap
+    metadata:
+      name: ansible-ca-file
+      namespace: NAMESPACE
+  15: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
@@ -282,7 +417,7 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-app
-  7: |
+  16: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -313,7 +448,7 @@ Full manifest should match snapshot:
           port: 9091
       selector:
         app: RELEASE-NAME-app
-  8: |
+  17: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -321,34 +456,7 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  9: |
-    apiVersion: kubernetes-client.io/v1
-    kind: ExternalSecret
-    metadata:
-      name: dsb-certificate-info
-      namespace: NAMESPACE
-    spec:
-      backendType: azureKeyVault
-      data:
-        - key: value_for_password
-          name: DSB_CERTIFICATE_CERTIFICATE_KEYSTORE
-        - key: value_for_alias
-          name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
-      keyVaultName: azure_key_vault_name
-  10: |
-    apiVersion: kubernetes-client.io/v1
-    kind: ExternalSecret
-    metadata:
-      name: dsb-certificate-file
-      namespace: NAMESPACE
-    spec:
-      backendType: azureKeyVault
-      data:
-        - isBinary: true
-          key: vaule_for_certificate
-          name: dsb-test-virksomhetssertifikat.pfx
-      keyVaultName: azure_key_vault_name
-  11: |
+  18: |
     apiVersion: monitoring.coreos.com/v1
     kind: ServiceMonitor
     metadata:
@@ -367,114 +475,6 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-service
-  12: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      name: RELEASE-NAME-cr
-      namespace: NAMESPACE
-    rules:
-      - apiGroups:
-          - ""
-        resources:
-          - nodes
-        verbs:
-          - list
-          - get
-      - apiGroups:
-          - ""
-          - apps
-        resources:
-          - pods
-          - deployments
-        verbs:
-          - list
-          - watch
-          - get
-  13: |
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      name: RELEASE-NAME-crb
-      namespace: NAMESPACE
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: RELEASE-NAME-cr
-    subjects:
-      - kind: ServiceAccount
-        name: RELEASE-NAME-service-account
-        namespace: NAMESPACE
-  14: |
-    apiVersion: v1
-    data:
-      ansible-ca.pem: |
-        -----BEGIN CERTIFICATE-----
-        MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
-        -----END CERTIFICATE-----
-    kind: ConfigMap
-    metadata:
-      name: ansible-ca-file
-      namespace: NAMESPACE
-  15: |
-    apiVersion: secrets-store.csi.x-k8s.io/v1
-    kind: SecretProviderClass
-    metadata:
-      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
-      namespace: NAMESPACE
-    spec:
-      parameters:
-        keyvaultName: kv-rg00-ss0-render-dev1
-        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
-        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
-        usePodIdentity: "false"
-        useVMManagedIdentity: "true"
-        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
-      provider: azure
-      secretObjects:
-        - data:
-            - key: name.of.env.variable.holding.key.in.pem.format
-              objectName: bf2727f85b33281f
-          secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
-          type: Opaque
-  16: |
-    apiVersion: v1
-    data:
-      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
-      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
-    kind: ConfigMap
-    metadata:
-      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
-      namespace: NAMESPACE
-  17: |
-    apiVersion: secrets-store.csi.x-k8s.io/v1
-    kind: SecretProviderClass
-    metadata:
-      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
-      namespace: NAMESPACE
-    spec:
-      parameters:
-        keyvaultName: kv-rg00-ss0-render-dev2
-        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
-        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
-        usePodIdentity: "false"
-        useVMManagedIdentity: "true"
-        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
-      provider: azure
-      secretObjects:
-        - data:
-            - key: key_in_2_var
-              objectName: 6ed738c95f993853
-          secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
-          type: Opaque
-  18: |
-    apiVersion: v1
-    data:
-      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
-    kind: ConfigMap
-    metadata:
-      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
-      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: apps/v1
