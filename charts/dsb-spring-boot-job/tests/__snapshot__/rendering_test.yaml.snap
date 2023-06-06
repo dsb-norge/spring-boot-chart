@@ -134,6 +134,65 @@ Full manifest should match snapshot:
       successfulJobsHistoryLimit: 2
       suspend: false
   3: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev1
+        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
+      provider: azure
+      secretObjects:
+        - data:
+            - key: name.of.env.variable.holding.key.in.pem.format
+              objectName: bf2727f85b33281f
+          secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
+          type: Opaque
+  4: |
+    apiVersion: v1
+    data:
+      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
+      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
+      namespace: NAMESPACE
+  5: |
+    apiVersion: secrets-store.csi.x-k8s.io/v1
+    kind: SecretProviderClass
+    metadata:
+      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+    spec:
+      parameters:
+        keyvaultName: kv-rg00-ss0-render-dev2
+        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
+        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
+        usePodIdentity: "false"
+        useVMManagedIdentity: "true"
+        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
+      provider: azure
+      secretObjects:
+        - data:
+            - key: key_in_2_var
+              objectName: 6ed738c95f993853
+          secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
+          type: Opaque
+  6: |
+    apiVersion: v1
+    data:
+      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
+      namespace: NAMESPACE
+  7: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -171,7 +230,7 @@ Full manifest should match snapshot:
                   cpu: "0.2"
                   memory: 1024Mi
           hostname: RELEASE-NAME-db-svc
-  4: |
+  8: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -184,65 +243,6 @@ Full manifest should match snapshot:
           targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
-  5: |
-    apiVersion: secrets-store.csi.x-k8s.io/v1
-    kind: SecretProviderClass
-    metadata:
-      name: RELEASE-NAME-kv-provider-5d7246df-kv-rg00-ss0-render-dev1
-      namespace: NAMESPACE
-    spec:
-      parameters:
-        keyvaultName: kv-rg00-ss0-render-dev1
-        objects: "array:        \n  - |\n    objectAlias: \"bf2727f85b33281f\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"5251feedd63c7723\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"68db8538e5026d9f\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
-        tenantID: b2255c28-9e28-4641-a6bc-b63391d59141
-        usePodIdentity: "false"
-        useVMManagedIdentity: "true"
-        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59142
-      provider: azure
-      secretObjects:
-        - data:
-            - key: name.of.env.variable.holding.key.in.pem.format
-              objectName: bf2727f85b33281f
-          secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
-          type: Opaque
-  6: |
-    apiVersion: v1
-    data:
-      name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
-      name.of.env.variable.holding.path.to.key.as.file: /custom/file/paths/are/supported
-    kind: ConfigMap
-    metadata:
-      name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
-      namespace: NAMESPACE
-  7: |
-    apiVersion: secrets-store.csi.x-k8s.io/v1
-    kind: SecretProviderClass
-    metadata:
-      name: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
-      namespace: NAMESPACE
-    spec:
-      parameters:
-        keyvaultName: kv-rg00-ss0-render-dev2
-        objects: "array:        \n  - |\n    objectAlias: \"6ed738c95f993853\"\n    objectName: \"name-of-key-in-vault\"\n    objectType: \"key\"\n  - |\n    objectAlias: \"74575ba0f9ab4322\"\n    objectName: \"name-of-secret-in-vault\"\n    objectType: \"secret\"\n  - |\n    objectAlias: \"c37bc3a2edadc0ed\"\n    objectName: \"name-of-cert-in-vault\"\n    objectType: \"cert\"\n"
-        tenantID: b2255c28-9e28-4641-a6bc-b63391d59143
-        usePodIdentity: "false"
-        useVMManagedIdentity: "true"
-        userAssignedIdentityID: b2255c28-9e28-4641-a6bc-b63391d59144
-      provider: azure
-      secretObjects:
-        - data:
-            - key: key_in_2_var
-              objectName: 6ed738c95f993853
-          secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
-          type: Opaque
-  8: |
-    apiVersion: v1
-    data:
-      cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
-    kind: ConfigMap
-    metadata:
-      name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
-      namespace: NAMESPACE
 Minimal manifest should match snapshot:
   1: |
     apiVersion: batch/v1
