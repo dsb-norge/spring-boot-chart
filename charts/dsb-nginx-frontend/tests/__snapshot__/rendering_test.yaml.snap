@@ -152,11 +152,23 @@ Full manifest should match snapshot:
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-www-to-non-www@kubernetescrd
       name: frontend1
       namespace: NAMESPACE
     spec:
       rules:
         - host: example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend1
+                    port:
+                      number: 80
+                path: /example
+                pathType: Prefix
+        - host: www.example.com
           http:
             paths:
               - backend:
@@ -383,6 +395,8 @@ Support multiple ingress hosts:
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-www-to-non-www@kubernetescrd
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -407,7 +421,37 @@ Support multiple ingress hosts:
                       number: 8080
                 path: /
                 pathType: Prefix
+        - host: www.example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /
+                pathType: Prefix
+        - host: www.www.example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /
+                pathType: Prefix
         - host: admin.example.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: frontend
+                    port:
+                      number: 8080
+                path: /secret
+                pathType: Prefix
+        - host: www.admin.example.com
           http:
             paths:
               - backend:
