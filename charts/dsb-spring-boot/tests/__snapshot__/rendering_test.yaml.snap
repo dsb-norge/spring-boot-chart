@@ -146,7 +146,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=4.2.0_config-hash=92a40549d0ad5b5b01b301d62056f2b80bd139e726b59d90f9787f4137e46520
+            checksum: chart-version=4.2.1_config-hash=bacf3742e0809c690e4b08e0f080f1c1aa74007c89e6025d980f2f086fd6021e
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -204,7 +204,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.2.0_config-hash=70ee77ee1ddebe13a0f9e4e91af4bf085cc0d6e1ff031e2814d67356e6c02bf5
+            checksum: chart-version=4.2.1_config-hash=70ee77ee1ddebe13a0f9e4e91af4bf085cc0d6e1ff031e2814d67356e6c02bf5
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -216,9 +216,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-spring-boot-4.2.0
+            helm.sh/chart: dsb-spring-boot-4.2.1
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.2.0
+            helm.sh/chart-version: 4.2.1
         spec:
           affinity:
             podAntiAffinity:
@@ -430,10 +430,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 4.2.0
-        helm.sh/chart: dsb-spring-boot-4.2.0
+        chart-version: 4.2.1
+        helm.sh/chart: dsb-spring-boot-4.2.1
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.2.0
+        helm.sh/chart-version: 4.2.1
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -493,7 +493,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.2.0_config-hash=73d6806c42f5255bab4720db975a591808385b27c7596fe6cc09e34faf84046e
+            checksum: chart-version=4.2.1_config-hash=73d6806c42f5255bab4720db975a591808385b27c7596fe6cc09e34faf84046e
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -505,9 +505,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-spring-boot-4.2.0
+            helm.sh/chart: dsb-spring-boot-4.2.1
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.2.0
+            helm.sh/chart-version: 4.2.1
         spec:
           affinity:
             podAntiAffinity:
@@ -601,10 +601,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 4.2.0
-        helm.sh/chart: dsb-spring-boot-4.2.0
+        chart-version: 4.2.1
+        helm.sh/chart: dsb-spring-boot-4.2.1
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.2.0
+        helm.sh/chart-version: 4.2.1
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
