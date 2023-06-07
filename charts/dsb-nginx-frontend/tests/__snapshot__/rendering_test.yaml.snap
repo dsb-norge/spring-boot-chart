@@ -28,7 +28,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.20_config-hash=3a9055d76e95751807aeb625011d29d84c0be4fe3d1e5d6271433471853c3324
+            checksum: chart-version=2.1.21_config-hash=3a9055d76e95751807aeb625011d29d84c0be4fe3d1e5d6271433471853c3324
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -38,9 +38,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-nginx-frontend-2.1.20
+            helm.sh/chart: dsb-nginx-frontend-2.1.21
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.20
+            helm.sh/chart-version: 2.1.21
         spec:
           affinity:
             podAntiAffinity:
@@ -201,10 +201,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.20
-        helm.sh/chart: dsb-nginx-frontend-2.1.20
+        chart-version: 2.1.21
+        helm.sh/chart: dsb-nginx-frontend-2.1.21
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.20
+        helm.sh/chart-version: 2.1.21
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -253,7 +253,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.20_config-hash=d67a2def2f4404d447a91b1999eded45fb9f35f40c71e17d06d7a83b05ad0920
+            checksum: chart-version=2.1.21_config-hash=d67a2def2f4404d447a91b1999eded45fb9f35f40c71e17d06d7a83b05ad0920
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -263,9 +263,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-nginx-frontend-2.1.20
+            helm.sh/chart: dsb-nginx-frontend-2.1.21
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.20
+            helm.sh/chart-version: 2.1.21
         spec:
           affinity:
             podAntiAffinity:
@@ -374,10 +374,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.20
-        helm.sh/chart: dsb-nginx-frontend-2.1.20
+        chart-version: 2.1.21
+        helm.sh/chart: dsb-nginx-frontend-2.1.21
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.20
+        helm.sh/chart-version: 2.1.21
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -474,10 +474,10 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.20
-        helm.sh/chart: dsb-nginx-frontend-2.1.20
+        chart-version: 2.1.21
+        helm.sh/chart: dsb-nginx-frontend-2.1.21
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.20
+        helm.sh/chart-version: 2.1.21
       name: frontend
       namespace: NAMESPACE
     spec:
