@@ -80,6 +80,7 @@ tests:
       cpu_limit: "1"
       java_opts: "-XX:MaxDirectMemorySize=256M -XX:MaxMetaspaceSize=128M"
       jvm_head_room: 12.34
+      lang: "no_NO.UTF-8"
       database_container:
         enabled: true
         image: "test-db:v1"

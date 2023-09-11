@@ -55,6 +55,8 @@ spec:
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: {{ .Values.springProfiles | quote }}
+                - name: LANG
+                  value: {{ .Values.lang | quote }}
               {{- if .Values.database_container.enabled }}
                 - name: DATABASE_CONTAINER_USER
                   value: {{ .Values.database_container.user | quote }}

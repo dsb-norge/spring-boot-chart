@@ -135,6 +135,9 @@ memory_limit: "1024Mi"
 cpu_request: "100m"
 cpu_limit: "2.5"
 
+# The value which will populate the LANG environment variable in the pod
+lang: "en_US.UTF-8"
+
 # If this is enabled, a docker image with a mssql database is created.
 # The following env variables are then added to the pod:
 # DATABASE_CONTAINER_USER, DATABASE_CONTAINER_PASSWORD, DATABASE_CONTAINER_HOST_AND_PORT and DATABASE_CONTAINER_DATABASE

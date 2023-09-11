@@ -31,7 +31,7 @@ Full manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.1.1_config-hash=e4a195d47108081f462ed2186e930730cc6bea90255b0e28ab46ac212d8ae0dd
+                checksum: chart-version=2.1.2_config-hash=3b6fa61f25ca20dbd2847b678e0aad03340abe87a6dc8c2f4d8ee7ffeb17e12b
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -42,6 +42,8 @@ Full manifest should match snapshot:
                 - env:
                     - name: SPRING_PROFILES_ACTIVE
                       value: chart-testing
+                    - name: LANG
+                      value: no_NO.UTF-8
                     - name: DATABASE_CONTAINER_USER
                       value: custom user
                     - name: DATABASE_CONTAINER_PASSWORD
@@ -206,7 +208,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=2.1.1_config-hash=736b869424567db8ec7cf1fa8633f19ed61ae1375ee91d31397f167d3a450440
+            checksum: chart-version=2.1.2_config-hash=a10e0406b7dd56070480f3fce25894bf470a96e4d4f955a03197588f571fb0e5
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -265,7 +267,7 @@ Minimal manifest should match snapshot:
             metadata:
               annotations:
                 apparmor.security.beta.kubernetes.io/pod: runtime/default
-                checksum: chart-version=2.1.1_config-hash=c37e837d369a2b77b4804e4d73a1bd4364d5bead86c38a0a544c852e61ff43a5
+                checksum: chart-version=2.1.2_config-hash=531b4e17908ce1e3edbed0307237e1d030e83345f1d2a983eede490d0d59351e
                 co.elastic.logs/json.add_error_key: "true"
                 co.elastic.logs/json.keys_under_root: "true"
                 co.elastic.logs/json.overwrite_keys: "true"
@@ -276,6 +278,8 @@ Minimal manifest should match snapshot:
                 - env:
                     - name: SPRING_PROFILES_ACTIVE
                       value: kubernetes
+                    - name: LANG
+                      value: en_US.UTF-8
                   envFrom: null
                   image: nginx:latest
                   name: RELEASE-NAME-job

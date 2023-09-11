@@ -173,6 +173,9 @@ database_container:
 
 java_opts:
 
+# The value which will populate the LANG environment variable in the pod
+lang: "en_US.UTF-8"
+
 # Headroom to specify to JVM memory calculator
 # Percentage of total memory available which will be left unallocated to cover JVM overhead.
 # Default is not specified ie. use paketo default.
