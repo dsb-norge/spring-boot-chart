@@ -84,6 +84,8 @@ spec:
           env:
             - name: MANAGEMENT_LISTEN_PORT
               value: "8180"
+            - name: LANG
+              value: {{ .Values.lang | quote }}
             {{- if (not (eq (toString .Values.websocket.enabled) "true")) }}
             - name: LOC_SOCKET_PROXY_PASS_HOST
               value: {{ .Values.config.LOC_API_PROXY_PASS_HOST }}

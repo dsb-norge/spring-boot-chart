@@ -95,6 +95,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.springProfiles | quote }}
+            - name: LANG
+              value: {{ .Values.lang | quote }}
             {{- if (not (eq (toString .Values.prometheus_enabled) "false")) }}
             - name: MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
               value: {{ .Values.prometheus_enabled | quote }}

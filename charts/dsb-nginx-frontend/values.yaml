@@ -107,3 +107,6 @@ dashboard: {}
 websocket:
   enabled: false
   path: /
+
+# The value which will populate the LANG environment variable in the pod
+lang: "en_US.UTF-8"
