@@ -2,6 +2,7 @@ Full manifest should match snapshot:
   1: |
     apiVersion: v1
     data:
+      CLIENT_MAX_BODY_SIZE: 20M
       LOC_API_PROXY_PASS_HOST: https://www.dsb.no
       root.key1: value1
       root.key2: value2
@@ -28,7 +29,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.23_config-hash=deec6cc5b4141ae5c1135f9bc388be722320e464267246c44967bda2c755e346
+            checksum: chart-version=2.1.23_config-hash=9360d889f5ea27c2712db021a1316cf8686660b8004af9a7cd898fb5ad79aca5
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -66,6 +67,8 @@ Full manifest should match snapshot:
                   value: "120"
                 - name: LOC_API_PROXY_SEND_TIMEOUT
                   value: "120"
+                - name: CLIENT_MAX_BODY_SIZE
+                  value: 20M
               envFrom:
                 - secretRef:
                     name: secret1
@@ -255,7 +258,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.23_config-hash=95cf2e1baba81994b289dbda14a7ff62a402fc79d98d673fcb1020171fb62df6
+            checksum: chart-version=2.1.23_config-hash=084e8c6b5883b391e634f9048b27b54fdc3f0206bb9f9b95ae0806a71f4cbaa7
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -293,6 +296,8 @@ Minimal manifest should match snapshot:
                   value: "120"
                 - name: LOC_API_PROXY_SEND_TIMEOUT
                   value: "120"
+                - name: CLIENT_MAX_BODY_SIZE
+                  value: 20M
               envFrom: null
               image: nginx:latest
               livenessProbe:

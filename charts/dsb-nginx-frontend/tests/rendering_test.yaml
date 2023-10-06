@@ -44,6 +44,7 @@ tests:
       resourceName: "frontend1"
       config:
         LOC_API_PROXY_PASS_HOST: "https://www.dsb.no"
+        CLIENT_MAX_BODY_SIZE: "20M"
         root:
           key1: value1
           key2: value2
