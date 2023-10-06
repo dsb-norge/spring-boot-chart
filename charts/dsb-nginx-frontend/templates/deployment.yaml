@@ -99,6 +99,8 @@ spec:
               value: "{{ .Values.proxy_connect_timeout }}"
             - name: LOC_API_PROXY_SEND_TIMEOUT
               value: "{{ .Values.proxy_send_timeout }}"
+            - name: CLIENT_MAX_BODY_SIZE
+              value: "{{ .Values.client_max_body_size }}"
           envFrom:
           {{- range .Values.secretRefs }}
             - secretRef:
