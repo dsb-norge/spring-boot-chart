@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   dsb-nginx-frontend:
   - apiVersion: v2
+    created: "2023-10-10T06:03:52.572582773Z"
+    description: A Helm chart for nginx frontend containers on Kubernetes
+    digest: b7785c861167b113764b6441e9a676fa2de24a1ac52a02229e86c694953ca63d
+    name: dsb-nginx-frontend
+    type: application
+    urls:
+    - https://github.com/dsb-norge/helm-charts/releases/download/dsb-nginx-frontend-2.1.25/dsb-nginx-frontend-2.1.25.tgz
+    version: 2.1.25
+  - apiVersion: v2
     created: "2023-10-09T07:20:40.423428423Z"
     description: A Helm chart for nginx frontend containers on Kubernetes
     digest: ed69f0f269fb9fe7ca6f88e16667ebc42ae2ab2c6a9a676ba5c7e619a799ff17
@@ -876,4 +885,4 @@ entries:
     urls:
     - https://github.com/dsb-norge/spring-boot-chart/releases/download/dsb-spring-boot-job-1.0.0/dsb-spring-boot-job-1.0.0.tgz
     version: 1.0.0
-generated: "2023-10-09T07:20:40.424752736Z"
+generated: "2023-10-10T06:03:52.573327985Z"
