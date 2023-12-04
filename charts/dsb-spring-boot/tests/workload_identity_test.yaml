@@ -1,0 +1,42 @@
+---
+suite: test workload identity (wi) config
+tests:
+  - it: wi should be disabled by default
+    template: deployment.yaml
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels["azure.workload.identity/use"]
+          value: "false"
+  - it: it should be possible to enable wi by specifying a client id
+    template: deployment.yaml
+    set:
+      azureWorkloadIdentity:
+        clientId: "test-client-id"
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels["azure.workload.identity/use"]
+          value: "true"
+  - it: empty wi client id should result in wi being disabled
+    template: deployment.yaml
+    set:
+      azureWorkloadIdentity:
+        clientId: ""
+    asserts:
+      - equal:
+          path: spec.template.metadata.labels["azure.workload.identity/use"]
+          value: "false"
+  - it: when wi is enabled, the client id should exist as service account annotation
+    template: serviceAccount.yaml
+    set:
+      azureWorkloadIdentity:
+        clientId: "test-client-id"
+    asserts:
+      - equal:
+          path: metadata.annotations["azure.workload.identity/client-id"]
+          value: "test-client-id"
+  - it: when wi is disabled, the client id should not exist as service account annotation
+    template: serviceAccount.yaml
+    asserts:
+      - notExists:
+          path: metadata.annotations["azure.workload.identity/client-id"]
+...

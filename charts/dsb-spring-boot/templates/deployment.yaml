@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +28,7 @@ spec:
         helm.sh/chart-name: {{ .Chart.Name }}
         helm.sh/chart-version: {{ .Chart.Version | replace "+" "_" }}
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        azure.workload.identity/use: {{ empty .Values.azureWorkloadIdentity.clientId | ternary "false" "true" | quote }}
       annotations:
         {{- /*
         protected pod annotations:
@@ -208,3 +210,4 @@ spec:
         .Values.azureKeyVault.vaults
         ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
         .Release.Name) | indent 8 }}
+...

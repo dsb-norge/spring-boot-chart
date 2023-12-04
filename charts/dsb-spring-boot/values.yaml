@@ -43,6 +43,12 @@ podAnnotations:
 # Default Spring Profile:
 springProfiles: "kubernetes"
 
+# default is to not use workload identity
+# if clientId is specified, workload identity will be enabled for the deployment
+# the specified clientId must be an existing managed identity in the Azure tenant
+azureWorkloadIdentity:
+  clientId: ""
+
 # It is possible to use a normal yaml tree here, for example:
 # root:
 #   node1: 1
