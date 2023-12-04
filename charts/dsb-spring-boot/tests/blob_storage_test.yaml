@@ -1,0 +1,134 @@
+---
+suite: test workload Azure Blob Storage config
+tests:
+  - it: StorageClass and PersistentVolumeClaim should not be deployed by default
+    template: blobStorage.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: blob storage volumeMount should not be deployed by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - not: true
+        contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: blob-storage
+            any: true
+  - it: blob storage volume should not be deployed by default
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - not: true
+        contains:
+          path: spec.template.spec.volumes
+          content:
+            name: blob-storage
+          any: true
+  - it: when enabled, the default should be non-ephemeral container
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    documentIndex: 0
+    asserts:
+      - isKind:
+          of: StorageClass
+      - equal:
+          path: reclaimPolicy
+          value: Retain
+  - it: when enabled, ensure public access is disabled and that private endpoint is used
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    documentIndex: 0
+    asserts:
+      - isKind:
+          of: StorageClass
+      - equal:
+          path: parameters.allowBlobPublicAccess
+          value: "false"
+      - equal:
+          path: parameters.networkEndpointType
+          value: "privateEndpoint"
+  - it: when enabled, a PersistentVolumeClaim should be deployed
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    documentIndex: 1
+    asserts:
+      - isKind:
+          of: PersistentVolumeClaim
+  - it: when enabled, volume mount should exist in deployment template
+    template: deployment.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: blob-storage
+            readOnly: false
+          any: true
+  - it: when enabled, blob storage volume should exist in deployment template
+    template: deployment.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: blob-storage
+          any: true
+  - it: should be possible to configure mount path
+    template: deployment.yaml
+    set:
+      azurePersistentStorage:
+        enabled: true
+        mountPath: "/my/custom/path"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: blob-storage
+            mountPath: "/my/custom/path"
+          any: true
+  - it: should be possible to make storage container ephemeral
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage:
+        enabled: true
+        isEphemeral: true
+    documentIndex: 0
+    asserts:
+      - equal:
+          path: reclaimPolicy
+          value: Delete
+  - it: should be possible to configure storage account sku
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage:
+        enabled: true
+        skuName: "Standard_RAGRS"
+    documentIndex: 0
+    asserts:
+      - equal:
+          path: parameters.skuName
+          value: "Standard_RAGRS"
+  - it: should be possible to configure persistent volume claim size
+    template: blobStorage.yaml
+    set:
+      azurePersistentStorage:
+        enabled: true
+        size: "99Gi"
+    documentIndex: 1
+    asserts:
+      - equal:
+          path: spec.resources.requests.storage
+          value: "99Gi"

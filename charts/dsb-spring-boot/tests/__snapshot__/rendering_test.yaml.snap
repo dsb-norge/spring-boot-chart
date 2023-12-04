@@ -1,5 +1,46 @@
 Full manifest should match snapshot:
   1: |
+    allowVolumeExpansion: true
+    apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      name: sc-blob-storage-RELEASE-NAME
+    mountOptions:
+      - -o allow_other
+      - --file-cache-timeout-in-seconds=120
+      - --use-attr-cache=true
+      - --cancel-list-on-mount-seconds=10
+      - -o attr_timeout=120
+      - -o entry_timeout=120
+      - -o negative_timeout=120
+      - --log-level=LOG_WARNING
+      - --cache-size-mb=1000
+    parameters:
+      allowBlobPublicAccess: "false"
+      containerNamePrefix: release-name
+      matchTags: "true"
+      networkEndpointType: privateEndpoint
+      protocol: fuse2
+      skuName: Standard_GRS
+      tags: CreatedBy=Azure Kubernetes Service,ApplicationName=AKS application storage,Description=Storage account providing persistent storage for application running in AKS
+    provisioner: blob.csi.azure.com
+    reclaimPolicy: Retain
+    volumeBindingMode: Immediate
+  2: |
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        volume.beta.kubernetes.io/storage-class: sc-blob-storage-RELEASE-NAME
+      name: pvc-blob-storage-RELEASE-NAME
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 100Gi
+      storageClassName: sc-blob-storage-RELEASE-NAME
+  3: |
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
@@ -13,7 +54,7 @@ Full manifest should match snapshot:
         - key: value_for_alias
           name: DSB_CERTIFICATE_CERTIFICATE_ALIAS
       keyVaultName: azure_key_vault_name
-  2: |
+  4: |
     apiVersion: kubernetes-client.io/v1
     kind: ExternalSecret
     metadata:
@@ -26,7 +67,7 @@ Full manifest should match snapshot:
           key: vaule_for_certificate
           name: dsb-test-virksomhetssertifikat.pfx
       keyVaultName: azure_key_vault_name
-  3: |
+  5: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
@@ -50,7 +91,7 @@ Full manifest should match snapshot:
           - list
           - watch
           - get
-  4: |
+  6: |
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRoleBinding
     metadata:
@@ -64,7 +105,7 @@ Full manifest should match snapshot:
       - kind: ServiceAccount
         name: RELEASE-NAME-service-account
         namespace: NAMESPACE
-  5: |
+  7: |
     apiVersion: v1
     data:
       root.key1: value1
@@ -73,7 +114,7 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-configmap
       namespace: NAMESPACE
-  6: |
+  8: |
     apiVersion: secrets-store.csi.x-k8s.io/v1
     kind: SecretProviderClass
     metadata:
@@ -94,7 +135,7 @@ Full manifest should match snapshot:
               objectName: bf2727f85b33281f
           secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
           type: Opaque
-  7: |
+  9: |
     apiVersion: v1
     data:
       name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
@@ -103,7 +144,7 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
       namespace: NAMESPACE
-  8: |
+  10: |
     apiVersion: secrets-store.csi.x-k8s.io/v1
     kind: SecretProviderClass
     metadata:
@@ -124,7 +165,7 @@ Full manifest should match snapshot:
               objectName: 6ed738c95f993853
           secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
           type: Opaque
-  9: |
+  11: |
     apiVersion: v1
     data:
       cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
@@ -132,7 +173,7 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
       namespace: NAMESPACE
-  10: |
+  12: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -146,7 +187,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=4.2.3_config-hash=9b86f1aedf86c0dec1c84f337857db3a32c0182f319591bcdb0afcb7058e08c0
+            checksum: chart-version=4.3.0_config-hash=f349b7aa899b782ffb52b436fc1d8a77adac18fdf2222abc30dca9c5cd922918
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -172,7 +213,7 @@ Full manifest should match snapshot:
           hostname: RELEASE-NAME-db-svc
           nodeSelector:
             NodePool: workers
-  11: |
+  13: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -185,7 +226,7 @@ Full manifest should match snapshot:
           targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
-  12: |
+  14: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -204,7 +245,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.2.3_config-hash=1bfd548597c03b5cf4a4e9a0b0eff8913ad89f221ef19eb0ca32632db6eebfdb
+            checksum: chart-version=4.3.0_config-hash=dfd4f04978e324353f8a6164e47c42f1d31788833620cce69b5367e9019f48c4
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -216,10 +257,10 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-4.2.3
+            azure.workload.identity/use: "true"
+            helm.sh/chart: dsb-spring-boot-4.3.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.2.3
+            helm.sh/chart-version: 4.3.0
         spec:
           affinity:
             podAntiAffinity:
@@ -357,6 +398,9 @@ Full manifest should match snapshot:
                   name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
                   readOnly: true
                   subPath: c37bc3a2edadc0ed
+                - mountPath: /mnt/azure-blob-storage
+                  name: blob-storage
+                  readOnly: false
           nodeSelector:
             NodePool: workers
           serviceAccountName: RELEASE-NAME-service-account
@@ -381,7 +425,10 @@ Full manifest should match snapshot:
                 volumeAttributes:
                   secretProviderClass: RELEASE-NAME-kv-provider-8d4afcaf-kv-rg00-ss0-render-dev2
               name: RELEASE-NAME-kv-volume-e5ef3384-kv-rg00-ss0-render-dev2
-  13: |
+            - name: blob-storage
+              persistentVolumeClaim:
+                claimName: pvc-blob-storage-RELEASE-NAME
+  15: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -399,7 +446,7 @@ Full manifest should match snapshot:
                       number: 80
                 path: /example
                 pathType: Prefix
-  14: |
+  16: |
     apiVersion: v1
     data:
       ansible-ca.pem: |
@@ -410,7 +457,7 @@ Full manifest should match snapshot:
     metadata:
       name: ansible-ca-file
       namespace: NAMESPACE
-  15: |
+  17: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
@@ -420,7 +467,7 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-app
-  16: |
+  18: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -433,10 +480,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 4.2.3
-        helm.sh/chart: dsb-spring-boot-4.2.3
+        chart-version: 4.3.0
+        helm.sh/chart: dsb-spring-boot-4.3.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.2.3
+        helm.sh/chart-version: 4.3.0
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -451,15 +498,17 @@ Full manifest should match snapshot:
           port: 9091
       selector:
         app: RELEASE-NAME-app
-  17: |
+  19: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
+      annotations:
+        azure.workload.identity/client-id: test-client-id
       labels:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  18: |
+  20: |
     apiVersion: monitoring.coreos.com/v1
     kind: ServiceMonitor
     metadata:
@@ -496,7 +545,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=4.2.3_config-hash=a6bf400a36300fa083f941b5c5ae1743db9536b65acae6ee787a66e8bbc9510d
+            checksum: chart-version=4.3.0_config-hash=80a6e01961adf1313afcc304f58c9df8cc05fdb4d6bd07bfeb897c440cbee4ca
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -509,9 +558,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-4.2.3
+            helm.sh/chart: dsb-spring-boot-4.3.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 4.2.3
+            helm.sh/chart-version: 4.3.0
         spec:
           affinity:
             podAntiAffinity:
@@ -607,10 +656,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 4.2.3
-        helm.sh/chart: dsb-spring-boot-4.2.3
+        chart-version: 4.3.0
+        helm.sh/chart: dsb-spring-boot-4.3.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 4.2.3
+        helm.sh/chart-version: 4.3.0
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
