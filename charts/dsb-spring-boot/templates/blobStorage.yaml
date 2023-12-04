@@ -25,7 +25,8 @@ parameters:
   protocol: "fuse2"
   networkEndpointType: "privateEndpoint"
   # can only contain lowercase letters, numbers, hyphens, and length should be less than 21
-  containerNamePrefix: {{ regexReplaceAll "[^a-zA-Z0-9-]" .Release.Name  "" | lower | trunc 21 | quote }}
+  # we remove hyphens and truncate to 20 characters, just to be safe
+  containerNamePrefix: {{ regexReplaceAll "[^a-zA-Z0-9]" .Release.Name  "" | lower | trunc 20 | quote }}
   # allow or disallow public access to all blobs or containers for storage account created by driver
   allowBlobPublicAccess: "false"
   # only used when creating new storage accounts
