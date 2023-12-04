@@ -1,0 +1,67 @@
+{{ if .Values.azurePersistentStorage.enabled }}
+  {{- $storageAccountTagDescription := "Storage account providing persistent storage for application running in AKS" }}
+  {{- $storageAccountSku := default "Standard_GRS" .Values.azurePersistentStorage.skuName }}
+  {{- $reclaimPolicy := "Retain" }}
+  {{ if .Values.azurePersistentStorage.isEphemeral }}
+    {{- $storageAccountTagDescription = "Storage account for ephemeral environments in AKS" }}
+    {{- $storageAccountSku = default "Standard_LRS" .Values.azurePersistentStorage.skuName }}
+    {{- $reclaimPolicy = "Delete" }}
+  {{- end }}
+  {{- $storageAccountTags := printf "CreatedBy=Azure Kubernetes Service,ApplicationName=AKS application storage,Description=%s" $storageAccountTagDescription }}
+---
+# this storage class is based on the default 'azureblob-fuse-premium' provided by Microsoft
+#   kubectl get sc azureblob-fuse-premium -o yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-blob-storage-{{ .Release.Name }}
+provisioner: blob.csi.azure.com
+# Note: all parameters must be strings
+parameters:
+  # type of storage account to use
+  skuName: {{ $storageAccountSku | quote }}
+  # type of mount, blobfuse, blobfuse2 or NFSv3 (fuse, fuse2, nfs)
+  # ref. https://learn.microsoft.com/en-us/azure/storage/blobs/blobfuse2-what-is#blobfuse2-enhancements-from-blobfuse-v1
+  protocol: "fuse2"
+  networkEndpointType: "privateEndpoint"
+  # can only contain lowercase letters, numbers, hyphens, and length should be less than 21
+  containerNamePrefix: {{ regexReplaceAll "[^a-zA-Z0-9-]" .Release.Name  "" | lower | trunc 21 | quote }}
+  # allow or disallow public access to all blobs or containers for storage account created by driver
+  allowBlobPublicAccess: "false"
+  # only used when creating new storage accounts
+  tags: {{ $storageAccountTags | quote }}
+  # whether matching tags when driver tries to find a suitable storage account
+  matchTags: "true"
+# 'Delete' will delete the underlying storage account when the PV is deleted
+# 'Retain' will leave the underlying storage account, ie. manual cleanup is required
+reclaimPolicy: {{ $reclaimPolicy | quote }}
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+mountOptions:
+  # these are all defaults from built-in class 'azureblob-fuse-premium'
+  - -o allow_other
+  - --file-cache-timeout-in-seconds=120
+  - --use-attr-cache=true
+  - --cancel-list-on-mount-seconds=10  # prevent billing charges on mounting
+  - -o attr_timeout=120
+  - -o entry_timeout=120
+  - -o negative_timeout=120
+  - --log-level=LOG_WARNING  # LOG_WARNING, LOG_INFO, LOG_DEBUG
+  - --cache-size-mb=1000  # Default will be 80% of available memory, eviction will happen beyond that.
+...
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-blob-storage-{{ .Release.Name }}
+  annotations:
+    volume.beta.kubernetes.io/storage-class: sc-blob-storage-{{ .Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: sc-blob-storage-{{ .Release.Name }}
+  resources:
+    requests:
+      storage: {{ .Values.azurePersistentStorage.size | quote }}
+...
+{{ end }} # end of azurePersistentStorage.enabled

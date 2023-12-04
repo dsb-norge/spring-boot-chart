@@ -150,6 +150,21 @@ azureKeyVault:
     #       secretEncoding: base64
     #       fileMountPath: "/path/of/my-cert.pfx"
 
+# if enabled, a blob storage account and storage container is dynamically provisioned by AKS and mounted in the pod
+azurePersistentStorage:
+  enabled: false                        # default is no storage
+  isEphemeral: false                    # set to true to make AKS deprovision the storage container as soon as no deployments are using it
+  size: 100Gi                           # how much storage to provision
+  mountPath: "/mnt/azure-blob-storage"  # where to mount the storage container in the pod
+  # type of storage account to use:
+  #   - Standard_LRS: Standard Locally Redundant Storage
+  #   - Premium_LRS: Premium Locally Redundant Storage
+  #   - Standard_GRS: Standard Geo-Redundant Storage
+  #   - Standard_RAGRS: Standard Read-Access Geo-Redundant Storage
+  # default for non-ephemeral storage is Standard_GRS, ref. templates/blobStorage.yaml
+  # default for ephemeral storage is Standard_LRS, ref. templates/blobStorage.yaml
+  skuName: ""
+
 # Hostname must be provided if Ingress should be enabled.
 ingress_host:
 ingress_path: /

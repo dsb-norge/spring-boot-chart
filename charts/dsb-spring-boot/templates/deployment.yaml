@@ -183,6 +183,11 @@ spec:
             .Values.azureKeyVault.vaults
             ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
             .Release.Name) | indent 12 }}
+          {{- if .Values.azurePersistentStorage.enabled }}
+            - name: blob-storage
+              mountPath: {{ .Values.azurePersistentStorage.mountPath | quote }}
+              readOnly: false
+          {{- end }}
           securityContext:
             capabilities:
               drop: [ALL]
@@ -210,4 +215,9 @@ spec:
         .Values.azureKeyVault.vaults
         ( .Values.global.azureKeyVaultDefaultValues | default .Values.azureKeyVault.defaultValues )
         .Release.Name) | indent 8 }}
+      {{- if .Values.azurePersistentStorage.enabled }}
+        - name: blob-storage
+          persistentVolumeClaim:
+            claimName: pvc-blob-storage-{{ .Release.Name }}
+      {{- end }}
 ...

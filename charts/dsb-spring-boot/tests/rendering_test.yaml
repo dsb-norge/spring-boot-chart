@@ -50,6 +50,7 @@ tests:
       - clusterRoleBinding.yaml
       - mountedConfigMap.yaml
       - csi-secrets-store-azure.yaml
+      - blobStorage.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -131,6 +132,8 @@ tests:
             -----BEGIN CERTIFICATE-----
             MIIFFTCCAv2gAwIBAgIUB7/W9hZbOPR/Co/SFx9rlV71A+swDQYJKoZIhvcNAQEL
             -----END CERTIFICATE-----
+      azureWorkloadIdentity.clientId: "test-client-id"
+      azurePersistentStorage.enabled: true
       azureKeyVault:
         defaultValues:
           tenantId: b2255c28-9e28-4641-a6bc-b63391d59143
