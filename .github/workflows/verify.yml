@@ -13,7 +13,7 @@ jobs:
         run: rm -rf ${{ github.workspace }} && mkdir ${{ github.workspace }}
 
       - name: Checkout working branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -40,13 +40,13 @@ jobs:
           python-version: "3.9"
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.4.0
+        uses: helm/chart-testing-action@v2.6.1
 
       - name: Run linting (ct)
         run: ct lint --all --validate-maintainers=false
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.5.0
+        uses: helm/kind-action@v1.8.0
         with:
           config: kind-cluster-config.yaml
         env:
