@@ -294,6 +294,8 @@ Full manifest should match snapshot:
                   value: RELEASE-NAME-db-svc:1433
                 - name: DATABASE_CONTAINER_DATABASE
                   value: test-data
+                - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
+                  value: /mnt/azure-blob-storage
                 - name: DSB_CERTIFICATE_CERTIFICATE_PATH
                   value: /certificates/dsb-test-virksomhetssertifikat.pfx
                 - name: ANSIBLE_CA_CONFIG_PATH
