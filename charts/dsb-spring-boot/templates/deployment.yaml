@@ -121,6 +121,10 @@ spec:
             - name: DATABASE_CONTAINER_DATABASE
               value: {{ .Values.database_container.database | quote }}
             {{- end }}
+            {{- if .Values.azurePersistentStorage.enabled }}
+            - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
+              value: {{ .Values.azurePersistentStorage.mountPath | quote }}
+            {{- end }}
             {{- range $name, $value := .Values.certificates }}
             - name: {{ regexReplaceAll "-" $name "_" | upper }}_CERTIFICATE_PATH
               value: {{ default "/certificates" $value.mountPath  }}/{{ $value.fileName  }}

@@ -28,6 +28,17 @@ tests:
           content:
             name: blob-storage
           any: true
+  - it: mount path should not be exposed as environment variable in deployment template if blob storage is not enabled
+    template: deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - not: true
+        contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
+          any: true
   - it: when enabled, the default should be non-ephemeral container
     template: blobStorage.yaml
     set:
@@ -86,6 +97,19 @@ tests:
           content:
             name: blob-storage
           any: true
+  - it: when enabled, mount path should be exposed as environment variable in deployment template
+    template: deployment.yaml
+    set:
+      azurePersistentStorage.enabled: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
+            value: "/mnt/azure-blob-storage"
+          any: true
   - it: should be possible to configure mount path
     template: deployment.yaml
     set:
@@ -98,6 +122,12 @@ tests:
           content:
             name: blob-storage
             mountPath: "/my/custom/path"
+          any: true
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
+            value: "/my/custom/path"
           any: true
   - it: should be possible to make storage container ephemeral
     template: blobStorage.yaml
