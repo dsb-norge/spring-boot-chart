@@ -16,8 +16,14 @@ dashboard:
   component: "backend-api"
   partOf: "verification-stuff"
 
+database_container.enabled: true
+
 config:
   spring:
+    datasource:
+      url: 'jdbc:sqlserver://${DATABASE_CONTAINER_HOST_AND_PORT};database=${DATABASE_CONTAINER_DATABASE};encrypt=false'
+      username: '${DATABASE_CONTAINER_USER}'
+      password: '${DATABASE_CONTAINER_PASSWORD}'
     security:
       oauth2:
         resourceserver:
