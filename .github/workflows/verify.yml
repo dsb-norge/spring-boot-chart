@@ -59,6 +59,8 @@ jobs:
           # 'imagePullPolicy: "Never"' in charts/*/ci/*-values.yaml
           docker pull dsbacr.azurecr.io/dsb-norge/test-application:latest
           kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:latest
+          docker pull dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest
+          kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest
 
       - name: Run chart-testing (install)
         run: ct install --all
