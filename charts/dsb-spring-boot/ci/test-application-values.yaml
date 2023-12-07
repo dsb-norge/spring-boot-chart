@@ -16,7 +16,8 @@ dashboard:
   component: "backend-api"
   partOf: "verification-stuff"
 
-database_container.enabled: true
+database_container:
+  enabled: true
 
 config:
   spring:
