@@ -2,7 +2,7 @@ Full manifest should match snapshot:
   1: |
     apiVersion: v1
     data:
-      CLIENT_MAX_BODY_SIZE: 20M
+      CLIENT_MAX_BODY_SIZE: 60M
       LOC_API_PROXY_PASS_HOST: https://www.dsb.no
       root.key1: value1
       root.key2: value2
@@ -29,7 +29,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.25_config-hash=9360d889f5ea27c2712db021a1316cf8686660b8004af9a7cd898fb5ad79aca5
+            checksum: chart-version=2.1.26_config-hash=26b02806254b0bd9452db3f43ba4176d9c8014976ee249c388d3a3c62ba86caf
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -39,9 +39,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-nginx-frontend-2.1.25
+            helm.sh/chart: dsb-nginx-frontend-2.1.26
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.25
+            helm.sh/chart-version: 2.1.26
         spec:
           affinity:
             podAntiAffinity:
@@ -68,7 +68,7 @@ Full manifest should match snapshot:
                 - name: LOC_API_PROXY_SEND_TIMEOUT
                   value: "120"
                 - name: CLIENT_MAX_BODY_SIZE
-                  value: 20M
+                  value: 60M
               envFrom:
                 - secretRef:
                     name: secret1
@@ -206,10 +206,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.25
-        helm.sh/chart: dsb-nginx-frontend-2.1.25
+        chart-version: 2.1.26
+        helm.sh/chart: dsb-nginx-frontend-2.1.26
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.25
+        helm.sh/chart-version: 2.1.26
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -258,7 +258,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.25_config-hash=084e8c6b5883b391e634f9048b27b54fdc3f0206bb9f9b95ae0806a71f4cbaa7
+            checksum: chart-version=2.1.26_config-hash=084e8c6b5883b391e634f9048b27b54fdc3f0206bb9f9b95ae0806a71f4cbaa7
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -268,9 +268,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-nginx-frontend-2.1.25
+            helm.sh/chart: dsb-nginx-frontend-2.1.26
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.25
+            helm.sh/chart-version: 2.1.26
         spec:
           affinity:
             podAntiAffinity:
@@ -296,8 +296,6 @@ Minimal manifest should match snapshot:
                   value: "120"
                 - name: LOC_API_PROXY_SEND_TIMEOUT
                   value: "120"
-                - name: CLIENT_MAX_BODY_SIZE
-                  value: ""
               envFrom: null
               image: nginx:latest
               livenessProbe:
@@ -383,10 +381,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.25
-        helm.sh/chart: dsb-nginx-frontend-2.1.25
+        chart-version: 2.1.26
+        helm.sh/chart: dsb-nginx-frontend-2.1.26
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.25
+        helm.sh/chart-version: 2.1.26
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -483,10 +481,10 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.25
-        helm.sh/chart: dsb-nginx-frontend-2.1.25
+        chart-version: 2.1.26
+        helm.sh/chart: dsb-nginx-frontend-2.1.26
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.25
+        helm.sh/chart-version: 2.1.26
       name: frontend
       namespace: NAMESPACE
     spec:
