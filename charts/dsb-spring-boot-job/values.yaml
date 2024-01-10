@@ -129,7 +129,7 @@ azureKeyVault:
     #       secretEncoding: base64
   #       fileMountPath: "/path/of/my-cert.pfx"
 
-memory_request: "256Mi"
+memory_request: "512Mi"
 memory_limit: "1024Mi"
 
 cpu_request: "100m"
