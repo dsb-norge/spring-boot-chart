@@ -9,6 +9,8 @@ tests:
     set:
       image: nginx
       tag: latest
+      shutdown:
+        graceful: false
     asserts:
       - matchSnapshot: { }
   - it: should render default with PodDisruptionBudget and should match snapshot

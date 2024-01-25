@@ -61,6 +61,9 @@ spec:
                 values:
                 - {{ .Release.Name }}-app
             topologyKey: "kubernetes.io/hostname"
+      {{- if .Values.shutdown.graceful }}
+      terminationGracePeriodSeconds: {{ .Values.shutdown.terminationGracePeriodSeconds }}
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}-container
           image: "{{ .Values.image }}:{{ .Values.tag }}"
@@ -124,6 +127,12 @@ spec:
             {{- if .Values.azurePersistentStorage.enabled }}
             - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
               value: {{ .Values.azurePersistentStorage.mountPath | quote }}
+            {{- end }}
+            {{- if .Values.shutdown.graceful }}
+            - name: SERVER_SHUTDOWN
+              value: GRACEFUL
+            - name: SPRING_LIFECYCLE_TIMEOUT_PER_SHUTDOWN_PHASE
+              value: {{ .Values.shutdown.timeoutPerShutdownPhase | quote }}
             {{- end }}
             {{- range $name, $value := .Values.certificates }}
             - name: {{ regexReplaceAll "-" $name "_" | upper }}_CERTIFICATE_PATH
