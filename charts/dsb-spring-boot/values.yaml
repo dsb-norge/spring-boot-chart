@@ -226,4 +226,14 @@ rbac:
 websocket:
   enabled: false
   port: 9091
+
+shutdown:
+  # Will set shutdown method to GRACEFUL for spring boot app
+  # this will guarantee it will no longer accept new requests upon receiving SIGTERM,
+  # but finishes processing all the ongoing requests (https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#web.graceful-shutdown)
+  graceful: true
+  # This is passed to 'spring.lifecycle.timeout-per-shutdown-phase' giving the graceful shutdown a timeout before forcing the shutdown
+  timeoutPerShutdownPhase: 30s
+  # This value is passed to kubernetes, it should be above the timeoutPerShutdownPhase to allow spring to do the shutdown before kubernetes forces it
+  terminationGracePeriodSeconds: 45
 ...
