@@ -24,9 +24,9 @@ parameters:
   # ref. https://learn.microsoft.com/en-us/azure/storage/blobs/blobfuse2-what-is#blobfuse2-enhancements-from-blobfuse-v1
   protocol: "fuse2"
   networkEndpointType: "privateEndpoint"
-  # can only contain lowercase letters, numbers, hyphens, and length should be less than 21
-  # we remove hyphens and truncate to 20 characters, just to be safe
-  containerNamePrefix: {{ regexReplaceAll "[^a-zA-Z0-9]" .Release.Name  "" | lower | trunc 20 | quote }}
+  # may only contain lowercase letters, numbers, and hyphens, and must begin with a letter or a number. Each hyphen
+  # must be preceded and followed by a non-hyphen character. The name must also be between 3 and 63 characters long
+  containerName: {{ regexReplaceAll "[^a-zA-Z0-9-]" .Release.Name  "" | lower | trunc 63 | quote }}
   # allow or disallow public access to all blobs or containers for storage account created by driver
   allowBlobPublicAccess: "false"
   # only used when creating new storage accounts
