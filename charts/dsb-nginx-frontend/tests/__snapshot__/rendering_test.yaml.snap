@@ -29,7 +29,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.26_config-hash=26b02806254b0bd9452db3f43ba4176d9c8014976ee249c388d3a3c62ba86caf
+            checksum: chart-version=2.1.27_config-hash=26b02806254b0bd9452db3f43ba4176d9c8014976ee249c388d3a3c62ba86caf
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -39,9 +39,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-nginx-frontend-2.1.26
+            helm.sh/chart: dsb-nginx-frontend-2.1.27
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.26
+            helm.sh/chart-version: 2.1.27
         spec:
           affinity:
             podAntiAffinity:
@@ -159,6 +159,15 @@ Full manifest should match snapshot:
     metadata:
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-www-to-non-www@kubernetescrd
+      labels:
+        app.kubernetes.io/component: Frontend
+        app.kubernetes.io/created-by: https://github.com/dsb-norge/helm-charts
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: Rendering test
+        app.kubernetes.io/part-of: Verification stuff
+        helm.sh/chart: dsb-nginx-frontend-2.1.27
+        helm.sh/chart-name: dsb-nginx-frontend
+        helm.sh/chart-version: 2.1.27
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -206,10 +215,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.26
-        helm.sh/chart: dsb-nginx-frontend-2.1.26
+        chart-version: 2.1.27
+        helm.sh/chart: dsb-nginx-frontend-2.1.27
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.26
+        helm.sh/chart-version: 2.1.27
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -258,7 +267,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.1.26_config-hash=084e8c6b5883b391e634f9048b27b54fdc3f0206bb9f9b95ae0806a71f4cbaa7
+            checksum: chart-version=2.1.27_config-hash=084e8c6b5883b391e634f9048b27b54fdc3f0206bb9f9b95ae0806a71f4cbaa7
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -268,9 +277,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-nginx-frontend-2.1.26
+            helm.sh/chart: dsb-nginx-frontend-2.1.27
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.1.26
+            helm.sh/chart-version: 2.1.27
         spec:
           affinity:
             podAntiAffinity:
@@ -381,10 +390,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.26
-        helm.sh/chart: dsb-nginx-frontend-2.1.26
+        chart-version: 2.1.27
+        helm.sh/chart: dsb-nginx-frontend-2.1.27
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.26
+        helm.sh/chart-version: 2.1.27
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -404,6 +413,15 @@ Support multiple ingress hosts:
     metadata:
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-www-to-non-www@kubernetescrd
+      labels:
+        app.kubernetes.io/component: Frontend
+        app.kubernetes.io/created-by: Helm
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: RELEASE-NAME
+        app.kubernetes.io/part-of: RELEASE-NAME
+        helm.sh/chart: dsb-nginx-frontend-2.1.27
+        helm.sh/chart-name: dsb-nginx-frontend
+        helm.sh/chart-version: 2.1.27
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -481,10 +499,10 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.1.26
-        helm.sh/chart: dsb-nginx-frontend-2.1.26
+        chart-version: 2.1.27
+        helm.sh/chart: dsb-nginx-frontend-2.1.27
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.1.26
+        helm.sh/chart-version: 2.1.27
       name: frontend
       namespace: NAMESPACE
     spec:
