@@ -593,7 +593,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.1.0_config-hash=660297ce85425932576dccae6bf4f1694cba5d392983346cc606cdd6af3e752c
+            checksum: chart-version=5.1.0_config-hash=298ddf62f66d110fca43760b1e6ce1e2c7c26d755a81d8e37aea58261ea5ef03
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
