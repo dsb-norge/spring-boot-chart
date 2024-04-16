@@ -115,6 +115,30 @@ Full manifest should match snapshot:
       name: RELEASE-NAME-configmap
       namespace: NAMESPACE
   8: |
+    apiVersion: v1
+    data:
+      application-example.yml: |-
+        #This file is used for testing values.ymlConfig property to load a yml a file into a configMap
+        app:
+          keycloak:
+            url: https://testauth.dsb.no/auth
+            connectTimeout: 30s
+            readTimeout: 30s
+            clientId: example
+          stuff:
+            list-of-things:
+              - "item-a"
+              - "item-b"
+              - "item-c"
+          routes:
+            - id: some-id
+              uri: https://dsb.no
+              path-rewrite: /place,/another-place
+    kind: ConfigMap
+    metadata:
+      name: RELEASE-NAME-yml-configmap
+      namespace: NAMESPACE
+  9: |
     apiVersion: secrets-store.csi.x-k8s.io/v1
     kind: SecretProviderClass
     metadata:
@@ -135,7 +159,7 @@ Full manifest should match snapshot:
               objectName: bf2727f85b33281f
           secretName: RELEASE-NAME-kv-objects-cc0a6e3f-kv-rg00-ss0-render-dev1
           type: Opaque
-  9: |
+  10: |
     apiVersion: v1
     data:
       name.of.env.variable.holding.path.to.cert.as.file: /mnt/9e717efb70949021/68db8538e5026d9f
@@ -144,7 +168,7 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-kv-file-envs-45d9ce6a-kv-rg00-ss0-render-dev1
       namespace: NAMESPACE
-  10: |
+  11: |
     apiVersion: secrets-store.csi.x-k8s.io/v1
     kind: SecretProviderClass
     metadata:
@@ -165,7 +189,7 @@ Full manifest should match snapshot:
               objectName: 6ed738c95f993853
           secretName: RELEASE-NAME-kv-objects-1d1ac72b-kv-rg00-ss0-render-dev2
           type: Opaque
-  11: |
+  12: |
     apiVersion: v1
     data:
       cert_in_2_file_path_var: /mnt/127cf7b855142ab1/c37bc3a2edadc0ed
@@ -173,7 +197,7 @@ Full manifest should match snapshot:
     metadata:
       name: RELEASE-NAME-kv-file-envs-cb749edb-kv-rg00-ss0-render-dev2
       namespace: NAMESPACE
-  12: |
+  13: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -187,7 +211,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.0.1_config-hash=b4245f42cf55a7ce558600af02191ebbc62c168562d43b108b592d2458b5497e
+            checksum: chart-version=5.1.0_config-hash=9f9a49e96ba2bba055b9874db18b95e47589f735142ea9221755d2d17fc17a7a
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -213,7 +237,7 @@ Full manifest should match snapshot:
           hostname: RELEASE-NAME-db-svc
           nodeSelector:
             NodePool: workers
-  13: |
+  14: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -226,7 +250,7 @@ Full manifest should match snapshot:
           targetPort: 1433
       selector:
         app: RELEASE-NAME-db-app
-  14: |
+  15: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -245,7 +269,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.0.1_config-hash=f63516af8ea53d3683dd6fcf09143e42d4b8bbb449f267f15f8566f2cb170082
+            checksum: chart-version=5.1.0_config-hash=90a26e763f7d0e916e1cd816aa79f6440c5a9f087bf2681f84edcd0ed055af06
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -258,9 +282,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
             azure.workload.identity/use: "true"
-            helm.sh/chart: dsb-spring-boot-5.0.1
+            helm.sh/chart: dsb-spring-boot-5.1.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.0.1
+            helm.sh/chart-version: 5.1.0
         spec:
           affinity:
             podAntiAffinity:
@@ -294,6 +318,8 @@ Full manifest should match snapshot:
                   value: RELEASE-NAME-db-svc:1433
                 - name: DATABASE_CONTAINER_DATABASE
                   value: test-data
+                - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+                  value: /spring-configuration
                 - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
                   value: /mnt/azure-blob-storage
                 - name: SERVER_SHUTDOWN
@@ -380,6 +406,9 @@ Full manifest should match snapshot:
                 - mountPath: /config
                   name: ansible-ca
                   readOnly: true
+                - mountPath: /spring-configuration
+                  name: yml-configmap-volume
+                  readOnly: true
                 - mountPath: /custom/file/paths/are/supported
                   name: RELEASE-NAME-kv-volume-9df4c11c-kv-rg00-ss0-render-dev1
                   readOnly: true
@@ -420,6 +449,9 @@ Full manifest should match snapshot:
             - configMap:
                 name: ansible-ca-file
               name: ansible-ca
+            - configMap:
+                name: RELEASE-NAME-yml-configmap
+              name: yml-configmap-volume
             - csi:
                 driver: secrets-store.csi.k8s.io
                 readOnly: true
@@ -435,7 +467,7 @@ Full manifest should match snapshot:
             - name: blob-storage
               persistentVolumeClaim:
                 claimName: pvc-blob-storage-RELEASE-NAME
-  15: |
+  16: |
     apiVersion: networking.k8s.io/v1
     kind: Ingress
     metadata:
@@ -445,9 +477,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-spring-boot-5.0.1
+        helm.sh/chart: dsb-spring-boot-5.1.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.0.1
+        helm.sh/chart-version: 5.1.0
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -462,7 +494,7 @@ Full manifest should match snapshot:
                       number: 80
                 path: /example
                 pathType: Prefix
-  16: |
+  17: |
     apiVersion: v1
     data:
       ansible-ca.pem: |
@@ -473,7 +505,7 @@ Full manifest should match snapshot:
     metadata:
       name: ansible-ca-file
       namespace: NAMESPACE
-  17: |
+  18: |
     apiVersion: policy/v1
     kind: PodDisruptionBudget
     metadata:
@@ -483,7 +515,7 @@ Full manifest should match snapshot:
       selector:
         matchLabels:
           app: RELEASE-NAME-app
-  18: |
+  19: |
     apiVersion: v1
     kind: Service
     metadata:
@@ -496,10 +528,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 5.0.1
-        helm.sh/chart: dsb-spring-boot-5.0.1
+        chart-version: 5.1.0
+        helm.sh/chart: dsb-spring-boot-5.1.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.0.1
+        helm.sh/chart-version: 5.1.0
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -514,7 +546,7 @@ Full manifest should match snapshot:
           port: 9091
       selector:
         app: RELEASE-NAME-app
-  19: |
+  20: |
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -524,7 +556,7 @@ Full manifest should match snapshot:
         app: RELEASE-NAME-app
       name: RELEASE-NAME-service-account
       namespace: NAMESPACE
-  20: |
+  21: |
     apiVersion: monitoring.coreos.com/v1
     kind: ServiceMonitor
     metadata:
@@ -561,7 +593,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.0.1_config-hash=660297ce85425932576dccae6bf4f1694cba5d392983346cc606cdd6af3e752c
+            checksum: chart-version=5.1.0_config-hash=660297ce85425932576dccae6bf4f1694cba5d392983346cc606cdd6af3e752c
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -574,9 +606,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-5.0.1
+            helm.sh/chart: dsb-spring-boot-5.1.0
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.0.1
+            helm.sh/chart-version: 5.1.0
         spec:
           affinity:
             podAntiAffinity:
@@ -672,10 +704,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 5.0.1
-        helm.sh/chart: dsb-spring-boot-5.0.1
+        chart-version: 5.1.0
+        helm.sh/chart: dsb-spring-boot-5.1.0
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.0.1
+        helm.sh/chart-version: 5.1.0
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME

@@ -1,0 +1,10 @@
+{{- $ymlGlob := printf "%s" .Values.ymlConfig -}}
+{{- if $ymlGlob }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-yml-configmap
+  namespace: {{ .Release.Namespace }}
+data:
+{{ (tpl (.Files.Glob $ymlGlob).AsConfig . ) | indent 2 }}
+{{- end }}
