@@ -126,7 +126,7 @@ spec:
             {{- end }}
             {{- if .Values.configurationConfigMap }}
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
-              value: "/spring-configuration"
+              value: "/spring-configuration/"
             {{- end }}
             {{- if .Values.azurePersistentStorage.enabled }}
             - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
