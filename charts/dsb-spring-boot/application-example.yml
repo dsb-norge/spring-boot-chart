@@ -1,4 +1,4 @@
-#This file is used for testing values.ymlConfig property to load a yml a file into a configMap
+#This file is used for testing Values.ymlConfig property to load a yml file into a configMap
 app:
   keycloak:
     url: https://testauth.dsb.no/auth
