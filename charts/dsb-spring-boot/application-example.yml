@@ -1,0 +1,16 @@
+#This file is used for testing values.ymlConfig property to load a yml a file into a configMap
+app:
+  keycloak:
+    url: https://testauth.dsb.no/auth
+    connectTimeout: 30s
+    readTimeout: 30s
+    clientId: example
+  stuff:
+    list-of-things:
+      - "item-a"
+      - "item-b"
+      - "item-c"
+  routes:
+    - id: some-id
+      uri: https://dsb.no
+      path-rewrite: /place,/another-place

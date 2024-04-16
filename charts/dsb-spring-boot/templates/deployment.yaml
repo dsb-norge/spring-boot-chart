@@ -124,6 +124,10 @@ spec:
             - name: DATABASE_CONTAINER_DATABASE
               value: {{ .Values.database_container.database | quote }}
             {{- end }}
+            {{- if .Values.ymlConfig }}
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: "/spring-configuration"
+            {{- end }}
             {{- if .Values.azurePersistentStorage.enabled }}
             - name: AZURE_PERSISTENT_STORAGE_MOUNT_PATH
               value: {{ .Values.azurePersistentStorage.mountPath | quote }}
@@ -191,6 +195,11 @@ spec:
               mountPath: {{ default "/config" $value.mountPath }}
               readOnly: true
           {{- end }}
+          {{- if .Values.ymlConfig }}
+            - name: yml-configmap-volume
+              mountPath: /spring-configuration
+              readOnly: true
+          {{- end }}
           {{- /* volume mounts from dsb-azure-csi-key-vault-provider */ -}}
           {{- include "dackvp.render-kubernetes-volume-mounts" (list
             .Values.azureKeyVault.vaults
@@ -222,6 +231,11 @@ spec:
         - name: {{ $name }}
           configMap:
             name: {{ $name }}-file
+      {{- end }}
+      {{- if .Values.ymlConfig }}
+        - name: yml-configmap-volume
+          configMap:
+            name: {{ .Release.Name }}-yml-configmap
       {{- end }}
       {{- /* volumes from dsb-azure-csi-key-vault-provider */ -}}
       {{- include "dackvp.render-kubernetes-volumes" (list
