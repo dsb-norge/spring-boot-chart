@@ -124,7 +124,7 @@ spec:
             - name: DATABASE_CONTAINER_DATABASE
               value: {{ .Values.database_container.database | quote }}
             {{- end }}
-            {{- if .Values.ymlConfig }}
+            {{- if .Values.configurationConfigMap }}
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: "/spring-configuration"
             {{- end }}
@@ -195,8 +195,8 @@ spec:
               mountPath: {{ default "/config" $value.mountPath }}
               readOnly: true
           {{- end }}
-          {{- if .Values.ymlConfig }}
-            - name: yml-configmap-volume
+          {{- if .Values.configurationConfigMap }}
+            - name: spring-configuration
               mountPath: /spring-configuration
               readOnly: true
           {{- end }}
@@ -232,10 +232,10 @@ spec:
           configMap:
             name: {{ $name }}-file
       {{- end }}
-      {{- if .Values.ymlConfig }}
-        - name: yml-configmap-volume
+      {{- if .Values.configurationConfigMap }}
+        - name: spring-configuration
           configMap:
-            name: {{ .Release.Name }}-yml-configmap
+            name: {{ .Values.configurationConfigMap }}
       {{- end }}
       {{- /* volumes from dsb-azure-csi-key-vault-provider */ -}}
       {{- include "dackvp.render-kubernetes-volumes" (list

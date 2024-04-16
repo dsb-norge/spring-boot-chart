@@ -53,7 +53,6 @@ tests:
       - mountedConfigMap.yaml
       - csi-secrets-store-azure.yaml
       - blobStorage.yaml
-      - configMapFromYml.yaml
     set:
       replicas: 3
       minAvailableReplicas: 1
@@ -68,7 +67,7 @@ tests:
         root:
           key1: value1
           key2: value2
-      ymlConfig: "application-example.yml"
+      configurationConfigMap: "test-configuration"
       secretRefs:
         - secret1
       configMapRefs:
