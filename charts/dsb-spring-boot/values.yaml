@@ -57,6 +57,12 @@ azureWorkloadIdentity:
 # If there is a lot of config, it is useful to use the helm function --set-file.
 config:
 
+# Path to a yml file to load into a ConfigMap, example: "application-example.yml"
+#
+# Supplying this value will load the file into a ConfigMap "as is" and mount said ConfigMap into the pod and set the spring.config.additional-location environment variable accordingly
+# Read more https://docs.spring.io/spring-boot/docs/3.2.2/reference/html/features.html#features.external-config.files
+ymlConfig: {}
+
 # Reference secrets that are mounted on the pod:
 secretRefs: {}
 
