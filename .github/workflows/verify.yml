@@ -26,7 +26,10 @@ jobs:
         run: helm lint charts/*
 
       - name: Run Helm Unittests
-        run: docker run --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest charts/*
+        # TODO: version is pinned to '3.14.3-0.4.4' workaround
+        # bug https://github.com/helm-unittest/helm-unittest/issues/329
+        # was fixed in 'v0.5.1' but docker image is missing ref. https://github.com/helm-unittest/helm-unittest/issues/348
+        run: docker run --rm --name unittest --volume "$(pwd)":/apps helmunittest/helm-unittest:3.14.3-0.4.4 charts/*
 
       - name: log into azure container registry (ACR)
         uses: azure/docker-login@v1
