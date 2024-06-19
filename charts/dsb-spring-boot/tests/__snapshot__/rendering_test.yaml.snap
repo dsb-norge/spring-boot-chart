@@ -187,7 +187,7 @@ Full manifest should match snapshot:
       template:
         metadata:
           annotations:
-            checksum: chart-version=5.1.3_config-hash=083bf07863f6248bc33231985aea217118acb34a56840099c4faa039073a3341
+            checksum: chart-version=5.1.4_config-hash=c544cc07f5d02d39c0c2f78cecddeb7d6eacc2c375b59c06bc7fb9f752649db7
           labels:
             app: RELEASE-NAME-db-app
         spec:
@@ -245,7 +245,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.1.3_config-hash=e0678d2458f6034658a06150389218f43c8e4e3256756525d0a4529a2ce8f279
+            checksum: chart-version=5.1.4_config-hash=e0678d2458f6034658a06150389218f43c8e4e3256756525d0a4529a2ce8f279
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -258,9 +258,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
             azure.workload.identity/use: "true"
-            helm.sh/chart: dsb-spring-boot-5.1.3
+            helm.sh/chart: dsb-spring-boot-5.1.4
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.1.3
+            helm.sh/chart-version: 5.1.4
         spec:
           affinity:
             podAntiAffinity:
@@ -453,9 +453,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-spring-boot-5.1.3
+        helm.sh/chart: dsb-spring-boot-5.1.4
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.1.3
+        helm.sh/chart-version: 5.1.4
       name: RELEASE-NAME
       namespace: NAMESPACE
     spec:
@@ -504,10 +504,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-spring-boot
-        chart-version: 5.1.3
-        helm.sh/chart: dsb-spring-boot-5.1.3
+        chart-version: 5.1.4
+        helm.sh/chart: dsb-spring-boot-5.1.4
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.1.3
+        helm.sh/chart-version: 5.1.4
         management.port: "81"
         spring-boot: "true"
       name: RELEASE-NAME
@@ -569,7 +569,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=5.1.3_config-hash=a852fe4f1f87db4cae8924a3cc9190d1a6d20810cb3b0739daf5977ba95e553b
+            checksum: chart-version=5.1.4_config-hash=a852fe4f1f87db4cae8924a3cc9190d1a6d20810cb3b0739daf5977ba95e553b
             co.elastic.logs/json.add_error_key: "true"
             co.elastic.logs/json.keys_under_root: "true"
             co.elastic.logs/json.overwrite_keys: "true"
@@ -582,9 +582,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
             azure.workload.identity/use: "false"
-            helm.sh/chart: dsb-spring-boot-5.1.3
+            helm.sh/chart: dsb-spring-boot-5.1.4
             helm.sh/chart-name: dsb-spring-boot
-            helm.sh/chart-version: 5.1.3
+            helm.sh/chart-version: 5.1.4
         spec:
           affinity:
             podAntiAffinity:
@@ -680,10 +680,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-spring-boot
-        chart-version: 5.1.3
-        helm.sh/chart: dsb-spring-boot-5.1.3
+        chart-version: 5.1.4
+        helm.sh/chart: dsb-spring-boot-5.1.4
         helm.sh/chart-name: dsb-spring-boot
-        helm.sh/chart-version: 5.1.3
+        helm.sh/chart-version: 5.1.4
         management.port: "8180"
         spring-boot: "true"
       name: RELEASE-NAME
