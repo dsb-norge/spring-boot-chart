@@ -65,4 +65,5 @@ spec:
     requests:
       storage: {{ .Values.azurePersistentStorage.size | quote }}
 ...
-{{ end }} # end of azurePersistentStorage.enabled
+{{ end }}
+# end of azurePersistentStorage.enabled
