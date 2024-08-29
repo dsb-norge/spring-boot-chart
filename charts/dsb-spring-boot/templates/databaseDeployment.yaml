@@ -39,6 +39,8 @@ spec:
             value: {{ .Values.database_container.password | quote }}
           - name: MSSQL_SA_PASSWORD
             value: {{ .Values.database_container.password | quote }}
+          - name: PASSWORD
+            value: {{ .Values.database_container.password | quote }}
           ports:
           - containerPort: 1433
 {{ end }}
