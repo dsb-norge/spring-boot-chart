@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: {{ .Release.Name }}-test
-      image: curlimages/curl:latest
+      image: dsbacr.azurecr.io/cache/docker-io/curlimages/curl:latest
       env:
         - name: SERVICE
           value: {{ .Values.resourceName }}

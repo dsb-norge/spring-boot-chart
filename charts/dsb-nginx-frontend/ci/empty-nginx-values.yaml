@@ -3,7 +3,7 @@ replicas: 2
 
 name: "test"
 
-image: "nginxinc/nginx-unprivileged"
+image: "dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged"
 tag: "1.20-alpine"
 
 ingress_host: "example.com"
