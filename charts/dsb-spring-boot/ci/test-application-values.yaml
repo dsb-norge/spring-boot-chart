@@ -18,6 +18,7 @@ dashboard:
 
 database_container:
   enabled: true
+  database: "emptydb"
 
 config:
   spring:
