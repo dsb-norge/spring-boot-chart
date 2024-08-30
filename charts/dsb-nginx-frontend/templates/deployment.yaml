@@ -140,8 +140,8 @@ spec:
         - name: {{ .Values.resourceName }}-mgmt
           image: "{{ .Values.mgmt_image }}:{{ .Values.mgmt_tag }}"
           args:
-            - '-nginx.scrape-uri=http://localhost:8180/status'
-            - '-prometheus.const-labels={{ .Values.prometheus_tag | default "nginxapp" }}={{ .Release.Name }}'
+            - '--nginx.scrape-uri=http://localhost:8180/status'
+            - '--prometheus.const-label={{ .Values.prometheus_tag | default "nginxapp" }}={{ .Release.Name }}'
           ports:
             - name: prometheus
               containerPort: 9113
