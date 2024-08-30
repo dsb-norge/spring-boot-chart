@@ -29,7 +29,7 @@ Full manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.2.0_config-hash=d32fd2c78345dd53ed401b038e55335ed007c9c869f3b71ccc664ba987a852a4
+            checksum: chart-version=2.2.1_config-hash=d32fd2c78345dd53ed401b038e55335ed007c9c869f3b71ccc664ba987a852a4
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend1
@@ -39,9 +39,9 @@ Full manifest should match snapshot:
             app.kubernetes.io/name: Rendering test
             app.kubernetes.io/part-of: Verification stuff
             app.kubernetes.io/version: greatest
-            helm.sh/chart: dsb-nginx-frontend-2.2.0
+            helm.sh/chart: dsb-nginx-frontend-2.2.1
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.2.0
+            helm.sh/chart-version: 2.2.1
         spec:
           affinity:
             podAntiAffinity:
@@ -117,8 +117,8 @@ Full manifest should match snapshot:
                   name: my-key-vault-volume-2
                   readOnly: true
             - args:
-                - -nginx.scrape-uri=http://localhost:8180/status
-                - -prometheus.const-labels=nginxapp=RELEASE-NAME
+                - --nginx.scrape-uri=http://localhost:8180/status
+                - --prometheus.const-label=nginxapp=RELEASE-NAME
               image: dsbacr.azurecr.io/cache/docker-io/nginx/nginx-prometheus-exporter:1.3
               name: frontend1-mgmt
               ports:
@@ -165,9 +165,9 @@ Full manifest should match snapshot:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: Rendering test
         app.kubernetes.io/part-of: Verification stuff
-        helm.sh/chart: dsb-nginx-frontend-2.2.0
+        helm.sh/chart: dsb-nginx-frontend-2.2.1
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.2.0
+        helm.sh/chart-version: 2.2.1
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -215,10 +215,10 @@ Full manifest should match snapshot:
         app.kubernetes.io/part-of: Verification stuff
         app.kubernetes.io/version: greatest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.2.0
-        helm.sh/chart: dsb-nginx-frontend-2.2.0
+        chart-version: 2.2.1
+        helm.sh/chart: dsb-nginx-frontend-2.2.1
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.2.0
+        helm.sh/chart-version: 2.2.1
       name: frontend1
       namespace: NAMESPACE
     spec:
@@ -267,7 +267,7 @@ Minimal manifest should match snapshot:
         metadata:
           annotations:
             apparmor.security.beta.kubernetes.io/pod: runtime/default
-            checksum: chart-version=2.2.0_config-hash=daa92e6610ff044a79ea23344d21dd25e38dae2e052b415fc2c892da3380ad2c
+            checksum: chart-version=2.2.1_config-hash=daa92e6610ff044a79ea23344d21dd25e38dae2e052b415fc2c892da3380ad2c
             no.dsb-norge.filebeat/autodiscover-template: nginx
           labels:
             app: frontend
@@ -277,9 +277,9 @@ Minimal manifest should match snapshot:
             app.kubernetes.io/name: RELEASE-NAME
             app.kubernetes.io/part-of: RELEASE-NAME
             app.kubernetes.io/version: latest
-            helm.sh/chart: dsb-nginx-frontend-2.2.0
+            helm.sh/chart: dsb-nginx-frontend-2.2.1
             helm.sh/chart-name: dsb-nginx-frontend
-            helm.sh/chart-version: 2.2.0
+            helm.sh/chart-version: 2.2.1
         spec:
           affinity:
             podAntiAffinity:
@@ -340,8 +340,8 @@ Minimal manifest should match snapshot:
                 runAsGroup: 101
                 runAsUser: 101
             - args:
-                - -nginx.scrape-uri=http://localhost:8180/status
-                - -prometheus.const-labels=nginxapp=RELEASE-NAME
+                - --nginx.scrape-uri=http://localhost:8180/status
+                - --prometheus.const-label=nginxapp=RELEASE-NAME
               image: dsbacr.azurecr.io/cache/docker-io/nginx/nginx-prometheus-exporter:1.3
               name: frontend-mgmt
               ports:
@@ -390,10 +390,10 @@ Minimal manifest should match snapshot:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.2.0
-        helm.sh/chart: dsb-nginx-frontend-2.2.0
+        chart-version: 2.2.1
+        helm.sh/chart: dsb-nginx-frontend-2.2.1
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.2.0
+        helm.sh/chart-version: 2.2.1
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -419,9 +419,9 @@ Support multiple ingress hosts:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: RELEASE-NAME
         app.kubernetes.io/part-of: RELEASE-NAME
-        helm.sh/chart: dsb-nginx-frontend-2.2.0
+        helm.sh/chart: dsb-nginx-frontend-2.2.1
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.2.0
+        helm.sh/chart-version: 2.2.1
       name: frontend
       namespace: NAMESPACE
     spec:
@@ -499,10 +499,10 @@ Support multiple ingress hosts:
         app.kubernetes.io/part-of: RELEASE-NAME
         app.kubernetes.io/version: latest
         chart-name: dsb-nginx-frontend
-        chart-version: 2.2.0
-        helm.sh/chart: dsb-nginx-frontend-2.2.0
+        chart-version: 2.2.1
+        helm.sh/chart: dsb-nginx-frontend-2.2.1
         helm.sh/chart-name: dsb-nginx-frontend
-        helm.sh/chart-version: 2.2.0
+        helm.sh/chart-version: 2.2.1
       name: frontend
       namespace: NAMESPACE
     spec:
