@@ -61,6 +61,9 @@ jobs:
           kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/test-application:latest
           docker pull dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest
           kind load --name chart-testing docker-image dsbacr.azurecr.io/dsb-norge/dsb-mssql-server:2019-latest
+          # must match the image in empty-nginx-values.yaml
+          docker pull dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged:1.20-alpine
+          kind load --name chart-testing docker-image dsbacr.azurecr.io/cache/docker-io/nginxinc/nginx-unprivileged:1.20-alpine
 
       - name: Run chart-testing (install)
         run: ct install --all
